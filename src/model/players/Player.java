@@ -35,11 +35,18 @@ public abstract class Player {
      */
     Player() {
         this.score = 0; // TODO: make 8 and 4 constants
-        this.currentCards = new Card[8];
-        this.pawns = new Pawn[4]; // Initialize the 4 pawns
+        this.currentCards = initializeCards();
+        this.pawns = initializePawns();
         this.findings = new ArrayList<>();
     }
 
+    private Card[] initializeCards(){
+        return null;
+    }
+
+    private Pawn[] initializePawns(){
+        return null;
+    }
 
     /**
      * Retrieves the current score
