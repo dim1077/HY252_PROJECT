@@ -12,23 +12,17 @@ import model.positions.Position;
  */
 public abstract class Pawn {
 
-//    /** An indicator of whether the pawn has been placed on a path */
-//    protected boolean usedInGame;
-
-    /** The current position of the pawn on the path. */
     protected Position currentPosition;
-
-    /** Whether the pawn's identity is revealed to the opponent. */
     protected boolean isRevealed;
-
-    /** The owner of the pawn */
     protected Player owner;
 
+    /**
+     * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
+     * */
     public Pawn(Player owner) {
         this.owner = owner;
         this.currentPosition = null;
         this.isRevealed = false;
-//        this.usedInGame = false;
     }
 
     /**
@@ -45,15 +39,21 @@ public abstract class Pawn {
 
     }
 
-
+    /** @return returns the position of the pawn */
     public Position getPosition(){
         return currentPosition;
     }
 
     /**
-     * Checks if the pawn is revealed.
-     *
-     * @return true if the pawn is revealed, false otherwise
+     * @return Returns the owner the of the pawn which could be either
+     * PlayerGreen or PlayerRed
+     * */
+    public Player getOwner() {
+        return owner;
+    }
+
+    /**
+     * @return returns true if the pawn is revealed, false otherwise
      */
     public boolean isRevealed() {
         return isRevealed;

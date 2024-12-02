@@ -5,9 +5,8 @@ import model.players.PlayerGreen;
 import model.players.PlayerRed;
 
 /**
-
-blah blah TODO
-
+ * This is the Controller of the application,
+ * where the model and view are put together.
 */
 public class Controller {
 
@@ -83,12 +82,22 @@ public class Controller {
         // - Notify the UI or log that the turn has ended.
     }
 
+    /**
+     * Closes the window and ends game.
+     */
     public void endGame(){
 
     }
 
+    /**
+     * @return returns a boolean value that checks if any of user has won or gave up
+     * */
     public boolean isGameOver(){
         return true;
     }
 
+
+    public static void main(String[] args){
+
+    }
 }

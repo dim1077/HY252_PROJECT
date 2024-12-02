@@ -3,25 +3,46 @@ package model.positions;
 import model.findings.Finding;
 import model.paths.Path;
 
+
+/**
+ * This class represents a cell in the path.
+ * A cell has a certain score gained if the player passes by it.
+ * This class also has a finding in it.
+ * */
 public class FindingPosition extends Position {
 
-    /** The finding this position contains */
     private Finding finding;
-
-    /** Indicates whether the relic is taken or destroyed (For Fresco this is always true)*/
     boolean findingAvailable;
 
     /**
      * Constructs a Position.
      *
      * @param pathIdx the path index this position belongs to
-     * @param index the index of this position on the path
-     * @param score the score associated with this position
+     * @param index The index of this cell on the path
+     * @param rewardScore the score associated with this position
      * @param findingAvailable Indicates whether the relic is taken or destroyed
      */
-    public FindingPosition(int pathIdx, int index, int score, Finding finding, boolean findingAvailable) {
-        super(pathIdx, index, score);
+    public FindingPosition(int pathIdx, int index, int rewardScore, Finding finding, boolean findingAvailable) {
+        super(pathIdx, index, rewardScore);
         this.finding = finding;
         this.findingAvailable = findingAvailable;
+    }
+
+    /**
+     * @precondition: findingAvailable = true
+     * Returns the finding this position contains */
+    public Finding getFinding() {
+        if (!findingAvailable) throw new IllegalStateException("Finding is not available");
+        return finding;
+    }
+
+
+
+    /**
+     * Returns an indication of whether the relic is available, either taken or destroyed.
+     * (For Fresco, this always returns true.)
+     */
+    public boolean isFindingAvailable() {
+        return findingAvailable;
     }
 }

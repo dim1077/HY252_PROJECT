@@ -17,10 +17,20 @@ public class Theseus extends Pawn {
     /** The maximum number of findings Theseus can destroy. */
     private static final int MAX_DESTRUCTION_COUNT = 3;
 
+    /**
+     * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
+     * */
+    public Theseus(Player owner) {
+        super(owner);
+        this.findingsDestroyed = 0;
+    }
 
     /**
-     * Destroys a finding at the current position.
+     * @precondition The position must contain a finding
      *
+     * This method is responsible for interacting with
+     * a position that has a finding. Theseus can either destroy
+     * a finding, which reveals his position, or ignore it.
      * @param position the position to interact with
      */
     @Override
@@ -28,15 +38,16 @@ public class Theseus extends Pawn {
 
     }
 
-    public Theseus(Player owner) {
-        super(owner);
-        this.findingsDestroyed = 0;
-    }
-
+    /**
+     * @return returns the number of findings destroyed, which are smaller or equal to thre
+     * */
     public int getFindingsDestroyed() {
         return findingsDestroyed;
     }
 
+    /**
+     *  set the number of findings destroyed
+     * */
     public void setFindingsDestroyed(int findingsDestroyed) {
         this.findingsDestroyed = findingsDestroyed;
     }

@@ -4,12 +4,17 @@ import model.cards.Card;
 import model.findings.Finding;
 import model.pawns.Pawn;
 
-import model.pawns.Theseus;
-import model.pawns.Archeologist;
-
 import java.util.ArrayList;
 import java.util.List;
 
+/*
+The PlayerRed and PlayerGreen classes were created separately to allow for
+future customization of their behavior (e.g., unique abilities or traits)
+without too much of a headache.
+
+This design also enforces the constraint that only two players can exist,
+making it straightforward to manage them independently.
+ */
 
 /**
  * Abstract class representing a player in the game.
@@ -17,52 +22,43 @@ import java.util.List;
  */
 public abstract class Player {
 
-    /** The player's score, calculated based {on findings and pawn positions}. */
     private int score;
-
-    /** The player's 8 current cards. */
     private Card[] currentCards;
-
-    /** The player's collection of 4 pawns: three archeologists and one theseus */
     private Pawn[] pawns;
-
-    /** The findings (Fresco, rare or snake goddess) currently collected by the player. */
     private List<Finding> findings;
 
     /**
      * Constructs a new Player with an initial score of 0,
-     * an empty hand of 8 cards, and 4 initialized pawns.
+     * an hand of 8 cards, and 4 initialized (not used) pawns.
      */
     Player() {
         this.score = 0; // TODO: make 8 and 4 constants
-        this.currentCards = initializeCards();
-        this.pawns = initializePawns();
         this.findings = new ArrayList<>();
+        initializeCards();
+        initializePawns();
     }
 
-    private Card[] initializeCards(){
-        return null;
+    private void initializeCards(){
+
     }
 
-    private Pawn[] initializePawns(){
-        return null;
+    private void initializePawns(){
+
     }
 
     /**
-     * Retrieves the current score
-     * @return: current score of player
+     * @return current score (integer) of player, calculated based on findings and pawn positions.
      */
     int getScore(){
-        return -1;
+        return score;
     }
 
     /**
-    Ends the game and exits the application.
+    Ends the game and exits the application. Player who called this lost.
      */
     void giveUp(){
 
-    };
-
+    }
 
     /**
      *  Player plays move, which could involve:
@@ -75,12 +71,34 @@ public abstract class Player {
 
     }
     /**
-     * @precondition: stack is not empty
-     *
-    * Get a new card from the available cards stack
-     *
+     * @precondition stack is not empty
+    * Get a new card from the available cards stack.
      */
-    Card getNewCard(){
+    public Card getNewCard(){
         return null;
     }
+
+    /**
+     * @return currents the deck of cards the player current possess.
+     */
+    public Card[] getCards(){
+        return currentCards;
+    }
+
+
+    // TODO: make the numbers below constants
+    /**
+     * @return returns 4 pawns, 3 archeologist 1 theseus.
+     */
+    public Pawn[] getPawns(){
+        return pawns;
+    }
+
+    /**
+     * @return returns findings, which could be type of FrescoFinding, RareFinding or SnakeGodnessFinding
+     */
+    public List<Finding> getFindings(){
+        return findings;
+    }
+
 }
