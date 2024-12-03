@@ -1,4 +1,9 @@
 package model.cards;
 
-public class MinotaurCard extends Card {
+import model.paths.PathNames;
+
+public class MinotaurCard extends SpecialCard {
+    public MinotaurCard(PathNames pathName) {
+        super(pathName);
+    }
 }

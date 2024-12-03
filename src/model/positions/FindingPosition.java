@@ -2,6 +2,7 @@ package model.positions;
 
 import model.findings.Finding;
 import model.paths.Path;
+import model.paths.PathNames;
 
 
 /**
@@ -17,13 +18,13 @@ public class FindingPosition extends Position {
     /**
      * Constructs a Position.
      *
-     * @param pathIdx the path index this position belongs to
+     * @param pathName the path name this position belongs to
      * @param index The index of this cell on the path
      * @param rewardScore the score associated with this position
      * @param findingAvailable Indicates whether the relic is taken or destroyed
      */
-    public FindingPosition(int pathIdx, int index, int rewardScore, Finding finding, boolean findingAvailable) {
-        super(pathIdx, index, rewardScore);
+    public FindingPosition(PathNames pathName, int index, int rewardScore, Finding finding, boolean findingAvailable) {
+        super(pathName, index, rewardScore);
         this.finding = finding;
         this.findingAvailable = findingAvailable;
     }

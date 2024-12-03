@@ -1,8 +1,11 @@
 package model.paths;
 
 import model.findings.RareFinding;
+import model.positions.FindingPosition;
 import model.positions.Position;
+import model.positions.SimplePosition;
 
+import java.util.Set;
 
 
 /**
@@ -10,34 +13,32 @@ import model.positions.Position;
  * that when completed marks the finding of the lost city
  * */
 public abstract class Path {
+
+    /** Represents the numbers of the positions in the path that have a finding (1-indexed) */
+    final static Set<Integer> numOfPositionsWithFindings = Set.of(2, 4, 6, 8, 9);
+
+
+    /** Represents the amount of cells in a path*/
+    final static int NUM_OF_POSITIONS = 9;
+    final static int NUM_OF_PATHS = 3;
+    final static int NUM_OF_PATH_CELLS = 9;
+
     protected Position[] positions;
     protected final RareFinding rareFinding;
-    protected final String name;
 
 
-    public Path(String name, RareFinding rareFinding) {
+    public Path(RareFinding rareFinding) {
         this.rareFinding = rareFinding;
-        this.name = name;
-        this.positions = new Position[9];
-        initializePositions();
+        this.positions = new Position[NUM_OF_POSITIONS];
+        initializeFindings();
     }
 
     /**
      * As the name suggests, we force each class to define
      * which relics will be on the current path.
      */
-    protected void initializePositions() {
-    }
+    protected abstract void initializeFindings();
 
-    ;
-
-
-    /**
-     * @return the name of the path, which is one of the four major ancient cities
-     */
-    public String getName() {
-        return name;
-    }
 
     /**
      * @return returns the (unique) rare finding of the path

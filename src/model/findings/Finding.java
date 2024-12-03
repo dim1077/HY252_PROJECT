@@ -9,7 +9,7 @@ import java.util.Map;
  * A finding could represent a Fresco, a rare finding or a snake goddess statue
  * Each finding has a name and rewards points (directly or indirect) by its discovery
  * */
-public abstract class Finding {
+public interface Finding {
 
     /*
     TODO:
@@ -18,38 +18,19 @@ public abstract class Finding {
     be passed as well?
      */
 
-    /* A dictionary to map the name of a Finding to it's description  */
-    protected static final Map<String, String> descriptions = new HashMap<>();
-
-    static {
-        descriptions.put("", "");
-        // TODO
-    }
-
-    /** The name of the relic */
-    protected final String name;
-
-    /***
-     *
-     * @param name The name of the relic
-     */
-    public Finding(String name)  {
-        this.name = name;
-    }
-
-
-    /**
-     * @return returns the description of the finding
-     * */
-    public String getDescription(){
-        return descriptions.get(name);
-    }
-
-
-    /**
-     * @return returns the name of the finding
-     * */
-    public String getName() {
-        return name;
-    }
+//    /* A dictionary to map the name of a Finding to it's description  */
+//    protected static final Map<String, String> descriptions = new HashMap<>();
+//
+//    static {
+//        descriptions.put("", "");
+//        // TODO
+//    }
+//
+//    /** The name of the relic */
+//    /**
+//     * @return returns the description of the finding
+//     * */
+//    public String getDescription(){
+//        return descriptions.get(name);
+//    }
 }

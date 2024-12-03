@@ -1,8 +1,7 @@
 package model.positions;
 
 
-
-
+import model.paths.PathNames;
 
 /**
  * This class represents a cell in the path.
@@ -10,27 +9,27 @@ package model.positions;
  * */
 public abstract class Position {
 
-    protected int pathIdx;
+    protected PathNames pathName;
     protected final int cellIdx;
     protected final int rewardScore;
 
 
     /**
      * Constructs a Position with a relic.
-     * @param pathIdx The path index this position belongs to.
+     * @param pathName The path name this position belongs to.
      * @param cellIdx The index of this cell on the path.
      * @param rewardScore the score associated with this position.
      */
-    public Position(int pathIdx, int cellIdx, int rewardScore) {
-        this.pathIdx = pathIdx;
+    public Position(PathNames pathName, int cellIdx, int rewardScore) {
+        this.pathName = pathName;
         this.cellIdx = cellIdx;
         this.rewardScore = rewardScore;
     }
 
 
-    /** @return returns the path index (0-3) this position belongs to. */
-    public int getPathIdx() {
-        return pathIdx;
+    /** @return returns the path name (0-3) this position belongs to. */
+    public PathNames getPathName() {
+        return pathName;
     }
 
     /** @return The index of this cell on the path. (0–8). */

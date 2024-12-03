@@ -1,6 +1,6 @@
 package model.findings;
 
-class FrescoFinding extends Finding{
+class FrescoFinding implements Finding {
 
     private final int points;
 
@@ -9,7 +9,7 @@ class FrescoFinding extends Finding{
      * @param points The points the player gains by its discovery
      */
     public FrescoFinding(String name, int points) {
-        super(name);
+//        super(name);
         this.points = points;
     }
 

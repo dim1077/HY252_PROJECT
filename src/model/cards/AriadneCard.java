@@ -1,4 +1,10 @@
 package model.cards;
 
-public class AriadneCard extends Card {
+import model.paths.PathNames;
+
+public class AriadneCard extends SpecialCard {
+    public AriadneCard(PathNames name) {
+        super(name);
+    }
+
 }

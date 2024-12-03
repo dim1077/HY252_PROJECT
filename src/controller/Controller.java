@@ -1,8 +1,14 @@
 package controller;
 
-import model.paths.Path;
+import model.cardStack.CardStack;
+import model.findings.RareFinding;
+import model.findings.RareFindingNames;
+import model.paths.*;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
+import view.components.centralContent.CentralContent;
+import view.components.menus.PlayerMenu;
+import view.window.MainWindow;
 
 /**
  * This is the Controller of the application,
@@ -21,12 +27,30 @@ public class Controller {
 
     // max 4
     private int checkPointsPassed = 0;
-    /*
-    Well First, I need to initialize the game somehow,
-    so I believe having an init function is a good idea
-     */
 
     public void initializeGame(){
+
+        // Model
+//        CardStack cardStack = new CardStack();
+//
+//        PlayerRed playerRed = new PlayerRed();
+//        PlayerGreen playerGreen = new PlayerGreen();
+//
+//        RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC);
+//        RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING);
+//        RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY);
+//        RareFinding RhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS);
+//
+//
+//        Path maliaPath = new MaliaPath(maliaJewelry);
+//        Path knossosPath = new KnossosPath(minosRing);
+//        Path phaistosPath = new PhaistosPath(phaistosDisc);
+//        Path zakrosPath = new ZakrosPath(RhytonOfZakros);
+
+        // View/UI
+        MainWindow mainWindow = new MainWindow();
+
+
         /* Creates the UI stuff */
 
         /* Initializes MaliaPath, KnossosPath, PhaistosPath and ZakrosPath */
@@ -37,6 +61,13 @@ public class Controller {
     }
 
     public void nextTurn() {
+
+
+
+
+
+
+
         // Step 1: Determine which player's turn it is
         // - Use the `isGreenTurn` flag to decide.
         // - Notify players (or the UI) which player's turn it is.
@@ -98,6 +129,7 @@ public class Controller {
 
 
     public static void main(String[] args){
-
+        Controller controller = new Controller();
+        controller.initializeGame();
     }
 }
