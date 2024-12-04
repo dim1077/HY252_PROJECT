@@ -17,7 +17,7 @@ public class PlayerMenu extends JLayeredPane {
     public PlayerMenu() {
         // Optional: Initialize components here
         setOpaque(true); // Ensure the JLayeredPane can be painted
-        setPreferredSize(calculatePreferredSize()); // Set initial size
+//        setPreferredSize(calculatePreferredSize()); // Set initial size
     }
 
     @Override

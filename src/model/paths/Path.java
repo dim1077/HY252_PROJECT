@@ -6,7 +6,9 @@ import model.positions.Position;
 import model.positions.SimplePosition;
 
 import java.util.Set;
-
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * This class represents a path, which is an array of 9 positions
@@ -15,7 +17,7 @@ import java.util.Set;
 public abstract class Path {
 
     /** Represents the numbers of the positions in the path that have a finding (1-indexed) */
-    final static Set<Integer> numOfPositionsWithFindings = Set.of(2, 4, 6, 8, 9);
+    final static Set<Integer> numOfPositionsWithFindings = new HashSet<>(Arrays.asList(2, 4, 6, 8, 9));
 
 
     /** Represents the amount of cells in a path*/

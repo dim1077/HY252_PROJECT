@@ -16,8 +16,10 @@ public class MainWindow extends JFrame {
 
     public MainWindow() {
         setTitle("Lost Cities");
-        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+//        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setLayout(new BorderLayout());
 
         // Player's red menu
@@ -30,6 +32,7 @@ public class MainWindow extends JFrame {
         add(bottomPlayerMenu, BorderLayout.SOUTH);
         add(centralContent, BorderLayout.CENTER);
 
+        pack();
         setVisible(true);
     }
 

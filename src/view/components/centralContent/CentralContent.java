@@ -18,32 +18,33 @@ public class CentralContent extends JLayeredPane {
 
     // Constructor
     public CentralContent() {
-        this.setLayout(null); // Use absolute layout for custom positioning
+        this.setLayout(null);
+//        setPreferredSize(calculatePreferredSize());
         initializeGrid();
-        addBackgroundImage("src/assets/images/background.jpg"); // Specify the path to your background image
 
-        // Add a resize listener to dynamically adjust components
-        this.addComponentListener(new java.awt.event.ComponentAdapter() {
-            @Override
-            public void componentResized(java.awt.event.ComponentEvent e) {
-                resizeComponents();
-            }
-        });
+//        addBackgroundImage("src/assets/images/background.jpg");
+        setupStaticLayout();
     }
 
-    // Adds a background image scaled to the full size of CentralContent
-    private void addBackgroundImage(String imagePath) {
-        // Load the image
-        ImageIcon imageIcon = new ImageIcon(imagePath);
-
-        // Create a JLabel for the background
-        backgroundLabel = new JLabel();
-        backgroundLabel.setIcon(imageIcon);
-        backgroundLabel.setBounds(0, 0, 0, 0); // Initial bounds, updated on resize
-
-        // Add the background label to the lowest layer
-        this.add(backgroundLabel, Integer.valueOf(0));
+    private Dimension calculatePreferredSize() {
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = (int) (screenSize.width * 0.60);
+        int height = (int) (screenSize.height * 0.60);
+        return new Dimension(width, height);
     }
+
+//    private void addBackgroundImage(String imagePath) {
+//        ImageIcon imageIcon = new ImageIcon(imagePath);
+//        Image scaledImage = imageIcon.getImage().getScaledInstance(this.getWidth(), this.getHeight(), Image.SCALE_SMOOTH);
+//        imageIcon = new ImageIcon(scaledImage);
+//
+//        backgroundLabel = new JLabel();
+//        backgroundLabel.setIcon(imageIcon);
+//        backgroundLabel.setBounds(0, 0, this.getWidth(), this.getHeight());
+//
+//        this.add(backgroundLabel, Integer.valueOf(0)); // Add to the background layer
+//    }
+
 
     // Initializes the grid
     private void initializeGrid() {
@@ -53,10 +54,12 @@ public class CentralContent extends JLayeredPane {
         gridLabels = new JLabel[4][9];
         cellStates = new CellState[4][9];
 
+        Color[] PathColors = {Color.RED, Color.YELLOW, Color.WHITE, Color.BLUE};
+
         for (int row = 0; row < 4; row++) {
             for (int col = 0; col < 9; col++) {
                 JLabel cellLabel = new JLabel("", SwingConstants.CENTER);
-                cellLabel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+                cellLabel.setBorder(BorderFactory.createLineBorder(PathColors[row], 3));
                 cellLabel.setOpaque(true);
                 cellLabel.setBackground(Color.WHITE);
 
@@ -66,7 +69,7 @@ public class CentralContent extends JLayeredPane {
             }
         }
 
-        this.add(pathsGrid, Integer.valueOf(1)); // Add to layered pane at level 1
+        this.add(pathsGrid, Integer.valueOf(1));
     }
 
     // Updates a specific cell in the grid
@@ -79,20 +82,18 @@ public class CentralContent extends JLayeredPane {
 
         JLabel cellLabel = gridLabels[row][col];
         switch (state) {
-            case NONE -> cellLabel.setBackground(Color.WHITE);
-            case GREEN_PLAYER -> cellLabel.setBackground(Color.GREEN);
-            case RED_PLAYER -> cellLabel.setBackground(Color.RED);
+            case NONE:
+                cellLabel.setBackground(Color.WHITE);
+                break;
+            case GREEN_PLAYER:
+                cellLabel.setBackground(Color.GREEN);
+                break;
+            case RED_PLAYER:
+                cellLabel.setBackground(Color.RED);
+                break;
         }
     }
 
-    // Resets the grid to its initial state
-    public void resetGrid() {
-        for (int row = 0; row < 4; row++) {
-            for (int col = 0; col < 9; col++) {
-                updateCell(row, col, CellState.NONE);
-            }
-        }
-    }
 
     // Gets the current state of the grid
     public CellState[][] getGridState() {
@@ -108,52 +109,44 @@ public class CentralContent extends JLayeredPane {
         }
     }
 
-    // Dynamically resize and reposition components
-    private void resizeComponents() {
-        Dimension contentSize = this.getSize();
+    private void setupStaticLayout() {
+        int contentWidth = 1920;
+        int contentHeight = 1080;
+        this.setSize(contentWidth, contentHeight);
 
-        // Resize and reposition background to cover entire CentralContent
-        if (backgroundLabel != null) {
-            backgroundLabel.setBounds(0, 0, contentSize.width, contentSize.height);
-            ImageIcon icon = (ImageIcon) backgroundLabel.getIcon();
-            if (icon != null) {
-                Image scaledImage = icon.getImage().getScaledInstance(contentSize.width, contentSize.height, Image.SCALE_SMOOTH);
-                backgroundLabel.setIcon(new ImageIcon(scaledImage));
-            }
-        }
+        // Set fixed size for the background
+//        if (backgroundLabel != null) {
+//            backgroundLabel.setBounds(0, 0, contentWidth, contentHeight);
+//            ImageIcon icon = (ImageIcon) backgroundLabel.getIcon();
+//            if (icon != null) {
+//                Image scaledImage = icon.getImage().getScaledInstance(contentWidth, contentHeight, Image.SCALE_SMOOTH);
+//                backgroundLabel.setIcon(new ImageIcon(scaledImage));
+//            }
+//        }
 
-        // Resize and reposition grid
+        // TODO: make those constants
+
         int numRows = 4;
         int numCols = 9;
 
-        int gapSmall = 5;
-        int gapLarge = 10;
+        int cellWidth = 80;
+        int cellHeight = 60;
+        int gapBetweenCells = 5;
+        int gapBetweenPaths = 10;
 
-        int totalWidth = (int) (contentSize.width * 0.75);
-        int totalHeight = (int) (contentSize.height * 0.75);
 
-        int maxCellHeight = (totalHeight - (numRows - 1) * gapSmall) / numRows;
-        int maxCellWidth = (totalWidth - (numCols - 1) * gapLarge) / numCols;
 
-        int cellHeight = Math.min(maxCellHeight, (int) (maxCellWidth * 0.75));
-        int cellWidth = (int) (cellHeight * (4.0 / 3.0));
+        pathsGrid.setBounds(1000 , 100, 800, 400);
 
-        int gridWidth = (cellWidth * numCols) + gapLarge * (numCols - 1);
-        int gridHeight = (cellHeight * numRows) + gapSmall * (numRows - 1);
-
-        // Align grid to the right side of the container
-        int gridX = contentSize.width - gridWidth - 20; // Add some padding (20px)
-        int gridY = (contentSize.height - gridHeight) / 2;
-
-        pathsGrid.setBounds(gridX, gridY, gridWidth, gridHeight);
-
+        // Position the cells within the grid
         for (int row = 0; row < numRows; row++) {
             for (int col = 0; col < numCols; col++) {
                 JLabel cellLabel = gridLabels[row][col];
-                int x = col * (cellWidth + gapLarge);
-                int y = row * (cellHeight + gapSmall);
+                int x = col * (cellWidth + gapBetweenCells);
+                int y = row * (cellHeight + gapBetweenPaths);
                 cellLabel.setBounds(x, y, cellWidth, cellHeight);
             }
         }
     }
+
 }
