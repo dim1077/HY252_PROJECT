@@ -1,13 +1,13 @@
 package model.paths;
 
+import model.cards.Card;
 import model.findings.RareFinding;
-import model.positions.FindingPosition;
+import model.pawns.Pawn;
+import model.players.Player;
+import model.players.PlayerRed;
 import model.positions.Position;
-import model.positions.SimplePosition;
 
-import java.util.Set;
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.*;
 import java.util.Set;
 
 /**
@@ -22,16 +22,22 @@ public abstract class Path {
 
     /** Represents the amount of cells in a path*/
     final static int NUM_OF_POSITIONS = 9;
-    final static int NUM_OF_PATHS = 3;
-    final static int NUM_OF_PATH_CELLS = 9;
 
+
+    final static int NUM_OF_PATHS = 4;
+
+    protected int pathIdx;
+    protected Map<Player, Pawn> playerPawn = new HashMap<>();
+    protected int maxCardPlayed;
     protected Position[] positions;
     protected final RareFinding rareFinding;
 
 
     public Path(RareFinding rareFinding) {
+        maxCardPlayed = 0;
         this.rareFinding = rareFinding;
         this.positions = new Position[NUM_OF_POSITIONS];
+        // TODO: perhaps something for player pawns?
         initializeFindings();
     }
 
@@ -40,6 +46,10 @@ public abstract class Path {
      * which relics will be on the current path.
      */
     protected abstract void initializeFindings();
+
+//    public void updateMaxNumber(){
+//      // throw something
+//    }
 
 
     /**
@@ -56,4 +66,25 @@ public abstract class Path {
     public Position[] getPositions() {
         return positions;
     }
+
+    public int getMaxCardPlayed() {
+        return maxCardPlayed;
+    }
+
+    public void setPlayerPawn(Player player, Pawn pawn) {
+         playerPawn.put(player, pawn);
+    }
+
+    public Pawn getPlayerPawn(Player player) {
+        return playerPawn.get(player);
+    }
+
+    public int getPathIdx(){
+        return pathIdx;
+    }
+
+    public void setMaxCardPlayed(int maxCardPlayed) {
+        this.maxCardPlayed = maxCardPlayed;
+    }
+
 }

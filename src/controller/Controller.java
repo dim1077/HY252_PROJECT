@@ -1,14 +1,22 @@
 package controller;
 
 import model.cardStack.CardStack;
+import model.cards.Card;
+import model.cards.NumberCard;
+import model.cards.SpecialCard;
 import model.findings.RareFinding;
 import model.findings.RareFindingNames;
 import model.paths.*;
+import model.pawns.Pawn;
+import model.players.Player;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
 import view.components.centralContent.CentralContent;
 import view.components.menus.PlayerMenu;
 import view.window.MainWindow;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This is the Controller of the application,
@@ -17,9 +25,12 @@ import view.window.MainWindow;
 public class Controller {
 
     private boolean isGreenTurn;
-    private PlayerRed playerGreen;
-    private PlayerGreen playerRed;
+    private PlayerGreen playerGreen;
+    private PlayerRed playerRed;
 
+    // TODO: perhaps public?
+    private Map<Player, Card[]> lastCardsPlayed = new HashMap<>();
+    private CardStack cardStack;
     private Path maliaPath;
     private Path knossosPath;
     private Path phaistosPath;
@@ -29,23 +40,29 @@ public class Controller {
     private int checkPointsPassed = 0;
 
     public void initializeGame(){
-
+        // TODO: this or constructor?
         // Model
-//        CardStack cardStack = new CardStack();
-//
-//        PlayerRed playerRed = new PlayerRed();
-//        PlayerGreen playerGreen = new PlayerGreen();
-//
-//        RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC);
-//        RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING);
-//        RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY);
-//        RareFinding RhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS);
-//
-//
-//        Path maliaPath = new MaliaPath(maliaJewelry);
-//        Path knossosPath = new KnossosPath(minosRing);
-//        Path phaistosPath = new PhaistosPath(phaistosDisc);
-//        Path zakrosPath = new ZakrosPath(RhytonOfZakros);
+
+        playerRed = new PlayerRed();
+        playerGreen = new PlayerGreen();
+
+        lastCardsPlayed.put(playerRed, new Card[4]);
+        lastCardsPlayed.put(playerGreen, new Card[4]);
+
+        RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC);
+        RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING);
+        RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY);
+        RareFinding RhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS);
+
+
+         maliaPath = new MaliaPath(maliaJewelry);
+         knossosPath = new KnossosPath(minosRing);
+         phaistosPath = new PhaistosPath(phaistosDisc);
+         zakrosPath = new ZakrosPath(RhytonOfZakros);
+
+        CardStack cardStack = new CardStack(new Path[]{maliaPath, knossosPath, phaistosPath, zakrosPath});
+
+
 
         // View/UI
         MainWindow mainWindow = new MainWindow();
@@ -58,9 +75,57 @@ public class Controller {
         /* Initializes PlayerGreen and PlayerRed */
 
         /*  Initializes card stack */
+
+
+
+        // Green always plays first
+        nextTurn(playerGreen);
     }
 
-    public void nextTurn() {
+    public void nextTurn(Player player) {
+        if (isGameOver()) endGame();
+
+        try{
+
+            Card userCard = CentralContent.getCard();
+            int cardIdx = CentralContent.getCardIdx();
+
+            Pawn playerPawn = null;
+
+            // first time the player played in this path: he needs to choose a pawn
+            Path cardPath = userCard.getPath();
+            int pathIdxOfCard = cardPath.getPathIdx();
+            if (lastCardsPlayed.get(player)[pathIdxOfCard] == null){
+                Card[] currentLastCardsPlayed = lastCardsPlayed.get(player);
+                currentLastCardsPlayed[pathIdxOfCard] = userCard;
+                lastCardsPlayed.put(player, currentLastCardsPlayed);
+                playerPawn = playerChoosePawn();
+                cardPath.setPlayerPawn(player, playerPawn);
+            }
+
+            playerPawn = cardPath.getPlayerPawn(player);
+
+            userCard.play(cardPath, playerPawn);
+
+            Card newCard = cardStack.getCard();
+            player.setCardInDeck(cardIdx, newCard);
+
+            updateCardDeck(currentPlayer, player.getCardDeck());
+            updateInformationLabel(cardStack.getStackSize(), checkPointsPassed, currentPlayer);
+            updatePath(/* TODO */);
+
+            lookForCheckPoints(player);
+
+
+
+
+            } catch (Exception e){
+            // TODO: also change the exception as well, or maybe don't make it that long
+        }
+        nextTurn(player instanceof PlayerRed ? playerGreen : playerRed);
+
+
+
 
 
 
@@ -111,6 +176,12 @@ public class Controller {
         // Step 8: Pass the turn to the next player.
         // - Toggle the `isGreenTurn` flag to switch players.
         // - Notify the UI or log that the turn has ended.
+    }
+
+
+    private void lookForCheckPoints(Player player) {
+//        player.getPawns();
+        // TODO
     }
 
     /**

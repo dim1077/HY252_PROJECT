@@ -9,8 +9,8 @@ import java.awt.*;
 
 public class MainWindow extends JFrame {
     private CentralContent centralContent;
-    private PlayerMenu topPlayerMenu;
-    private PlayerMenu bottomPlayerMenu;
+    private PlayerMenu GreenPlayerMenu;
+    private PlayerMenu RedPlayerMenu;
     final static int WINDOW_WIDTH = 1920;
     final static int WINDOW_HEIGHT = 1080;
 
@@ -22,14 +22,14 @@ public class MainWindow extends JFrame {
         setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setLayout(new BorderLayout());
 
-        // Player's red menu
-        topPlayerMenu = new PlayerMenu();
-        // Player's green menu
-        bottomPlayerMenu = new PlayerMenu();
+        // bottom menu
+        GreenPlayerMenu = new PlayerMenu();
+        // top menu
+        RedPlayerMenu = new PlayerMenu();
         centralContent = new CentralContent();
 
-        add(topPlayerMenu, BorderLayout.NORTH);
-        add(bottomPlayerMenu, BorderLayout.SOUTH);
+        add(RedPlayerMenu, BorderLayout.NORTH);
+        add(GreenPlayerMenu, BorderLayout.SOUTH);
         add(centralContent, BorderLayout.CENTER);
 
         pack();
@@ -44,12 +44,12 @@ public class MainWindow extends JFrame {
         return centralContent;
     }
 
-    public PlayerMenu getTopPlayerMenu() {
-        return topPlayerMenu;
+    public PlayerMenu getRedPlayerMenu() {
+        return RedPlayerMenu;
     }
 
-    public PlayerMenu getBottomPlayerMenu() {
-        return bottomPlayerMenu;
+    public PlayerMenu getGreenPlayerMenu() {
+        return GreenPlayerMenu;
     }
 
 }

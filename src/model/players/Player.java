@@ -70,6 +70,13 @@ public abstract class Player {
     void playMove(){
 
     }
+
+    // TODO: perhaps the function should grab a card by itself
+    public void setCardInDeck(int cardIdx, Card card){
+        this.currentCards[cardIdx] = card;
+    }
+
+
     /**
      * @precondition stack is not empty
     * Get a new card from the available cards stack.
@@ -81,7 +88,7 @@ public abstract class Player {
     /**
      * @return currents the deck of cards the player current possess.
      */
-    public Card[] getCards(){
+    public Card[] getCardDeck(){
         return currentCards;
     }
 

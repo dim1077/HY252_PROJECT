@@ -2,6 +2,9 @@ package model.positions;
 
 
 import model.paths.PathNames;
+import model.players.Player;
+
+import java.util.Map;
 
 /**
  * This class represents a cell in the path.
@@ -12,7 +15,7 @@ public abstract class Position {
     protected PathNames pathName;
     protected final int cellIdx;
     protected final int rewardScore;
-
+    protected Map<Player, Boolean> hasPlayer;
 
     /**
      * Constructs a Position with a relic.
@@ -27,6 +30,10 @@ public abstract class Position {
     }
 
 
+    public void setHasPlayer(Player player, boolean hasPlayerValue) {
+        hasPlayer.put(player, hasPlayerValue);
+    }
+
     /** @return returns the path name (0-3) this position belongs to. */
     public PathNames getPathName() {
         return pathName;
@@ -40,5 +47,9 @@ public abstract class Position {
     /** @return the score this position rewards. */
     public int getRewardScore() {
         return rewardScore;
+    }
+
+    public boolean hasPlayer(Player player) {
+        return hasPlayer.get(player);
     }
 }

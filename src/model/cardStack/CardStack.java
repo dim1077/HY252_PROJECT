@@ -4,7 +4,7 @@ import model.cards.AriadneCard;
 import model.cards.Card;
 import model.cards.MinotaurCard;
 import model.cards.NumberCard;
-import model.paths.PathNames;
+import model.paths.Path;
 
 import java.util.Collections;
 import java.util.Stack;
@@ -25,6 +25,7 @@ public class CardStack {
     final static int MINOTAUR_CARDS = 8;
 
 
+
     private Stack<Card> cardStack;
 
 
@@ -33,9 +34,9 @@ public class CardStack {
      * This constructor initializes 100 cards:
      * 80 number cards for each ancient city (20 for each path), 12 Ariadne cards (3 for each path) and 8 minotaur cards (2 for each path)
      * */
-    public CardStack() {
+    public CardStack(Path[] paths) {
         cardStack = new Stack<>();
-        initCards();
+        initCards(paths);
         shuffleCards();
     }
 
@@ -43,15 +44,15 @@ public class CardStack {
         Collections.shuffle(cardStack);
     }
 
-    public void getCardSize(){
-
+    public int getStackSize(){
+        return cardStack.size();
     }
 
-    private void initCards(){
-        for (PathNames pathName : PathNames.values()) {
-            for (int j = 1; j <= PATH_NUMBER_CARDS / 2; j++) {
-                cardStack.push(new NumberCard(pathName, j));
-                cardStack.push(new NumberCard(pathName, j));
+    private void initCards(Path[] paths) {
+        for (Path pathName : paths) {
+            for (int number = 1; number <= PATH_NUMBER_CARDS / 2; number++) {
+                cardStack.push(new NumberCard(pathName, number));
+                cardStack.push(new NumberCard(pathName, number));
             }
 
             for (int j = 0; j <= ARIADNE_CARDS ; j++ ) {
@@ -64,7 +65,7 @@ public class CardStack {
         }
     }
 
-    public Card CardStackPop(){
-        return null;
+    public Card getCard(){
+        return cardStack.pop();
     }
 }

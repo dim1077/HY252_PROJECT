@@ -1,7 +1,11 @@
 package model.cards;
 
 
+import model.paths.Path;
 import model.paths.PathNames;
+import model.pawns.Pawn;
+import model.players.Player;
+import model.positions.Position;
 
 /**
  * This class represents the cards (Ariadne, minotaur, or number card) on some path
@@ -9,17 +13,17 @@ import model.paths.PathNames;
  * Cards are the way a player can move his pawns on the path
  * */
 public abstract class Card {
-    // TODO: perhaps the path should be an enum?
-    private final PathNames path;
 
-    public Card(PathNames path) {
+    protected final Path path;
+
+    public Card(Path path) {
         this.path = path;
     }
 
-    // may or may not be needed
-    public abstract void play();
+    public abstract void play(Pawn pawn);
 
-    public PathNames getPath() {
+
+    public Path getPath() {
         return path;
     }
 }

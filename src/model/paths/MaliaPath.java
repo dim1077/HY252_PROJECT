@@ -8,8 +8,10 @@ import model.findings.RareFinding;
  * that when completed marks the finding of the lost city
  */
 public class MaliaPath extends Path {
+    final PathNames name = PathNames.MALIA_PATH;
     public MaliaPath(RareFinding rareFinding) {
         super(rareFinding);
+        super.pathIdx = 1;
     }
 
     @Override
