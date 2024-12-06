@@ -1,6 +1,6 @@
 package model.players;
 
-import model.cards.Card;
+import  model.cards.Card;
 import model.findings.Finding;
 import model.pawns.Pawn;
 
@@ -46,36 +46,64 @@ public abstract class Player {
 
     }
 
-    /**
-     * @return current score (integer) of player, calculated based on findings and pawn positions.
-     */
-    int getScore(){
-        return score;
-    }
 
     /**
-    Ends the game and exits the application. Player who called this lost.
+    Ends the game and exits the application. Player who called this considered to have lost.
      */
     void giveUp(){
 
     }
 
     /**
-     *  Player plays move, which could involve:
-     *  1) Throw number card for some path
-     *  2) Throw a MinotaurCard on opponent
-     *  3) Reject a card (throw in the rejection stack)
+     * Represents the player's move in the game. This could involve:
+     * <ul>
+     *     <li>Throwing a number card for some path.</li>
+     *     <li>Throwing a MinotaurCard on the opponent.</li>
+     *     <li>Rejecting a card (throwing it into the rejection stack).</li>
+     * </ul>
      *
+     * @deprecated This method is unlikely to be used.
      */
+    @Deprecated
     void playMove(){
 
     }
 
-    // TODO: perhaps the function should grab a card by itself
+    /**
+     * Sets a specific card in the player's deck.
+     *
+     * @param cardIdx The index in the deck where the card will be set.
+     * @param card The card to be placed at the specified index.
+     */
     public void setCardInDeck(int cardIdx, Card card){
         this.currentCards[cardIdx] = card;
     }
 
+    /**
+     * Replaces the player's entire deck of cards.
+     *
+     * @param cards An array of cards to set as the player's current deck.
+     */
+    public void setCardsInDeck(Card[] cards){
+        this.currentCards = cards;
+    }
+
+    /**
+     * Adds a finding to the player's collection of findings.
+     *
+     * @param finding The finding to be added.
+     */
+    public void addFinding(Finding finding){
+        findings.add(finding);
+    }
+
+
+    /**
+     * @return current score (integer) of player, calculated based on findings and pawn positions.
+     */
+    int getScore(){
+        return score;
+    }
 
     /**
      * @precondition stack is not empty.

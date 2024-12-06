@@ -1,6 +1,7 @@
 package model.positions;
 
 import model.findings.Finding;
+import model.util.PathName;
 
 
 /**
@@ -10,7 +11,7 @@ import model.findings.Finding;
  * */
 public class FindingPosition extends Position {
 
-    private Finding finding;
+    private final Finding finding;
     boolean findingAvailable;
 
     /**
@@ -21,24 +22,31 @@ public class FindingPosition extends Position {
      * @param rewardScore the score associated with this position
      * @param findingAvailable Indicates whether the relic is taken or destroyed
      */
-    public FindingPosition(int pathName, int index, int rewardScore, Finding finding, boolean findingAvailable) {
+    public FindingPosition(PathName pathName, int index, int rewardScore, Finding finding, boolean findingAvailable) {
         super(pathName, index, rewardScore);
         this.finding = finding;
         this.findingAvailable = findingAvailable;
     }
 
     /**
-     * Returns the finding this position contains
+     * Returns the finding this position contains iff the finding is available.
+     * Then makes the finding unavailable (if it isn't a fresco)
      */
     public Finding getFinding() {
         if (!findingAvailable) return null;
-        findingAvailable = false;
+        if (finding.isCollectable()) findingAvailable = false;
         return finding;
     }
 
 
+    /**
+     * Destroys the finding by making it unavailable
+     * */
+    public void destroyFinding(){
+        findingAvailable = false;
+    }
 
-    // Not: even sure if that's needed
+
     /**
      * Returns an indication of whether the relic is available, either taken or destroyed.
      * (For Fresco, this always returns true.)

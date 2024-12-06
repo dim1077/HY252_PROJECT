@@ -1,9 +1,8 @@
 package model.pawns;
 
-import model.cards.Card;
-import model.paths.Path;
-import model.players.Player;
+
 import model.positions.Position;
+import model.util.PlayerName;
 
 
 /**
@@ -14,12 +13,12 @@ public abstract class Pawn {
 
     protected Position currentPosition;
     protected boolean isRevealed;
-    protected int owner; // could've given Player type, but I don't like bidirectional classes
+    protected final PlayerName owner; // could've given Player type, but I don't like bidirectional classes
 
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Pawn(int owner) {
+    public Pawn(PlayerName owner) {
         this.owner = owner;
         this.currentPosition = null;
         this.isRevealed = false;
@@ -48,7 +47,7 @@ public abstract class Pawn {
      * @return Returns the owner the of the pawn which could be either
      * PlayerGreen or PlayerRed
      * */
-    public int getOwner() {
+    public PlayerName getOwner() {
         return owner;
     }
 
@@ -59,4 +58,22 @@ public abstract class Pawn {
         return isRevealed;
     }
 
+
+    /**
+     * Sets the revealed state of the pawn.
+     *
+     * @param revealed True to reveal the pawn; false to conceal it.
+     */
+    public void setRevealed(boolean revealed) {
+        isRevealed = revealed;
+    }
+
+    /**
+     * Sets the current position of the pawn.
+     *
+     * @param currentPosition The new position of the pawn.
+     */
+    public void setCurrentPosition(Position currentPosition) {
+        this.currentPosition = currentPosition;
+    }
 }

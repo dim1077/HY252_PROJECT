@@ -1,7 +1,6 @@
 package model.cards;
 
 import model.paths.Path;
-import model.paths.PathNames;
 import model.pawns.Pawn;
 import model.players.Player;
 

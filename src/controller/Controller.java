@@ -1,34 +1,41 @@
 package controller;
 
+import controller.listeners.GameButtonClickListener;
 import model.cardStack.CardStack;
 import model.cards.Card;
-import model.findings.Finding;
 import model.findings.RareFinding;
 import model.findings.RareFindingNames;
 import model.paths.*;
-import model.pawns.Pawn;
 import model.players.Player;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
-import model.positions.FindingPosition;
-import model.positions.Position;
-import view.components.centralContent.CentralContent;
+import util.GameConstants;
 import view.window.MainWindow;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This is the Controller of the application,
- * where the model and view are put together.
-*/
-public class Controller {
+ * This is the main Controller of the application,
+ * where the model and view are integrated.
+ *
+ * Responsibilities:
+ * <ul>
+ *     <li>Manages game state and logic.</li>
+ *     <li>Handles user interactions via UI components.</li>
+ *     <li>Coordinates between the model (game state) and the view (UI).</li>
+ * </ul>
+ *
+ * Implements {@link GameButtonClickListener} to handle user actions such as
+ *  interacting with cards.
+ */
+public class Controller implements GameButtonClickListener {
 
     private boolean isGreenTurn;
     private PlayerGreen playerGreen;
     private PlayerRed playerRed;
 
-    // TODO: perhaps public?
+    // TODO: perhaps this should've been an array with PlayerName type instead, map is an overkill
     private Map<Player, Card[]> lastCardsPlayed = new HashMap<>();
     private CardStack cardStack;
     private Path maliaPath;
@@ -51,13 +58,13 @@ public class Controller {
         playerRed = new PlayerRed();
         playerGreen = new PlayerGreen();
 
-        lastCardsPlayed.put(playerRed, new Card[4]);
-        lastCardsPlayed.put(playerGreen, new Card[4]);
+        lastCardsPlayed.put(playerRed, new Card[GameConstants.NUMBER_OF_LAST_CARD_PLAYED_DECK]);
+        lastCardsPlayed.put(playerGreen, new Card[GameConstants.NUMBER_OF_LAST_CARD_PLAYED_DECK]);
 
-        RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC);
-        RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING);
-        RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY);
-        RareFinding RhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS);
+        RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC, 35);
+        RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING, 25);
+        RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY, 25);
+        RareFinding RhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS, 25);
 
 
          maliaPath = new MaliaPath(maliaJewelry);
@@ -71,7 +78,7 @@ public class Controller {
 
         // View/UI
         int cardsInStack = cardStack.getStackSize();
-        MainWindow mainWindow = new MainWindow(cardsInStack, checkPointsPassed, isGreenTurn);
+        MainWindow mainWindow = new MainWindow(this);
 
 
         /* Creates the UI stuff */
@@ -88,10 +95,16 @@ public class Controller {
 //        nextTurn(playerGreen);
     }
 
-        public void nextTurn(Player player) {
-        if (isGameOver()) endGame();
+    /**
+     * Advances the game to the next player's turn.
+     * Handles card interactions, pawn movement, findings, and game state updates.
+     *
+     * @param player The player whose turn it is.
+     */
+    public void nextTurn(Player player) {
+    if (isGameOver()) endGame();
 
-        try{
+    try{
 
 //            Card userCard = handleCardClick();
 //            int cardIdx = CentralContent.getCardIdx();
@@ -140,10 +153,10 @@ public class Controller {
 
 
 
-            } catch (Exception e){
-            // TODO: also change the exception as well, or maybe don't make it that long
-        }
-        nextTurn(player instanceof PlayerRed ? playerGreen : playerRed);
+        } catch (Exception e){
+        // TODO: also change the exception as well, or maybe don't make it that long
+    }
+    nextTurn(player instanceof PlayerRed ? playerGreen : playerRed);
 
 
 
@@ -193,19 +206,29 @@ public class Controller {
         // - Update the player's hand (e.g., JButtons representing cards).
         // - Update fresco or finding displays if their state has changed.
         // - Update the turn indicator to show whose turn is next.
-
         // Step 8: Pass the turn to the next player.
         // - Toggle the `isGreenTurn` flag to switch players.
         // - Notify the UI or log that the turn has ended.
     }
 
+
+    /**
+     * Handles the event where the rejection stack is clicked.
+     */
     public static void handleRejectionStackClick() {
         rejectionStackCLicked = true;
     }
 
-    public static int handleCardClick(int cardId) {
-
-    }
+//
+//    /**
+//     * Handles the event where a card is clicked.
+//     *
+//     * @param cardId The ID of the clicked card.
+//     * @return An integer indicating the result of the card click.
+//     */
+//    public int handleCardClick(int cardId) {
+//        return 1;
+//    }
 
 
 
@@ -232,5 +255,25 @@ public class Controller {
     public static void main(String[] args){
         Controller controller = new Controller();
         controller.initializeGame();
+    }
+
+    @Override
+    public void onCardRejectionClicked() {
+
+    }
+
+    @Override
+    public void onCardInDeckClicked() {
+
+    }
+
+    @Override
+    public void onFrescoClicked() {
+
+    }
+
+    @Override
+    public void onGiveUpClicked() {
+
     }
 }

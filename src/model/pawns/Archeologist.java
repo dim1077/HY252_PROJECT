@@ -1,8 +1,8 @@
 package model.pawns;
 
-import model.players.Player;
 import model.positions.Position;
 import model.positions.SimplePosition;
+import model.util.PlayerName;
 
 
 /**
@@ -16,7 +16,7 @@ public class Archeologist extends Pawn {
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Archeologist(int owner) {
+    public Archeologist(PlayerName owner) {
         super(owner);
     }
 

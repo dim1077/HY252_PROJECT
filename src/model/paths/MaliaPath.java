@@ -1,6 +1,7 @@
 package model.paths;
 
 import model.findings.RareFinding;
+import model.util.PathName;
 
 
 /**
@@ -8,10 +9,9 @@ import model.findings.RareFinding;
  * that when completed marks the finding of the lost city
  */
 public class MaliaPath extends Path {
-    final PathNames name = PathNames.MALIA_PATH;
+    final PathName name = PathName.MALIA_PATH;
     public MaliaPath(RareFinding rareFinding) {
         super(rareFinding);
-        super.pathIdx = 1;
     }
 
     @Override

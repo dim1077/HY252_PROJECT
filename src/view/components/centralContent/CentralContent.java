@@ -7,12 +7,25 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+/**
+ * The CentralContent class represents the main central panel in the game UI.
+ * It displays the game's paths as a grid, a rejection stack button, and game-related information.
+ * The panel is implemented using a {@link JLayeredPane} for flexible component layering.
+ */
 public class CentralContent extends JLayeredPane {
     private JLabel infoLabel;
     private JPanel pathGrid;
     private JButton rejectionStack;
+    private Controller controller;
 
-    public CentralContent() {
+
+    /**
+     * Constructs the CentralContent panel.
+     *
+     * @param controller The game controller used to manage interactions with the central content.
+     */
+    public CentralContent(Controller controller) {
         // Set up the JLayeredPane properties
         setBackground(Color.BLUE);
         setOpaque(true);

@@ -16,7 +16,7 @@ public class NumberCard extends Card {
     @Override
     public void play(Player player) {
 //        if () throw new IllegalArgumentException();
-        if (number < path.getMaxCardPlayed()) return;
+        if (number < path.getMaxCardPlayed(player)) return;
         Position[] position = path.getPositions();
         for (int posIdx = 0; posIdx < position.length; posIdx++) {
 
@@ -33,9 +33,13 @@ public class NumberCard extends Card {
                 break;
             }
         }
-        path.setMaxCardPlayed(number);
+        path.setMaxCardPlayed(number, player);
     }
 
+    /**
+     * @return returns the number associated with this card. This number
+     * has to be higher than the previously drawn number from that path
+     * */
     public int getNumber(){
         return number;
     }

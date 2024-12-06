@@ -2,10 +2,7 @@ package model.cards;
 
 
 import model.paths.Path;
-import model.paths.PathNames;
-import model.pawns.Pawn;
 import model.players.Player;
-import model.positions.Position;
 
 /**
  * This class represents the cards (Ariadne, minotaur, or number card) on some path
@@ -16,13 +13,29 @@ public abstract class Card {
 
     protected final Path path;
 
+
+    /**
+     * Constructs a card associated with a specific path.
+     *
+     * @param path The path on which this card can be used.
+     */
     public Card(Path path) {
         this.path = path;
     }
 
+
+    /**
+     * Plays the card, triggering its effect for the specified player.
+     * The exact behavior of this method is determined by the specific card type
+     * (Ariadne, Minotaur, or Number).
+     *
+     * @param player The player who is playing the card.
+     */
     public abstract void play(Player player);
 
-
+    /**
+     * @return returns the path associated with this card.
+     */
     public Path getPath() {
         return path;
     }

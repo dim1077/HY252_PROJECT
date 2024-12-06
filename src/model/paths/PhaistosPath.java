@@ -1,6 +1,7 @@
 package model.paths;
 
 import model.findings.RareFinding;
+import model.util.PathName;
 
 
 /**
@@ -8,11 +9,9 @@ import model.findings.RareFinding;
  * that when completed marks the finding of the lost city
  */
 public class PhaistosPath extends Path {
-    final PathNames name = PathNames.PHAISTOS_PATH;
+    final PathName name = PathName.PHAISTOS_PATH;
     public PhaistosPath(RareFinding rareFinding) {
         super(rareFinding);
-        super.pathIdx = 2;
-
     }
 
     @Override

@@ -1,11 +1,12 @@
 package model.paths;
 
-import model.cards.Card;
 import model.findings.RareFinding;
 import model.pawns.Pawn;
 import model.players.Player;
-import model.players.PlayerRed;
 import model.positions.Position;
+import model.util.PathName;
+import model.util.PlayerName;
+import util.GameConstants;
 
 import java.util.*;
 import java.util.Set;
@@ -20,24 +21,20 @@ public abstract class Path {
     final static Set<Integer> numOfPositionsWithFindings = new HashSet<>(Arrays.asList(2, 4, 6, 8, 9));
 
 
-    /** Represents the amount of cells in a path*/
-    final static int NUM_OF_POSITIONS = 9;
 
 
-    final static int NUM_OF_PATHS = 4;
-
-    protected int pathIdx;
+    protected PathName pathName;
     protected Map<Player, Pawn> playerPawn = new HashMap<>();
-    protected int maxCardPlayed;
+    protected int[] maxCardPlayed;
     protected Position[] positions;
     protected final RareFinding rareFinding;
+    // TODO: perhaps add something to hold player pawn positions? (Probably not)
 
 
     public Path(RareFinding rareFinding) {
-        maxCardPlayed = 0;
+        maxCardPlayed = new int[GameConstants.NUMBER_OF_PLAYERS];
         this.rareFinding = rareFinding;
-        this.positions = new Position[NUM_OF_POSITIONS];
-        // TODO: perhaps something for player pawns?
+        this.positions = new Position[GameConstants.NUMBER_OF_PATH_CELLS];
         initializeFindings();
     }
 
@@ -67,8 +64,14 @@ public abstract class Path {
         return positions;
     }
 
-    public int getMaxCardPlayed() {
-        return maxCardPlayed;
+    public int getMaxCardPlayed(Player player) {
+        PlayerName playerName = PlayerName.playerObjectEncode(player);
+        return getMaxCardPlayed(playerName);
+    }
+
+    public int getMaxCardPlayed(PlayerName playerName) {
+        int PlayerNameIdx = playerName.getValue();
+        return maxCardPlayed[PlayerNameIdx];
     }
 
     public void setPlayerPawn(Player player, Pawn pawn) {
@@ -79,12 +82,17 @@ public abstract class Path {
         return playerPawn.get(player);
     }
 
-    public int getPathIdx(){
-        return pathIdx;
+    public PathName getPathName(){
+        return pathName;
     }
 
-    public void setMaxCardPlayed(int maxCardPlayed) {
-        this.maxCardPlayed = maxCardPlayed;
+    public void setMaxCardPlayed(int maxCardPlayedValue, PlayerName playerName) {
+        int PlayerNameIdx = playerName.getValue();
+        maxCardPlayed[PlayerNameIdx] = maxCardPlayedValue;
     }
 
+    public void setMaxCardPlayed(int maxCardPlayedValue, Player player) {
+        PlayerName playerName = PlayerName.playerObjectEncode(player);
+        setMaxCardPlayed(maxCardPlayedValue, playerName);
+    }
 }

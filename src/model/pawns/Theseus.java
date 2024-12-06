@@ -1,8 +1,7 @@
 package model.pawns;
 
-import model.players.Player;
 import model.positions.Position;
-
+import model.util.PlayerName;
 
 
 /**
@@ -20,7 +19,7 @@ public class Theseus extends Pawn {
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Theseus(int owner) {
+    public Theseus(PlayerName owner) {
         super(owner);
         this.findingsDestroyed = 0;
     }
