@@ -29,7 +29,7 @@ public abstract class Player {
 
     /**
      * Constructs a new Player with an initial score of 0,
-     * an hand of 8 cards, and 4 initialized (not used) pawns.
+     * a hand of 8 cards, and 4 initialized (not used) pawns.
      */
     Player() {
         this.score = 0; // TODO: make 8 and 4 constants
@@ -78,7 +78,7 @@ public abstract class Player {
 
 
     /**
-     * @precondition stack is not empty
+     * @precondition stack is not empty.
     * Get a new card from the available cards stack.
      */
     public Card getNewCard(){

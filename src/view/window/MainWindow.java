@@ -14,13 +14,13 @@ public class MainWindow extends JFrame {
     final static int WINDOW_WIDTH = 1920;
     final static int WINDOW_HEIGHT = 1080;
 
-    public MainWindow() {
+    public MainWindow(int cardsLeftInStack, int NumOfCheckPoints, boolean IsPlayerGreenTurn) {
         setTitle("Lost Cities");
-//        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
+        setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
         setLayout(new BorderLayout());
+        setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 
         // bottom menu
         GreenPlayerMenu = new PlayerMenu();

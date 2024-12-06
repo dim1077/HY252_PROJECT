@@ -20,6 +20,21 @@ public class RareFinding implements Finding {
 //        if (!rareFindingsNames.contains(name)) throw new IllegalArgumentException();
     }
 
+    @Override
+    public void collectFinding() {
+
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
+    public boolean isCollectable() {
+        return false;
+    }
+
     /**
      * @return returns the points of the finding
      */

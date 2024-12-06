@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * This class represents a finding.
  * A finding could represent a Fresco, a rare finding or a snake goddess statue
- * Each finding has a name and rewards points (directly or indirect) by its discovery
+ * Each finding has a name and rewards points (directly or indirectly) by its discovery
  * */
 public interface Finding {
 
@@ -33,4 +33,15 @@ public interface Finding {
 //    public String getDescription(){
 //        return descriptions.get(name);
 //    }
+
+    void collectFinding();
+
+    String getDescription();
+
+    /**
+     * Determines whether the finding can be collected by a player.
+     *
+     * @return true if the finding is collectable, false otherwise
+     */
+    boolean isCollectable();
 }

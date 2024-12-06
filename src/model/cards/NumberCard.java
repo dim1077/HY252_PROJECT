@@ -1,11 +1,11 @@
 package model.cards;
 
 import model.paths.Path;
-import model.pawns.Pawn;
+import model.players.Player;
 import model.positions.Position;
 
 public class NumberCard extends Card {
-    private final int number;
+    private final int number; // TODO: maybe byte
 
     public NumberCard(Path path, int number) {
         super(path);
@@ -14,13 +14,13 @@ public class NumberCard extends Card {
     }
 
     @Override
-    public void play(Pawn pawn) {
-        if () throw new IllegalArgumentException();
+    public void play(Player player) {
+//        if () throw new IllegalArgumentException();
         if (number < path.getMaxCardPlayed()) return;
         Position[] position = path.getPositions();
         for (int posIdx = 0; posIdx < position.length; posIdx++) {
 
-            // player is in the last position: he is now removed from the map and the pawn doesn't exist anymore
+            // The Player is in the last position: he is now removed from the map, and the pawn doesn't exist anymore
             if (posIdx == position.length - 1){
                 position[posIdx].setHasPlayer(player,false);
                 break;
@@ -33,6 +33,7 @@ public class NumberCard extends Card {
                 break;
             }
         }
+        path.setMaxCardPlayed(number);
     }
 
     public int getNumber(){

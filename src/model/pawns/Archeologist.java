@@ -16,7 +16,7 @@ public class Archeologist extends Pawn {
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Archeologist(Player owner) {
+    public Archeologist(int owner) {
         super(owner);
     }
 

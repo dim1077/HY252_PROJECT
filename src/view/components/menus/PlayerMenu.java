@@ -1,86 +1,61 @@
 package view.components.menus;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.*;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 public class PlayerMenu extends JLayeredPane {
-    // Components for the left menu
-    private JButton[] deckOfCardsButtons; // Array for 9 buttons
-    private JLabel availablePawnsLabel;
-
-    // Components for the right menu
-    private JLabel[] lastCardInPathLabels; // Array for 4 labels
-    private JButton playerFrescoButton;
-    private JLabel playerScoreLabel;
-    private JLabel frescoBelowLabel;
-
     public PlayerMenu() {
-        // Optional: Initialize components here
-        setOpaque(true); // Ensure the JLayeredPane can be painted
-//        setPreferredSize(calculatePreferredSize()); // Set initial size
+        setBackground(Color.RED);
+        setOpaque(true);
+        setPreferredSize(new Dimension(800, 230));
+        displayCardDeck();
     }
 
-    @Override
-    protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
-        // Set the background to red
-        g.setColor(Color.RED);
-        g.fillRect(0, 0, getWidth(), getHeight());
+    private void displayCardDeck() {
+        // Create a panel to hold the buttons
+            JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
+        buttonPanel.setBounds(0, 0, 1400, 1400); // TODO: the width and height are not correct
+        buttonPanel.setOpaque(false);
+
+        // Add buttons to the panel
+        for (int cardId = 1; cardId <= 8; cardId++) {
+            JButton button = new JButton("Button " + cardId);
+            button.setOpaque(true); // Allow background color to be visible
+            button.setBackground(Color.WHITE);
+            button.setFont(new Font("Arial", Font.BOLD, 20));
+            button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
+            button.setPreferredSize(new Dimension(100, 170));
+            buttonPanel.add(button);
+
+
+            final int buttonIndex = cardId; // Use a final variable to capture the button index
+            button.addActionListener(e -> {
+                System.out.println("Button " + buttonIndex + " clicked");
+                Controller.handleCardClick(cardId);
+            });
+        }
+
+        // Add the panel to the JLayeredPane
+        add(buttonPanel, JLayeredPane.DEFAULT_LAYER);
     }
 
-    // Calculate size as 25% of the screen
-    private Dimension calculatePreferredSize() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = (int) (screenSize.width * 0.20);
-        int height = (int) (screenSize.height * 0.20);
-        return new Dimension(width, height);
+    private void updateCardDeck(){
+
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return calculatePreferredSize();
+    private void availablePawns(){
+
     }
 
-    // Updates the label for available pawns
-    public void updateAvailablePawns(int count) {}
+    private void lastCardInPath(){
 
-    // Sets a card in the deck to a new state
-    public void updateDeckCard(int index, String newLabel) {}
-
-    // Updates the player's score
-    public void updateScore(int score) {}
-
-    // Updates the label below the fresco
-    public void updateFrescoLabel(String newLabel) {}
-
-    // Updates the last card in a path
-    public void updateLastCardInPath(int index, String cardDescription) {}
-
-    // Resets the menu to its initial state
-    public void resetMenu() {}
-
-    // Getters for components (if dynamic updates are needed externally)
-    public JButton[] getDeckOfCardsButtons() {
-        return null;
     }
 
-    public JLabel getAvailablePawnsLabel() {
-        return null;
-    }
+    // BoxLayout
+    private void playerInformation(){
 
-    public JLabel[] getLastCardInPathLabels() {
-        return null;
-    }
-
-    public JButton getPlayerFrescoButton() {
-        return null;
-    }
-
-    public JLabel getPlayerScoreLabel() {
-        return null;
-    }
-
-    public JLabel getFrescoBelowLabel() {
-        return null;
     }
 }

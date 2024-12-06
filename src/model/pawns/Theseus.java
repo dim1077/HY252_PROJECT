@@ -20,7 +20,7 @@ public class Theseus extends Pawn {
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Theseus(Player owner) {
+    public Theseus(int owner) {
         super(owner);
         this.findingsDestroyed = 0;
     }

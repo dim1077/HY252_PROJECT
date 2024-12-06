@@ -51,4 +51,18 @@ package model.findings;
  */
 public class SnakeGoddessFinding implements Finding {
 
+    @Override
+    public void collectFinding() {
+
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
+    public boolean isCollectable() {
+        return false;
+    }
 }

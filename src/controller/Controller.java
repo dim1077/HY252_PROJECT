@@ -2,8 +2,7 @@ package controller;
 
 import model.cardStack.CardStack;
 import model.cards.Card;
-import model.cards.NumberCard;
-import model.cards.SpecialCard;
+import model.findings.Finding;
 import model.findings.RareFinding;
 import model.findings.RareFindingNames;
 import model.paths.*;
@@ -11,8 +10,9 @@ import model.pawns.Pawn;
 import model.players.Player;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
+import model.positions.FindingPosition;
+import model.positions.Position;
 import view.components.centralContent.CentralContent;
-import view.components.menus.PlayerMenu;
 import view.window.MainWindow;
 
 import java.util.HashMap;
@@ -36,13 +36,18 @@ public class Controller {
     private Path phaistosPath;
     private Path zakrosPath;
 
-    // max 4
-    private int checkPointsPassed = 0;
+    // max 4 TODO: put them in the constructor
+    private int checkPointsPassed;
+    static boolean rejectionStackCLicked;
+
 
     public void initializeGame(){
         // TODO: this or constructor?
-        // Model
 
+        checkPointsPassed = 0;
+        rejectionStackCLicked = false;
+
+        // Model
         playerRed = new PlayerRed();
         playerGreen = new PlayerGreen();
 
@@ -65,7 +70,8 @@ public class Controller {
 
 
         // View/UI
-        MainWindow mainWindow = new MainWindow();
+        int cardsInStack = cardStack.getStackSize();
+        MainWindow mainWindow = new MainWindow(cardsInStack, checkPointsPassed, isGreenTurn);
 
 
         /* Creates the UI stuff */
@@ -79,42 +85,57 @@ public class Controller {
 
 
         // Green always plays first
-        nextTurn(playerGreen);
+//        nextTurn(playerGreen);
     }
 
-    public void nextTurn(Player player) {
+        public void nextTurn(Player player) {
         if (isGameOver()) endGame();
 
         try{
 
-            Card userCard = CentralContent.getCard();
-            int cardIdx = CentralContent.getCardIdx();
-
-            Pawn playerPawn = null;
-
-            // first time the player played in this path: he needs to choose a pawn
-            Path cardPath = userCard.getPath();
-            int pathIdxOfCard = cardPath.getPathIdx();
-            if (lastCardsPlayed.get(player)[pathIdxOfCard] == null){
-                Card[] currentLastCardsPlayed = lastCardsPlayed.get(player);
-                currentLastCardsPlayed[pathIdxOfCard] = userCard;
-                lastCardsPlayed.put(player, currentLastCardsPlayed);
-                playerPawn = playerChoosePawn();
-                cardPath.setPlayerPawn(player, playerPawn);
-            }
-
-            playerPawn = cardPath.getPlayerPawn(player);
-
-            userCard.play(cardPath, playerPawn);
-
-            Card newCard = cardStack.getCard();
-            player.setCardInDeck(cardIdx, newCard);
-
-            updateCardDeck(currentPlayer, player.getCardDeck());
-            updateInformationLabel(cardStack.getStackSize(), checkPointsPassed, currentPlayer);
-            updatePath(/* TODO */);
-
-            lookForCheckPoints(player);
+//            Card userCard = handleCardClick();
+//            int cardIdx = CentralContent.getCardIdx();
+//
+//            Pawn playerPawn = null;
+//
+//            // first time the player played in this path: he needs to choose a pawn
+//            Path cardPath = userCard.getPath();
+//            int pathIdxOfCard = cardPath.getPathIdx();
+//            if (lastCardsPlayed.get(player)[pathIdxOfCard] == null){
+//                Card[] currentLastCardsPlayed = lastCardsPlayed.get(player);
+//                currentLastCardsPlayed[pathIdxOfCard] = userCard;
+//                lastCardsPlayed.put(player, currentLastCardsPlayed);
+//                playerPawn = playerChoosePawn();
+//                cardPath.setPlayerPawn(player, playerPawn);
+//            }
+//
+//            playerPawn = cardPath.getPlayerPawn(player);
+//
+//            Position currentPosition = playerPawn.getPosition();
+//
+//            Finding currentFinding = null;
+//            if (currentPosition.getFinding() != null){
+//                 currentFinding = currentPosition.getFinding();
+//            }
+//
+//
+//            if (currentFinding != null){
+//                boolean takeFinding = askPlayerIfToKeepFinding(currentFinding);
+//                if (takeFinding) {
+//                    currentFinding.collectFinding(player);
+//                }
+//            }
+//
+//            userCard.play(player);
+//
+//            Card newCard = cardStack.getCard();
+//            player.setCardInDeck(cardIdx, newCard);
+//
+//            updateCardDeck(currentPlayer, player.getCardDeck());
+//            updateInformationLabel(cardStack.getStackSize(), checkPointsPassed, currentPlayer);
+//            updatePath(/* TODO */);
+//
+//            lookForCheckPoints(player);
 
 
 
@@ -177,6 +198,15 @@ public class Controller {
         // - Toggle the `isGreenTurn` flag to switch players.
         // - Notify the UI or log that the turn has ended.
     }
+
+    public static void handleRejectionStackClick() {
+        rejectionStackCLicked = true;
+    }
+
+    public static int handleCardClick(int cardId) {
+
+    }
+
 
 
     private void lookForCheckPoints(Player player) {

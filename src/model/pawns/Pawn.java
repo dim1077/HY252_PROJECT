@@ -14,12 +14,12 @@ public abstract class Pawn {
 
     protected Position currentPosition;
     protected boolean isRevealed;
-    protected Player owner;
+    protected int owner; // could've given Player type, but I don't like bidirectional classes
 
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Pawn(Player owner) {
+    public Pawn(int owner) {
         this.owner = owner;
         this.currentPosition = null;
         this.isRevealed = false;
@@ -48,7 +48,7 @@ public abstract class Pawn {
      * @return Returns the owner the of the pawn which could be either
      * PlayerGreen or PlayerRed
      * */
-    public Player getOwner() {
+    public int getOwner() {
         return owner;
     }
 

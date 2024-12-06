@@ -19,4 +19,19 @@ class FrescoFinding implements Finding {
     public int getPoints() {
         return points;
     }
+
+    @Override
+    public void collectFinding() {
+
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
+
+    @Override
+    public boolean isCollectable() {
+        return false;
+    }
 }

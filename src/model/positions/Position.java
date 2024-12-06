@@ -1,6 +1,7 @@
 package model.positions;
 
 
+import model.findings.Finding;
 import model.paths.PathNames;
 import model.players.Player;
 
@@ -12,7 +13,7 @@ import java.util.Map;
  * */
 public abstract class Position {
 
-    protected PathNames pathName;
+    protected int pathName;
     protected final int cellIdx;
     protected final int rewardScore;
     protected Map<Player, Boolean> hasPlayer;
@@ -23,11 +24,16 @@ public abstract class Position {
      * @param cellIdx The index of this cell on the path.
      * @param rewardScore the score associated with this position.
      */
-    public Position(PathNames pathName, int cellIdx, int rewardScore) {
+    public Position(int pathName, int cellIdx, int rewardScore) {
         this.pathName = pathName;
         this.cellIdx = cellIdx;
         this.rewardScore = rewardScore;
     }
+
+    // Perhaps the code stinks because this method is pointless for SimplePosition,
+    // but it's the only way I thought that doesn't break polymorphism later on.
+    // Furthermore, this is we could've made the getter for finding abstract instead
+    public abstract Finding getFinding();
 
 
     public void setHasPlayer(Player player, boolean hasPlayerValue) {
@@ -35,7 +41,7 @@ public abstract class Position {
     }
 
     /** @return returns the path name (0-3) this position belongs to. */
-    public PathNames getPathName() {
+    public int getPathName() {
         return pathName;
     }
 
@@ -52,4 +58,6 @@ public abstract class Position {
     public boolean hasPlayer(Player player) {
         return hasPlayer.get(player);
     }
+
+
 }

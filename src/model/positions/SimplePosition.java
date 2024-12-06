@@ -1,5 +1,6 @@
 package model.positions;
 
+import model.findings.Finding;
 import model.paths.Path;
 import model.paths.PathNames;
 
@@ -16,7 +17,12 @@ public class SimplePosition extends Position {
      * @param cellIdx The index of this cell on the path.
      * @param rewardScore the score associated with this position.
      */
-    public SimplePosition(PathNames pathName, int cellIdx, int rewardScore) {
+    public SimplePosition(int pathName, int cellIdx, int rewardScore) {
         super(pathName, cellIdx, rewardScore);
+    }
+
+    @Override
+    public Finding getFinding() {
+        return null;
     }
 }
