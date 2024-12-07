@@ -1,6 +1,5 @@
 package controller;
 
-import controller.listeners.GameButtonClickListener;
 import model.cardStack.CardStack;
 import model.cards.Card;
 import model.findings.RareFinding;
@@ -219,16 +218,16 @@ public class Controller implements GameButtonClickListener {
         rejectionStackCLicked = true;
     }
 
-//
-//    /**
-//     * Handles the event where a card is clicked.
-//     *
-//     * @param cardId The ID of the clicked card.
-//     * @return An integer indicating the result of the card click.
-//     */
-//    public int handleCardClick(int cardId) {
-//        return 1;
-//    }
+
+    /**
+     * Handles the event where a card is clicked.
+     *
+     * @param cardId The ID of the clicked card.
+     * @return An integer indicating the result of the card click.
+     */
+    public int handleCardClick(int cardId) {
+        return 1;
+    }
 
 
 

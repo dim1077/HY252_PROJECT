@@ -5,11 +5,9 @@ class FrescoFinding implements Finding {
     private final int points;
 
     /***
-     *  @param name The name of the relic
      * @param points The points the player gains by its discovery
      */
-    public FrescoFinding(String name, int points) {
-//        super(name);
+    public FrescoFinding(int points) {
         this.points = points;
     }
 
