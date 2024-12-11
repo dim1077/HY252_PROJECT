@@ -1,9 +1,7 @@
 package model.paths;
 
 import model.findings.RareFinding;
-import model.positions.FindingPosition;
-import model.positions.SimplePosition;
-import model.util.PathName;
+import util.PathName;
 
 
 /**
@@ -11,7 +9,6 @@ import model.util.PathName;
  * that when completed marks the finding of the lost city
  */
 public class KnossosPath extends Path {
-    final PathName name = PathName.KNOSSOS_PATH;
     public KnossosPath(RareFinding rareFinding) {
         super(rareFinding);
     }
@@ -27,5 +24,10 @@ public class KnossosPath extends Path {
 //                positions[position] = new SimplePosition();
             }
         }
+    }
+
+    @Override
+    void setPathName() {
+        pathName = PathName.KNOSSOS_PATH;
     }
 }

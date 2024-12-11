@@ -17,15 +17,12 @@ public class CentralContent extends JLayeredPane {
     private JLabel infoLabel;
     private JPanel pathGrid;
     private JButton rejectionStack;
-    private Controller controller;
 
 
     /**
      * Constructs the CentralContent panel.
-     *
-     * @param controller The game controller used to manage interactions with the central content.
      */
-    public CentralContent(Controller controller) {
+    public CentralContent() {
         // Set up the JLayeredPane properties
         setBackground(Color.BLUE);
         setOpaque(true);
@@ -63,11 +60,10 @@ public class CentralContent extends JLayeredPane {
 
     private void displayRejectionStackButton(){
 
-        // Create a new button
         rejectionStack = new JButton("Click Me");
         rejectionStack.setBounds(100, 270, 100, 150); // Set position and size of the button
 
-        // Add action listener to the button
+
         rejectionStack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -98,4 +94,10 @@ public class CentralContent extends JLayeredPane {
                 + "<br>Checkpoints: " + numOfCheckPoints
                 + "<br>Player Green Turn: " + isPlayerGreenTurn + "</html>");
     }
+
+    public void onCardRejectionClicked(ActionListener listener){
+        rejectionStack.addActionListener(listener);
+    }
+
+
 }

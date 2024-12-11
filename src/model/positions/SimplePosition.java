@@ -1,6 +1,6 @@
 package model.positions;
 
-import model.util.PathName;
+import util.PathName;
 
 /**
  * This class represents a cell in the path.

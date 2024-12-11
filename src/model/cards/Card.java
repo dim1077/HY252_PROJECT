@@ -3,6 +3,7 @@ package model.cards;
 
 import model.paths.Path;
 import model.players.Player;
+import util.CardName;
 
 /**
  * This class represents the cards (Ariadne, minotaur, or number card) on some path
@@ -12,7 +13,7 @@ import model.players.Player;
 public abstract class Card {
 
     protected final Path path;
-
+    CardName cardName;
 
     /**
      * Constructs a card associated with a specific path.
@@ -21,6 +22,7 @@ public abstract class Card {
      */
     public Card(Path path) {
         this.path = path;
+        setCardName();
     }
 
 
@@ -38,5 +40,11 @@ public abstract class Card {
      */
     public Path getPath() {
         return path;
+    }
+
+    abstract void setCardName();
+
+    public CardName getName(){
+        return cardName;
     }
 }

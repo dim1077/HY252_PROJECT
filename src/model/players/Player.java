@@ -1,8 +1,10 @@
 package model.players;
 
+import model.cardStack.CardStack;
 import  model.cards.Card;
 import model.findings.Finding;
 import model.pawns.Pawn;
+import util.GameConstants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,16 +33,13 @@ public abstract class Player {
      * Constructs a new Player with an initial score of 0,
      * a hand of 8 cards, and 4 initialized (not used) pawns.
      */
-    Player() {
+    Player(Card[] initialCards) {
         this.score = 0; // TODO: make 8 and 4 constants
+        this.currentCards = initialCards;
         this.findings = new ArrayList<>();
-        initializeCards();
         initializePawns();
     }
 
-    private void initializeCards(){
-
-    }
 
     private void initializePawns(){
 

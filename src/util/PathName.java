@@ -1,4 +1,4 @@
-package model.util;
+package util;
 
 import model.players.Player;
 
@@ -30,5 +30,6 @@ public enum PathName {
 
     public static int playerObjectEncode(Player player){
 //        if (player instanceof PlayerRed)
+        return -1;
     }
 }

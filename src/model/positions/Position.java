@@ -3,7 +3,7 @@ package model.positions;
 
 import model.findings.Finding;
 import model.players.Player;
-import model.util.PathName;
+import util.PathName;
 import model.util.PlayerName;
 
 /**

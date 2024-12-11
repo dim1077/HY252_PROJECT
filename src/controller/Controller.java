@@ -2,13 +2,18 @@ package controller;
 
 import model.cardStack.CardStack;
 import model.cards.Card;
+import model.cards.NumberCard;
 import model.findings.RareFinding;
 import model.findings.RareFindingNames;
 import model.paths.*;
 import model.players.Player;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
+import util.CardName;
 import util.GameConstants;
+import view.components.centralContent.CentralContent;
+import view.components.menus.CardView;
+import view.components.menus.PlayerMenu;
 import view.window.MainWindow;
 
 import java.util.HashMap;
@@ -54,30 +59,48 @@ public class Controller implements GameButtonClickListener {
         rejectionStackCLicked = false;
 
         // Model
-        playerRed = new PlayerRed();
-        playerGreen = new PlayerGreen();
 
-        lastCardsPlayed.put(playerRed, new Card[GameConstants.NUMBER_OF_LAST_CARD_PLAYED_DECK]);
-        lastCardsPlayed.put(playerGreen, new Card[GameConstants.NUMBER_OF_LAST_CARD_PLAYED_DECK]);
 
         RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC, 35);
         RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING, 25);
         RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY, 25);
-        RareFinding RhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS, 25);
+        RareFinding rhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS, 25);
 
 
-         maliaPath = new MaliaPath(maliaJewelry);
-         knossosPath = new KnossosPath(minosRing);
-         phaistosPath = new PhaistosPath(phaistosDisc);
-         zakrosPath = new ZakrosPath(RhytonOfZakros);
+        maliaPath = new MaliaPath(maliaJewelry);
+        knossosPath = new KnossosPath(minosRing);
+        phaistosPath = new PhaistosPath(phaistosDisc);
+        zakrosPath = new ZakrosPath(rhytonOfZakros);
+
 
         CardStack cardStack = new CardStack(new Path[]{maliaPath, knossosPath, phaistosPath, zakrosPath});
 
 
+        playerRed = new PlayerRed(cardStack.getNCards(GameConstants.NUMBER_OF_DECK_CARDS));
+        playerGreen = new PlayerGreen(cardStack.getNCards(GameConstants.NUMBER_OF_DECK_CARDS));
+
+
+        lastCardsPlayed.put(playerRed, new Card[GameConstants.NUMBER_OF_LAST_CARD_PLAYED_DECK]);
+        lastCardsPlayed.put(playerGreen, new Card[GameConstants.NUMBER_OF_LAST_CARD_PLAYED_DECK]);
+
+
+
+
+
 
         // View/UI
-        int cardsInStack = cardStack.getStackSize();
-        MainWindow mainWindow = new MainWindow(this);
+
+        CardView[] cardRed = convertCardsToViewCards(playerRed.getCardDeck());
+        CardView[] cardGreen = convertCardsToViewCards(playerGreen.getCardDeck());
+
+        MainWindow mainWindow = new MainWindow(cardRed, cardGreen);
+
+        CentralContent centralContent = mainWindow.getCentralContent();
+
+        PlayerMenu greenMenu = mainWindow.getGreenPlayerMenu();
+        PlayerMenu redMenu = mainWindow.getRedPlayerMenu();
+
+        centralContent.onCardRejectionClicked(e -> System.out.println("rejection stack clicked"));
 
 
         /* Creates the UI stuff */
@@ -93,6 +116,16 @@ public class Controller implements GameButtonClickListener {
         // Green always plays first
 //        nextTurn(playerGreen);
     }
+
+
+
+    private void initializeListeners(CentralContent centralContent, PlayerMenu playerMenu) {
+//        for (int i = 0; i < cards.size(); i++) {
+//            final int cardIndex = i;
+//            playerMenu.setCardButtonActionListener(cardIndex + 1, );
+//        }
+    }
+
 
     /**
      * Advances the game to the next player's turn.
@@ -218,7 +251,6 @@ public class Controller implements GameButtonClickListener {
         rejectionStackCLicked = true;
     }
 
-
     /**
      * Handles the event where a card is clicked.
      *
@@ -256,9 +288,21 @@ public class Controller implements GameButtonClickListener {
         controller.initializeGame();
     }
 
+
+    private CardView[] convertCardsToViewCards(Card[] cards) {
+        CardView[] cardViews = new CardView[cards.length];
+        for (int i = 0; i < cards.length; i++) {
+            if (cards[i].getName() != CardName.NUMBER_CARD) cardViews[i] = new CardView(cards[i].getName(), cards[i].getPath().getPathName());
+            else cardViews[i] = new CardView(cards[i].getName(), cards[i].getPath().getPathName(), String.valueOf(((NumberCard)cards[i]).getNumber()));
+        }
+        return cardViews;
+    }
+
+
+
+
     @Override
     public void onCardRejectionClicked() {
-
     }
 
     @Override

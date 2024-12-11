@@ -2,6 +2,7 @@ package model.cards;
 
 import model.paths.Path;
 import model.players.Player;
+import util.CardName;
 
 public class MinotaurCard extends Card {
     public MinotaurCard(Path pathName) {
@@ -12,4 +13,11 @@ public class MinotaurCard extends Card {
     public void play(Player player) {
 
     }
+
+    @Override
+    void setCardName() {
+        cardName = CardName.MINOTAUR_CARD;
+    }
+
+
 }

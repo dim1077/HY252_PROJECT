@@ -3,6 +3,7 @@ package view.window;
 import controller.Controller;
 import util.GameConstants;
 import view.components.centralContent.CentralContent;
+import view.components.menus.CardView;
 import view.components.menus.PlayerMenu;
 
 import javax.swing.*;
@@ -21,16 +22,12 @@ public class MainWindow extends JFrame {
     private CentralContent centralContent;
     private PlayerMenu GreenPlayerMenu;
     private PlayerMenu RedPlayerMenu;
-    final static int WINDOW_WIDTH = 1920;
-    final static int WINDOW_HEIGHT = 1080;
 
 
     /**
      * Constructs the main window for the application.
-     *
-     * @param controller The game controller used to manage interactions between the view and the underlying logic.
-     */
-    public MainWindow(Controller controller) {
+     * */
+    public MainWindow(CardView[] initialCardsRed, CardView[] initialCardsGreen) {
         setTitle("Lost Cities");
         setSize(GameConstants.WIDTH, GameConstants.HEIGHT); // TODO I don't think this is needed or makes sense
         setResizable(false);
@@ -39,10 +36,10 @@ public class MainWindow extends JFrame {
         setPreferredSize(new Dimension(GameConstants.WIDTH, GameConstants.HEIGHT));
 
         // bottom menu
-        GreenPlayerMenu = new PlayerMenu(controller);
+        GreenPlayerMenu = new PlayerMenu(initialCardsRed);
         // top menu
-        RedPlayerMenu = new PlayerMenu(controller);
-        centralContent = new CentralContent(controller);
+        RedPlayerMenu = new PlayerMenu(initialCardsGreen);
+        centralContent = new CentralContent();
 
         add(RedPlayerMenu, BorderLayout.NORTH);
         add(GreenPlayerMenu, BorderLayout.SOUTH);

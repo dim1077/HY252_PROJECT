@@ -63,4 +63,18 @@ public class CardStack {
         if (cardStack.isEmpty())throw new IllegalArgumentException();
         return cardStack.pop();
     }
+
+
+    /***
+     * @precondition numOfCards is a valid positive integer that is not more than the stack size
+     * @return draw n new cards from the top of the stack
+     */
+    public Card[] getNCards(int numOfCards){
+        Card[] cards = new Card[numOfCards];
+        if (numOfCards <= 0 || numOfCards > cardStack.size()) throw new IllegalArgumentException();
+        for (int i = 0; i < numOfCards; i++) {
+            cards[i] = cardStack.pop();
+        }
+        return cards;
+    }
 }

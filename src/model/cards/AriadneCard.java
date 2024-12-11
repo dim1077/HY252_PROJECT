@@ -3,6 +3,7 @@ package model.cards;
 import model.paths.Path;
 import model.pawns.Pawn;
 import model.players.Player;
+import util.CardName;
 
 public class AriadneCard extends Card {
     public AriadneCard(Path name) {
@@ -17,4 +18,8 @@ public class AriadneCard extends Card {
         // bluh bluh bluh TODO
     }
 
+    @Override
+    void setCardName() {
+        cardName = CardName.ARIADNE_CARD;
+    }
 }

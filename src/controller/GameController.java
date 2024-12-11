@@ -11,28 +11,28 @@
 //import model.players.Player;
 //import model.players.PlayerGreen;
 //import model.players.PlayerRed;
-//import view.window.MainWindow;
+//import view.MainWindow;
 //
 //import java.util.HashMap;
 //import java.util.Map;
 //
 //public class GameController {
-//    private PlayerActionHandler playerActionHandler;
-//    private ViewUpdateHandler viewUpdateHandler;
+//    private final PlayerActionHandler playerActionHandler;
+//    private final ViewUpdateHandler viewUpdateHandler;
 //
-//    private PlayerGreen playerGreen;
-//    private PlayerRed playerRed;
-//    private CardStack cardStack;
-//    private Map<Player, Card[]> lastCardsPlayed = new HashMap<>();
-//    private Path maliaPath;
-//    private Path knossosPath;
-//    private Path phaistosPath;
-//    private Path zakrosPath;
+//    private final PlayerGreen playerGreen;
+//    private final PlayerRed playerRed;
+//    private final CardStack cardStack;
+//    private final Map<Player, Card[]> lastCardsPlayed = new HashMap<>();
+//    private final Path maliaPath;
+//    private final Path knossosPath;
+//    private final Path phaistosPath;
+//    private final Path zakrosPath;
 //
 //    private boolean isGreenTurn = true;
 //    private int checkPointsPassed = 0;
 //
-//    public GameController() {
+//    public GameController(MainWindow view) {
 //
 //        // Model
 //        playerRed = new PlayerRed();
@@ -52,41 +52,37 @@
 //        phaistosPath = new PhaistosPath(phaistosDisc);
 //        zakrosPath = new ZakrosPath(RhytonOfZakros);
 //
-//        Path paths[] = new Path[]{maliaPath, knossosPath, phaistosPath, zakrosPath};
+//        CardStack cardStack = new CardStack(new Path[]{maliaPath, knossosPath, phaistosPath, zakrosPath});
 //
-//        CardStack cardStack = new CardStack(paths);
+//        playerActionHandler = new PlayerActionHandler(this, lastCardsPlayed, cardStack);
+//        viewUpdateHandler = new ViewUpdateHandler(view);
 //
-//        MainWindow mainWindow = new MainWindow(this);
+//        // Link handlers to the view
+//        view.setPlayerActionListener(playerActionHandler);
+//        view.setViewUpdateListener(viewUpdateHandler);
 //
-//        playerActionHandler = new PlayerActionHandler(playerRed, playerGreen, paths);
-//        viewUpdateHandler = new ViewUpdateHandler(mainWindow);
-////
-////        // Link handlers to the view
-////        view.setPlayerActionListener(playerActionHandler);
-////        view.setViewUpdateListener(viewUpdateHandler);
-//
+//        // Start the game
+//        nextTurn(playerGreen);
 //    }
-//
-//    public void startGame(){ nextTurn(playerGreen);}
 //
 //    public void nextTurn(Player player) {
 //        if (isGameOver()) endGame();
 //
-////        try {
-////            // Delegate turn logic to the PlayerActionHandler
-////            playerActionHandler.handlePlayerTurn(player);
-////
-////            // Update the view with the current game state
-////            viewUpdateHandler.updateInformationLabel(
-////                    cardStack.getStackSize(),
-////                    checkPointsPassed,
-////                    player
-////            );
-////        } catch (Exception e) {
-////
-////        }
+//        try {
+//            // Delegate turn logic to the PlayerActionHandler
+//            playerActionHandler.handlePlayerTurn(player);
 //
-//        // And no I'm not afraid of stack overflow: The game is not going to last that long
+//            // Update the view with the current game state
+//            viewUpdateHandler.updateInformationLabel(
+//                    cardStack.getStackSize(),
+//                    checkPointsPassed,
+//                    player
+//            );
+//        } catch (Exception e) {
+//
+//        }
+//
+//        // Toggle the turn
 //        nextTurn(player instanceof PlayerRed ? playerGreen : playerRed);
 //    }
 //
@@ -98,10 +94,5 @@
 //    public void endGame() {
 //        System.out.println("Game Over!");
 //        // Game-ending logic
-//    }
-//
-//    public static void main(String[] args){
-//        GameController gameController = new GameController();
-//        gameController.startGame();
 //    }
 //}

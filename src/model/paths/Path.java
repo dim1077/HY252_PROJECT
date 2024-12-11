@@ -4,7 +4,7 @@ import model.findings.RareFinding;
 import model.pawns.Pawn;
 import model.players.Player;
 import model.positions.Position;
-import model.util.PathName;
+import util.PathName;
 import model.util.PlayerName;
 import util.GameConstants;
 
@@ -32,6 +32,7 @@ public abstract class Path {
 
 
     public Path(RareFinding rareFinding) {
+        setPathName();
         maxCardPlayed = new int[GameConstants.NUMBER_OF_PLAYERS];
         this.rareFinding = rareFinding;
         this.positions = new Position[GameConstants.NUMBER_OF_PATH_CELLS];
@@ -48,6 +49,10 @@ public abstract class Path {
 //      // throw something
 //    }
 
+    /**
+     * Forces all subclasses of Path to have a name
+     * */
+    abstract void setPathName();
 
     /**
      * @return returns the (unique) rare finding of the path

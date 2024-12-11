@@ -1,7 +1,7 @@
 package model.positions;
 
 import model.findings.Finding;
-import model.util.PathName;
+import util.PathName;
 
 
 /**

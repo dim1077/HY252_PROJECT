@@ -3,6 +3,7 @@ package model.cards;
 import model.paths.Path;
 import model.players.Player;
 import model.positions.Position;
+import util.CardName;
 
 public class NumberCard extends Card {
     private final int number; // TODO: maybe byte
@@ -34,6 +35,11 @@ public class NumberCard extends Card {
             }
         }
         path.setMaxCardPlayed(number, player);
+    }
+
+    @Override
+    void setCardName() {
+        cardName = CardName.NUMBER_CARD;
     }
 
     /**
