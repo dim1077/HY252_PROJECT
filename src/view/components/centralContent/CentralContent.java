@@ -1,6 +1,7 @@
 package view.components.centralContent;
 
 import controller.Controller;
+import controller.GameButtonClickListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,12 +18,14 @@ public class CentralContent extends JLayeredPane {
     private JLabel infoLabel;
     private JPanel pathGrid;
     private JButton rejectionStack;
-
+    private GameButtonClickListener cardClickListener;
 
     /**
      * Constructs the CentralContent panel.
      */
-    public CentralContent() {
+    public CentralContent(GameButtonClickListener cardClickListener) {
+        this.cardClickListener = cardClickListener;
+
         // Set up the JLayeredPane properties
         setBackground(Color.BLUE);
         setOpaque(true);
@@ -64,12 +67,7 @@ public class CentralContent extends JLayeredPane {
         rejectionStack.setBounds(100, 270, 100, 150); // Set position and size of the button
 
 
-        rejectionStack.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Controller.handleRejectionStackClick();
-            }
-        });
+        rejectionStack.addActionListener(e -> cardClickListener.onCardRejectionClicked());
         add(rejectionStack);
     }
 
@@ -94,10 +92,7 @@ public class CentralContent extends JLayeredPane {
                 + "<br>Checkpoints: " + numOfCheckPoints
                 + "<br>Player Green Turn: " + isPlayerGreenTurn + "</html>");
     }
-
-    public void onCardRejectionClicked(ActionListener listener){
+    public void onCardRejectionClicked(ActionListener listener) {
         rejectionStack.addActionListener(listener);
     }
-
-
 }

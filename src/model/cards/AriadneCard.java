@@ -13,6 +13,8 @@ public class AriadneCard extends Card {
     @Override
     public void play(Player player) {
         Pawn playerPawn = path.getPlayerPawn(player);
+
+
         // Invalid, can't use Ariadne card in the first round. TODO: 0 is not the correct thing here
         if (playerPawn.getPosition().getCellIdx() == 0) throw new IllegalArgumentException();
         // bluh bluh bluh TODO

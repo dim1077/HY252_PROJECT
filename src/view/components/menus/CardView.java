@@ -41,6 +41,10 @@ public class CardView {
         return cardIcon;
     }
 
+    public PathName getPathName() {
+        return pathName;
+    }
+
     public JButton getButton() {
         return button;
     }
@@ -62,5 +66,9 @@ public class CardView {
 
         fileName += ".jpg";
         return fileName;
+    }
+
+    public String getNumber() {
+        return number;
     }
 }

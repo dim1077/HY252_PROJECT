@@ -1,7 +1,9 @@
 package view.window;
 
 import controller.Controller;
+import controller.GameButtonClickListener;
 import util.GameConstants;
+import util.PlayerName;
 import view.components.centralContent.CentralContent;
 import view.components.menus.CardView;
 import view.components.menus.PlayerMenu;
@@ -22,12 +24,16 @@ public class MainWindow extends JFrame {
     private CentralContent centralContent;
     private PlayerMenu GreenPlayerMenu;
     private PlayerMenu RedPlayerMenu;
+    private GameButtonClickListener cardClickListener;
+
 
 
     /**
      * Constructs the main window for the application.
      * */
-    public MainWindow(CardView[] initialCardsRed, CardView[] initialCardsGreen) {
+    public MainWindow(CardView[] initialCardsRed, CardView[] initialCardsGreen, GameButtonClickListener cardClickListener) {
+        this.cardClickListener = cardClickListener;
+
         setTitle("Lost Cities");
         setSize(GameConstants.WIDTH, GameConstants.HEIGHT); // TODO I don't think this is needed or makes sense
         setResizable(false);
@@ -36,10 +42,10 @@ public class MainWindow extends JFrame {
         setPreferredSize(new Dimension(GameConstants.WIDTH, GameConstants.HEIGHT));
 
         // bottom menu
-        GreenPlayerMenu = new PlayerMenu(initialCardsRed);
+        GreenPlayerMenu = new PlayerMenu(initialCardsRed, cardClickListener, PlayerName.PLAYER_GREEN);
         // top menu
-        RedPlayerMenu = new PlayerMenu(initialCardsGreen);
-        centralContent = new CentralContent();
+        RedPlayerMenu = new PlayerMenu(initialCardsGreen, cardClickListener, PlayerName.PLAYER_RED);
+        centralContent = new CentralContent(cardClickListener);
 
         add(RedPlayerMenu, BorderLayout.NORTH);
         add(GreenPlayerMenu, BorderLayout.SOUTH);

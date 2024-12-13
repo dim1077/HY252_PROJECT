@@ -1,7 +1,9 @@
 package controller;
 
 import model.cardStack.CardStack;
+import model.cards.AriadneCard;
 import model.cards.Card;
+import model.cards.MinotaurCard;
 import model.cards.NumberCard;
 import model.findings.RareFinding;
 import model.findings.RareFindingNames;
@@ -11,6 +13,7 @@ import model.players.PlayerGreen;
 import model.players.PlayerRed;
 import util.CardName;
 import util.GameConstants;
+import util.PlayerName;
 import view.components.centralContent.CentralContent;
 import view.components.menus.CardView;
 import view.components.menus.PlayerMenu;
@@ -38,6 +41,8 @@ public class Controller implements GameButtonClickListener {
     private boolean isGreenTurn;
     private PlayerGreen playerGreen;
     private PlayerRed playerRed;
+    private CardView[] cardsOfRed;
+    private CardView[] cardsOfGreen;
 
     // TODO: perhaps this should've been an array with PlayerName type instead, map is an overkill
     private Map<Player, Card[]> lastCardsPlayed = new HashMap<>();
@@ -46,6 +51,7 @@ public class Controller implements GameButtonClickListener {
     private Path knossosPath;
     private Path phaistosPath;
     private Path zakrosPath;
+    private Path[] paths; // VERY IMPORTANT: The paths are ordered with respect to PathNames.
 
     // max 4 TODO: put them in the constructor
     private int checkPointsPassed;
@@ -57,6 +63,9 @@ public class Controller implements GameButtonClickListener {
 
         checkPointsPassed = 0;
         rejectionStackCLicked = false;
+
+        this.cardsOfRed = new CardView[GameConstants.NUMBER_OF_DECK_CARDS];
+        this.cardsOfGreen = new CardView[GameConstants.NUMBER_OF_DECK_CARDS];
 
         // Model
 
@@ -72,8 +81,9 @@ public class Controller implements GameButtonClickListener {
         phaistosPath = new PhaistosPath(phaistosDisc);
         zakrosPath = new ZakrosPath(rhytonOfZakros);
 
+        this.paths = new Path[]{knossosPath, maliaPath, phaistosPath, zakrosPath};
 
-        CardStack cardStack = new CardStack(new Path[]{maliaPath, knossosPath, phaistosPath, zakrosPath});
+        CardStack cardStack = new CardStack(paths);
 
 
         playerRed = new PlayerRed(cardStack.getNCards(GameConstants.NUMBER_OF_DECK_CARDS));
@@ -90,17 +100,18 @@ public class Controller implements GameButtonClickListener {
 
         // View/UI
 
-        CardView[] cardRed = convertCardsToViewCards(playerRed.getCardDeck());
-        CardView[] cardGreen = convertCardsToViewCards(playerGreen.getCardDeck());
+        cardsOfRed = convertCardsToViewCards(playerRed.getCardDeck());
+        cardsOfGreen = convertCardsToViewCards(playerGreen.getCardDeck());
 
-        MainWindow mainWindow = new MainWindow(cardRed, cardGreen);
+        MainWindow mainWindow = new MainWindow(cardsOfRed, cardsOfGreen, this);
 
         CentralContent centralContent = mainWindow.getCentralContent();
 
         PlayerMenu greenMenu = mainWindow.getGreenPlayerMenu();
         PlayerMenu redMenu = mainWindow.getRedPlayerMenu();
 
-        centralContent.onCardRejectionClicked(e -> System.out.println("rejection stack clicked"));
+//        centralContent.onCardRejectionClicked(e -> onCardInDeckClicked(5));
+//        greenMenu.onCardClicked(0, e -> System.out.println("rejection stack clicked"));
 
 
         /* Creates the UI stuff */
@@ -245,13 +256,6 @@ public class Controller implements GameButtonClickListener {
 
 
     /**
-     * Handles the event where the rejection stack is clicked.
-     */
-    public static void handleRejectionStackClick() {
-        rejectionStackCLicked = true;
-    }
-
-    /**
      * Handles the event where a card is clicked.
      *
      * @param cardId The ID of the clicked card.
@@ -298,16 +302,43 @@ public class Controller implements GameButtonClickListener {
         return cardViews;
     }
 
-
-
-
-    @Override
-    public void onCardRejectionClicked() {
+    @Deprecated
+    private Card[] convertCardViewsToCards(CardView[] cardViews) {
+        Card[] cards = new Card[cardViews.length];
+        for (int i = 0; i < cardViews.length; i++) {
+            int pathIdx = cardViews[i].getPathName().getValue();
+            Path currentPath = paths[pathIdx];
+            if (cards[i].getName() == CardName.MINOTAUR_CARD) new MinotaurCard(currentPath);
+            else if (cards[i].getName() == CardName.ARIADNE_CARD) new AriadneCard(currentPath);
+            else if (cards[i].getName() == CardName.NUMBER_CARD) new NumberCard(currentPath, Integer.parseInt(cardViews[i].getNumber()));
+            else throw new IllegalArgumentException();
+        }
+        return cards;
     }
 
-    @Override
-    public void onCardInDeckClicked() {
 
+
+
+    /**
+     * Handles the event where the rejection stack is clicked.
+     */
+    @Override
+    public void onCardRejectionClicked() {
+        System.out.println("rejection stack clicked");
+        rejectionStackCLicked = true;
+    }
+
+    public void onCardInDeckClicked(CardView[] cardDeckView, int cardClickedIdx, PlayerName currentPlayerName) {
+        // TODO: you have to make the buttons of the other player unclickable
+        System.out.println(currentPlayerName);
+
+        Player currentPlayer = (currentPlayerName == PlayerName.PLAYER_GREEN) ? playerGreen : playerRed;
+        Card[] cards = currentPlayer.getCardDeck();
+        cards[cardClickedIdx].play(currentPlayer);
+
+
+
+        System.out.println("card with index" + cardClickedIdx + "clicked");
     }
 
     @Override

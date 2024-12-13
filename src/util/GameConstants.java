@@ -1,5 +1,9 @@
 package util;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * This class defines various constants used throughout the game.
  * These constants represent fixed values such as dimensions, numbers of game elements,
@@ -67,5 +71,9 @@ public class GameConstants {
     /** The number of last cards played section displayed on the player's menu. */
     public static final int NUMBER_OF_LAST_CARD_PLAYED_DECK = 4;
 
+    /** Represents the numbers of the positions in the path that have a finding (1-indexed) */
+    public static final Set<Integer> numOfPositionsWithFindings = new HashSet<>(Arrays.asList(2, 4, 6, 8, 9));
+
+    public static final int[] rewardForIthPathCell = {-20, -15, 5, 10, 15, 30, 35, 50};
 
 }

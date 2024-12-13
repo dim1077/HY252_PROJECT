@@ -4,7 +4,7 @@ package model.positions;
 import model.findings.Finding;
 import model.players.Player;
 import util.PathName;
-import model.util.PlayerName;
+import util.PlayerName;
 
 /**
  * This class represents a cell in the path.

@@ -1,20 +1,29 @@
 package view.components.menus;
 
+import controller.Controller;
+import controller.GameButtonClickListener;
+import model.players.Player;
 import util.CardName;
 import util.GameConstants;
+import util.PlayerName;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PlayerMenu extends JLayeredPane {
     private CardView[] cardDeck;
+    private GameButtonClickListener cardClickListener;
+    private PlayerName playerName; // whose menu this is
 
     /**
      * Constructs a PlayerMenu.
      */
-    public PlayerMenu(CardView[] initialCards) {
+    public PlayerMenu(CardView[] initialCards, GameButtonClickListener cardClickListener, PlayerName playerName) {
+        this.playerName = playerName;
         this.cardDeck = initialCards;
+        this.cardClickListener = cardClickListener;
 
         setBackground(Color.RED);
         setOpaque(true);
@@ -35,39 +44,28 @@ public class PlayerMenu extends JLayeredPane {
 //        // Add cards to the panel
         for (int cardId = 1; cardId <= GameConstants.NUMBER_OF_DECK_CARDS; cardId++) {
 //
-//
+            int cardIdx = cardId - 1;
 //            CardView card = new CardView(CardName.MINOTAUR_CARD);
 //
 //            JButton button = card.getButton();
 //
 //            cardDeck[cardId - 1] = card;
+            JButton currentButton = cardDeck[cardIdx].getButton();
 
-            buttonPanel.add(cardDeck[cardId - 1].getButton());
+
+            buttonPanel.add(currentButton);
+
 //
 //            int buttonIndex = cardId; // Use a final variable to capture the button index
-//            button.addActionListener(e -> {
-//                System.out.println("Card " + "bruh" + " clicked");
-//                // controller.onCardInDeckClicked();
-//            });
+            currentButton.addActionListener(e -> {
+                cardClickListener.onCardInDeckClicked(cardDeck, cardIdx, playerName);
+            });
         }
 
         // Add the panel to the JLayeredPane
         add(buttonPanel, JLayeredPane.DEFAULT_LAYER);
     }
 
-    /**
-     * Allows setting an ActionListener for a specific card button.
-     *
-     * @param cardId   The ID of the card (1-8).
-     * @param listener The ActionListener to attach to the button.
-     */
-    public void setCardButtonActionListener(int cardId, ActionListener listener) {
-        if (cardId >= 1 && cardId <= cardDeck.length) {
-            cardDeck[cardId - 1].getButton().addActionListener(listener);
-        } else {
-            throw new IllegalArgumentException("Invalid card ID: " + cardId);
-        }
-    }
 
     /**
      * Updates the card deck display in the menu.

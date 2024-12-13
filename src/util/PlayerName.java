@@ -1,4 +1,4 @@
-package model.util;
+package util;
 
 import model.players.Player;
 import model.players.PlayerGreen;

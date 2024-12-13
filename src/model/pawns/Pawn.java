@@ -2,7 +2,7 @@ package model.pawns;
 
 
 import model.positions.Position;
-import model.util.PlayerName;
+import util.PlayerName;
 
 
 /**

@@ -18,12 +18,12 @@ public class FindingPosition extends Position {
      * Constructs a Position.
      *
      * @param pathName the path name this position belongs to
-     * @param index The index of this cell on the path
+     * @param cellIdx The index of this cell on the path
      * @param rewardScore the score associated with this position
      * @param findingAvailable Indicates whether the relic is taken or destroyed
      */
-    public FindingPosition(PathName pathName, int index, int rewardScore, Finding finding, boolean findingAvailable) {
-        super(pathName, index, rewardScore);
+    public FindingPosition(PathName pathName, int cellIdx, int rewardScore, Finding finding, boolean findingAvailable) {
+        super(pathName, cellIdx, rewardScore);
         this.finding = finding;
         this.findingAvailable = findingAvailable;
     }

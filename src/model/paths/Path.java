@@ -3,23 +3,21 @@ package model.paths;
 import model.findings.RareFinding;
 import model.pawns.Pawn;
 import model.players.Player;
+import model.positions.FindingPosition;
 import model.positions.Position;
+import model.positions.SimplePosition;
 import util.PathName;
-import model.util.PlayerName;
+import util.PlayerName;
 import util.GameConstants;
+import java.util.Random;
 
 import java.util.*;
-import java.util.Set;
 
 /**
  * This class represents a path, which is an array of 9 positions
  * that when completed marks the finding of the lost city
  * */
 public abstract class Path {
-
-    /** Represents the numbers of the positions in the path that have a finding (1-indexed) */
-    final static Set<Integer> numOfPositionsWithFindings = new HashSet<>(Arrays.asList(2, 4, 6, 8, 9));
-
 
 
 
@@ -36,6 +34,7 @@ public abstract class Path {
         maxCardPlayed = new int[GameConstants.NUMBER_OF_PLAYERS];
         this.rareFinding = rareFinding;
         this.positions = new Position[GameConstants.NUMBER_OF_PATH_CELLS];
+        initializePositions();
         initializeFindings();
     }
 
@@ -43,11 +42,33 @@ public abstract class Path {
      * As the name suggests, we force each class to define
      * which relics will be on the current path.
      */
-    protected abstract void initializeFindings();
+    protected void initializeFindings(){
+        List<Integer> positionsList = new ArrayList<>(GameConstants.numOfPositionsWithFindings); // TODO:Perhaps numOfPositionsWithFindings should be an array after all
+        Random random = new Random();
+        int rareFindingPosition = random.nextInt(GameConstants.numOfPositionsWithFindings.size());
+
+        for (int pos = 0; pos < GameConstants.NUMBER_OF_PATH_CELLS; pos++) {
+            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1) && rareFindingPosition == pos) positions[pos]. = getRareFinding();
+            else if (GameConstants.numOfPositionsWithFindings.contains(pos + 1))
+
+        }
+    }
 
 //    public void updateMaxNumber(){
 //      // throw something
 //    }
+
+    private void initializePositions(){
+
+        // Reminder: positions 2, 4, 6, 8, 9 are FindingPositions
+        for (int pos = 0; pos < GameConstants.NUMBER_OF_PATH_CELLS; pos++) {
+            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1)) { // pos + 1 to adjust for 1-indexed positions
+                positions[pos] = new FindingPosition(pathName, pos, GameConstants.rewardForIthPathCell[pos], null, true); // the Finding will be initialized in the initializeFindings() function
+            } else {
+                positions[pos] = new SimplePosition(pathName, pos, GameConstants.rewardForIthPathCell[pos]);
+            }
+        }
+    }
 
     /**
      * Forces all subclasses of Path to have a name

@@ -1,6 +1,9 @@
 package controller;
 
 
+import util.PlayerName;
+import view.components.menus.CardView;
+
 /**
  * This interface defines the listener for various button click events in the game.
  * Implementations of this interface handle the specific actions to be taken
@@ -16,7 +19,7 @@ public interface GameButtonClickListener {
     /**
      * Triggered when a card in the deck is clicked.
      */
-    void onCardInDeckClicked();
+    void onCardInDeckClicked(CardView[] cardView, int cardIdx, PlayerName playerName);
 
     /**
      * Triggered when a fresco is clicked.
