@@ -3,8 +3,14 @@ package model.players;
 import model.cardStack.CardStack;
 import  model.cards.Card;
 import model.findings.Finding;
+import model.paths.Path;
+import model.pawns.Archeologist;
 import model.pawns.Pawn;
+import model.pawns.Theseus;
 import util.GameConstants;
+import util.PathName;
+import util.PawnName;
+import util.PlayerName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,10 +30,13 @@ making it straightforward to manage them independently.
  */
 public abstract class Player {
 
+    PlayerName name;
     private int score;
     private Card[] currentCards;
     private Pawn[] pawns;
     private List<Finding> findings;
+    private int numberOfPawnsUsed = 0;
+
 
     /**
      * Constructs a new Player with an initial score of 0,
@@ -37,12 +46,17 @@ public abstract class Player {
         this.score = 0; // TODO: make 8 and 4 constants
         this.currentCards = initialCards;
         this.findings = new ArrayList<>();
+        this.pawns = new Pawn[GameConstants.NUMBER_OF_PAWNS];
         initializePawns();
     }
 
 
     private void initializePawns(){
-
+//        PlayerName currentPlayer = PlayerName.playerObjectEncode(this);
+//        pawns[0] = new Theseus(currentPlayer);
+//        pawns[1] = new Archeologist(currentPlayer);
+//        pawns[2] = new Archeologist(currentPlayer);
+//        pawns[3] = new Archeologist(currentPlayer);
     }
 
 
@@ -87,6 +101,10 @@ public abstract class Player {
         this.currentCards = cards;
     }
 
+    public void setNumberOfPawnsUsed(int numberOfPawnsUsed){
+        this.numberOfPawnsUsed = numberOfPawnsUsed;
+    }
+
     /**
      * Adds a finding to the player's collection of findings.
      *
@@ -96,6 +114,18 @@ public abstract class Player {
         findings.add(finding);
     }
 
+    public void setPawn(PawnName pawnName, PathName pathName){
+        if (pawnName == PawnName.ARCHEOLOGIST){
+            pawns[numberOfPawnsUsed++] = new Archeologist(this.getName(), pathName);
+        }else if (pawnName == PawnName.THESEUS){
+            pawns[numberOfPawnsUsed++] = new Theseus(this.getName(), pathName);
+        }else{
+            throw new IllegalArgumentException("Invalid pawn name: " + pawnName);
+        }
+    }
+
+    abstract void setPlayerName();
+
 
     /**
      * @return current score (integer) of player, calculated based on findings and pawn positions.
@@ -104,11 +134,34 @@ public abstract class Player {
         return score;
     }
 
+    public int getNumberOfPawnsUsed() {
+        return numberOfPawnsUsed;
+    }
+
     /**
      * @precondition stack is not empty.
     * Get a new card from the available cards stack.
      */
     public Card getNewCard(){
+        return null;
+    }
+
+    public PlayerName getName(){
+        return name;
+    }
+
+    public Pawn getPawnInPath(PawnName pawnName, PathName currentPath){
+        Pawn pawn = getPawnInPath(currentPath);
+        assert(pawnName == pawn.getPawnName());
+        return pawn;
+    }
+
+    @Deprecated
+    public Pawn getPawnInPath(PathName currentPathName){
+        for (int i = 0; i < GameConstants.NUMBER_OF_PAWNS; i++) {
+            if (pawns[i] == null) continue; // pawn has finished or hasn't been played yet
+            if (pawns[i].getPathName().equals(currentPathName)) return pawns[i];
+        }
         return null;
     }
 
@@ -134,5 +187,16 @@ public abstract class Player {
     public List<Finding> getFindings(){
         return findings;
     }
+
+    public boolean hasPawnInPath(PathName pathName){
+        for (int i = 0; i < GameConstants.NUMBER_OF_PAWNS; i++){
+            if (pawns[i] == null) continue;
+            assert (pawns[i].getPosition() != null);
+            if (pawns[i].getPosition().getPathName() == pathName) return true;
+        }
+        return false;
+    }
+
+
 
 }

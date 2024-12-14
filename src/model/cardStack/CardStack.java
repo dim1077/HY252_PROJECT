@@ -31,7 +31,7 @@ public class CardStack {
     }
 
     private void shuffleCards() {
-        Collections.shuffle(cardStack);
+        Collections.shuffle(cardStack, new java.util.Random(42));
     }
 
     public int getStackSize(){

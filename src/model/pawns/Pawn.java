@@ -2,6 +2,8 @@ package model.pawns;
 
 
 import model.positions.Position;
+import util.PathName;
+import util.PawnName;
 import util.PlayerName;
 
 
@@ -11,15 +13,20 @@ import util.PlayerName;
  */
 public abstract class Pawn {
 
+    protected PawnName name;
+    protected final PathName pathName;
     protected Position currentPosition;
     protected boolean isRevealed;
+    protected boolean hasFinished; // when hasFinished currentPosition == null
     protected final PlayerName owner; // could've given Player type, but I don't like bidirectional classes
 
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Pawn(PlayerName owner) {
+    public Pawn(PlayerName owner, PathName pathName) {
         this.owner = owner;
+        this.hasFinished = false;
+        this.pathName = pathName;
         this.currentPosition = null;
         this.isRevealed = false;
     }
@@ -43,12 +50,24 @@ public abstract class Pawn {
         return currentPosition;
     }
 
+    public PawnName getPawnName(){
+        return name;
+    }
+
+    public PathName getPathName(){
+        return pathName;
+    }
+
     /**
      * @return Returns the owner the of the pawn which could be either
      * PlayerGreen or PlayerRed
      * */
     public PlayerName getOwner() {
         return owner;
+    }
+
+    public boolean getHasFinished(){
+        return hasFinished;
     }
 
     /**
@@ -76,4 +95,15 @@ public abstract class Pawn {
     public void setCurrentPosition(Position currentPosition) {
         this.currentPosition = currentPosition;
     }
+
+    public void setHasFinished(boolean hasFinished) {
+        this.hasFinished = hasFinished;
+        currentPosition = null;
+    }
+
+    /**
+     * Forces all subclasses of Pawn to have a name
+     * */
+    abstract void setPawnName();
+
 }

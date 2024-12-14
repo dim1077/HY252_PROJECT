@@ -1,5 +1,6 @@
 package model.paths;
 
+import model.findings.Finding;
 import model.findings.RareFinding;
 import model.pawns.Pawn;
 import model.players.Player;
@@ -25,45 +26,39 @@ public abstract class Path {
     protected Map<Player, Pawn> playerPawn = new HashMap<>();
     protected int[] maxCardPlayed;
     protected Position[] positions;
+    protected Finding[] nonRareFindings;
     protected final RareFinding rareFinding;
     // TODO: perhaps add something to hold player pawn positions? (Probably not)
 
 
-    public Path(RareFinding rareFinding) {
+    public Path(RareFinding rareFinding, Finding[] nonRareFindings) {
         setPathName();
         maxCardPlayed = new int[GameConstants.NUMBER_OF_PLAYERS];
+        Arrays.fill(maxCardPlayed, -1); // -1 means player hasn't played in that path.
+        this.nonRareFindings = nonRareFindings;
         this.rareFinding = rareFinding;
         this.positions = new Position[GameConstants.NUMBER_OF_PATH_CELLS];
         initializePositions();
-        initializeFindings();
     }
 
-    /**
-     * As the name suggests, we force each class to define
-     * which relics will be on the current path.
-     */
-    protected void initializeFindings(){
-        List<Integer> positionsList = new ArrayList<>(GameConstants.numOfPositionsWithFindings); // TODO:Perhaps numOfPositionsWithFindings should be an array after all
-        Random random = new Random();
-        int rareFindingPosition = random.nextInt(GameConstants.numOfPositionsWithFindings.size());
-
-        for (int pos = 0; pos < GameConstants.NUMBER_OF_PATH_CELLS; pos++) {
-            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1) && rareFindingPosition == pos) positions[pos]. = getRareFinding();
-            else if (GameConstants.numOfPositionsWithFindings.contains(pos + 1))
-
-        }
-    }
 
 //    public void updateMaxNumber(){
 //      // throw something
 //    }
 
     private void initializePositions(){
+        List<Integer> positionsList = new ArrayList<>(GameConstants.numOfPositionsWithFindings); // TODO:Perhaps numOfPositionsWithFindings should be an array after all
+        Random random = new Random();
+        int rareFindingPosition = positionsList.get(random.nextInt(positionsList.size())) - 1;
+        positions[rareFindingPosition] = new FindingPosition(pathName, rareFindingPosition, GameConstants.rewardForIthPathCell[rareFindingPosition], rareFinding,true);
 
-        // Reminder: positions 2, 4, 6, 8, 9 are FindingPositions
+
+        // Reminder: positions 2, 4, 6, 8, 9 are FindingPositions (1-indexed)
+        int currFindingIdx = 0;
         for (int pos = 0; pos < GameConstants.NUMBER_OF_PATH_CELLS; pos++) {
-            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1)) { // pos + 1 to adjust for 1-indexed positions
-                positions[pos] = new FindingPosition(pathName, pos, GameConstants.rewardForIthPathCell[pos], null, true); // the Finding will be initialized in the initializeFindings() function
+
+            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1) && pos != rareFindingPosition) {
+                positions[pos] = new FindingPosition(pathName, pos, GameConstants.rewardForIthPathCell[pos], nonRareFindings[currFindingIdx++], true); // the Finding will be initialized in the initializeFindings() function
             } else {
                 positions[pos] = new SimplePosition(pathName, pos, GameConstants.rewardForIthPathCell[pos]);
             }

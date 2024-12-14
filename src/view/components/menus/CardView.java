@@ -22,16 +22,22 @@ public class CardView {
         this.pathName = pathName;
         this.number = number;
 
-
-        // Create a card icon (placeholder for now)
+        // Load and scale the card icon
         String iconFileName = getCardIconFileName();
-        cardIcon = new ImageIcon("src/assets/images/cards/" + iconFileName);
-        button = new JButton("Button " , cardIcon);
+        ImageIcon rawIcon = new ImageIcon("src/assets/images/cards/" + iconFileName);
+        Image scaledImage = rawIcon.getImage().getScaledInstance(80, 120, Image.SCALE_SMOOTH);
+        cardIcon = new ImageIcon(scaledImage);
+
+        // Create the button with only the icon
+        button = new JButton(cardIcon);
         button.setOpaque(true);
         button.setBackground(Color.WHITE);
-        button.setFont(new Font("Arial", Font.BOLD, 20));
-        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 2));
-        button.setPreferredSize(new Dimension(100, 170));
+        button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        button.setPreferredSize(new Dimension(90, 130));
+
+        // Remove any default padding for text
+        button.setHorizontalTextPosition(SwingConstants.CENTER);
+        button.setVerticalTextPosition(SwingConstants.CENTER);
     }
 
     public CardName getCardName() {

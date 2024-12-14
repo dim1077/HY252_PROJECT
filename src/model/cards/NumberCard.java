@@ -1,6 +1,8 @@
 package model.cards;
 
+import javafx.geometry.Pos;
 import model.paths.Path;
+import model.pawns.Pawn;
 import model.players.Player;
 import model.positions.Position;
 import util.CardName;
@@ -16,23 +18,40 @@ public class NumberCard extends Card {
 
     @Override
     public void play(Player player) {
+        Position[] position = path.getPositions();
+        Pawn playerPawn = path.getPlayerPawn(player);
+        Position playerPos = playerPawn.getPosition();
+
+        // In case the pawn has finished, the player can play the card, but it won't do anything
+        if (playerPawn.getHasFinished()) return;
+
+
+        // Player plays for the first time: every number card is valid
+        if (playerPos == null){
+            position[0].setHasPlayer(player, true);
+            playerPawn.setCurrentPosition(position[0]);
+            path.setMaxCardPlayed(number, player);
+            return;
+        }
+
+        int pawnPosition = playerPawn.getPosition().getCellIdx();
+
 //        if () throw new IllegalArgumentException();
         if (number < path.getMaxCardPlayed(player)) return;
-        Position[] position = path.getPositions();
-        for (int posIdx = 0; posIdx < position.length; posIdx++) {
+        System.out.println(path.getMaxCardPlayed(player));
 
-            // The Player is in the last position: he is now removed from the map, and the pawn doesn't exist anymore
-            if (posIdx == position.length - 1){
-                position[posIdx].setHasPlayer(player,false);
-                break;
-            }
 
-            // move the pawn into the next position
-            if (position[posIdx].hasPlayer(player)) {
-                position[posIdx].setHasPlayer(player,false);
-                position[posIdx + 1].setHasPlayer(player,true);
-                break;
-            }
+        // The Player is in the last position: he is now removed from the map, and the pawn doesn't exist anymore
+         if (pawnPosition == position.length - 1){
+            position[pawnPosition].setHasPlayer(player,false);
+             playerPawn.setHasFinished(true);
+         }
+
+        // move the pawn into the next position
+        else{
+            position[pawnPosition].setHasPlayer(player,false);
+            position[pawnPosition + 1].setHasPlayer(player,true);
+             playerPawn.setCurrentPosition(position[pawnPosition + 1]);
         }
         path.setMaxCardPlayed(number, player);
     }

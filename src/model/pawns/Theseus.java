@@ -1,6 +1,8 @@
 package model.pawns;
 
 import model.positions.Position;
+import util.PathName;
+import util.PawnName;
 import util.PlayerName;
 
 
@@ -19,8 +21,8 @@ public class Theseus extends Pawn {
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Theseus(PlayerName owner) {
-        super(owner);
+    public Theseus(PlayerName owner, PathName pathName) {
+        super(owner, pathName);
         this.findingsDestroyed = 0;
     }
 
@@ -49,5 +51,10 @@ public class Theseus extends Pawn {
      * */
     public void setFindingsDestroyed(int findingsDestroyed) {
         this.findingsDestroyed = findingsDestroyed;
+    }
+
+    @Override
+    void setPawnName() {
+        name = PawnName.THESEUS;
     }
 }

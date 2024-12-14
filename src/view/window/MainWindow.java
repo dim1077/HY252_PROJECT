@@ -3,6 +3,7 @@ package view.window;
 import controller.Controller;
 import controller.GameButtonClickListener;
 import util.GameConstants;
+import util.PawnName;
 import util.PlayerName;
 import view.components.centralContent.CentralContent;
 import view.components.menus.CardView;
@@ -10,6 +11,8 @@ import view.components.menus.PlayerMenu;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
 /**
@@ -42,9 +45,10 @@ public class MainWindow extends JFrame {
         setPreferredSize(new Dimension(GameConstants.WIDTH, GameConstants.HEIGHT));
 
         // bottom menu
-        GreenPlayerMenu = new PlayerMenu(initialCardsRed, cardClickListener, PlayerName.PLAYER_GREEN);
+        GreenPlayerMenu = new PlayerMenu(initialCardsGreen, cardClickListener, PlayerName.PLAYER_GREEN, true);
         // top menu
-        RedPlayerMenu = new PlayerMenu(initialCardsGreen, cardClickListener, PlayerName.PLAYER_RED);
+        RedPlayerMenu = new PlayerMenu(initialCardsRed, cardClickListener, PlayerName.PLAYER_RED, false);
+
         centralContent = new CentralContent(cardClickListener);
 
         add(RedPlayerMenu, BorderLayout.NORTH);
@@ -53,6 +57,51 @@ public class MainWindow extends JFrame {
 
         pack();
         setVisible(true);
+    }
+
+    public PawnName askUserForPawn() {
+        // Create the dialog
+        JDialog dialog = new JDialog(this, "Choose Your Path", true);
+        dialog.setLayout(new BorderLayout());
+        dialog.setSize(300, 150);
+        dialog.setLocationRelativeTo(this);
+        dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+
+        // Message Label
+        JLabel messageLabel = new JLabel("Choose your role:", SwingConstants.CENTER);
+        dialog.add(messageLabel, BorderLayout.CENTER);
+
+        // Button Panel
+        JPanel buttonPanel = new JPanel();
+        JButton theseusButton = new JButton("Theseus");
+        JButton archeologistButton = new JButton("Archeologist");
+
+        buttonPanel.add(theseusButton);
+        buttonPanel.add(archeologistButton);
+        dialog.add(buttonPanel, BorderLayout.SOUTH);
+
+        // Set up button actions
+        final PawnName[] result = {null};
+        theseusButton.addActionListener(e -> {
+            result[0] = PawnName.THESEUS;
+            dialog.dispose();
+        });
+
+        archeologistButton.addActionListener(e -> {
+            result[0] = PawnName.ARCHEOLOGIST;
+            dialog.dispose();
+        });
+
+        // Show the dialog and wait for user interaction
+        dialog.setVisible(true);
+
+        // Return the selected option
+        return result[0];
+    }
+
+    public void noAriadneCardPopUp(){
+        JOptionPane.showMessageDialog(null, "Cannot use Ariadne cards without having played any other card in that path before that", "Invalid card", JOptionPane.ERROR_MESSAGE);
     }
 
 

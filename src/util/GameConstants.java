@@ -74,6 +74,8 @@ public class GameConstants {
     /** Represents the numbers of the positions in the path that have a finding (1-indexed) */
     public static final Set<Integer> numOfPositionsWithFindings = new HashSet<>(Arrays.asList(2, 4, 6, 8, 9));
 
-    public static final int[] rewardForIthPathCell = {-20, -15, 5, 10, 15, 30, 35, 50};
+    public static final int NUMBER_OF_RELICS = 20;
+
+    public static final int[] rewardForIthPathCell = {-20, -15, -10, 5, 10, 15, 30, 35, 50};
 
 }

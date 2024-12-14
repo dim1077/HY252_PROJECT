@@ -2,6 +2,8 @@ package model.pawns;
 
 import model.positions.Position;
 import model.positions.SimplePosition;
+import util.PathName;
+import util.PawnName;
 import util.PlayerName;
 
 
@@ -16,8 +18,8 @@ public class Archeologist extends Pawn {
     /**
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
-    public Archeologist(PlayerName owner) {
-        super(owner);
+    public Archeologist(PlayerName owner, PathName pathName) {
+        super(owner, pathName);
     }
 
     /**
@@ -37,5 +39,10 @@ public class Archeologist extends Pawn {
     public void interact(Position position) {
         if (position instanceof SimplePosition) throw new IllegalArgumentException("precondition broken," +
                 " position must have a finding ");
+    }
+
+    @Override
+    void setPawnName() {
+        name = PawnName.ARCHEOLOGIST;
     }
 }

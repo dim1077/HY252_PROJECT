@@ -1,6 +1,6 @@
 package model.findings;
 
-class FrescoFinding implements Finding {
+public class FrescoFinding implements Finding {
 
     private final int points;
 

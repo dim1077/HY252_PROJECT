@@ -1,24 +1,25 @@
 package controller;
 
+import com.sun.xml.internal.ws.addressing.WsaActionUtil;
 import model.cardStack.CardStack;
 import model.cards.AriadneCard;
 import model.cards.Card;
 import model.cards.MinotaurCard;
 import model.cards.NumberCard;
-import model.findings.RareFinding;
-import model.findings.RareFindingNames;
+import model.findings.*;
 import model.paths.*;
+import model.pawns.Pawn;
 import model.players.Player;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
-import util.CardName;
-import util.GameConstants;
-import util.PlayerName;
+import util.*;
 import view.components.centralContent.CentralContent;
 import view.components.menus.CardView;
 import view.components.menus.PlayerMenu;
 import view.window.MainWindow;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,11 +39,12 @@ import java.util.Map;
  */
 public class Controller implements GameButtonClickListener {
 
-    private boolean isGreenTurn;
+    private boolean isGreensTurn; // green always plays first
     private PlayerGreen playerGreen;
     private PlayerRed playerRed;
     private CardView[] cardsOfRed;
     private CardView[] cardsOfGreen;
+    private MainWindow mainWindow;
 
     // TODO: perhaps this should've been an array with PlayerName type instead, map is an overkill
     private Map<Player, Card[]> lastCardsPlayed = new HashMap<>();
@@ -67,8 +69,21 @@ public class Controller implements GameButtonClickListener {
         this.cardsOfRed = new CardView[GameConstants.NUMBER_OF_DECK_CARDS];
         this.cardsOfGreen = new CardView[GameConstants.NUMBER_OF_DECK_CARDS];
 
-        // Model
 
+        Finding[] nonRarefindings = new Finding[GameConstants.NUMBER_OF_RELICS];
+        for (int i = 0; i < GameConstants.NUMBER_OF_SNAKE_GODDESS_STATUES; i++) nonRarefindings[i] = new SnakeGoddessFinding();
+        final int baseIndex = GameConstants.NUMBER_OF_SNAKE_GODDESS_STATUES;
+        nonRarefindings[baseIndex]  = new FrescoFinding(20);
+        nonRarefindings[baseIndex + 1]  = new FrescoFinding(20);
+        nonRarefindings[baseIndex + 2]  = new FrescoFinding(15);
+        nonRarefindings[baseIndex + 3]  = new FrescoFinding(15);
+        nonRarefindings[baseIndex + 4]  = new FrescoFinding(15);
+        nonRarefindings[baseIndex + 5]  = new FrescoFinding(20);
+        // Note that points are tied to images; not images are tied to points
+
+        Collections.shuffle(Arrays.asList(nonRarefindings));
+
+        // model
 
         RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC, 35);
         RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING, 25);
@@ -76,14 +91,15 @@ public class Controller implements GameButtonClickListener {
         RareFinding rhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS, 25);
 
 
-        maliaPath = new MaliaPath(maliaJewelry);
-        knossosPath = new KnossosPath(minosRing);
-        phaistosPath = new PhaistosPath(phaistosDisc);
-        zakrosPath = new ZakrosPath(rhytonOfZakros);
+        maliaPath = new MaliaPath(maliaJewelry, Arrays.copyOfRange(nonRarefindings, 0, 4));
+        knossosPath = new KnossosPath(minosRing, Arrays.copyOfRange(nonRarefindings, 4, 8));
+        phaistosPath = new PhaistosPath(phaistosDisc, Arrays.copyOfRange(nonRarefindings, 8, 12));
+        zakrosPath = new ZakrosPath(rhytonOfZakros, Arrays.copyOfRange(nonRarefindings, 12, 16));
 
         this.paths = new Path[]{knossosPath, maliaPath, phaistosPath, zakrosPath};
 
-        CardStack cardStack = new CardStack(paths);
+        cardStack = new CardStack(paths);
+
 
 
         playerRed = new PlayerRed(cardStack.getNCards(GameConstants.NUMBER_OF_DECK_CARDS));
@@ -103,12 +119,13 @@ public class Controller implements GameButtonClickListener {
         cardsOfRed = convertCardsToViewCards(playerRed.getCardDeck());
         cardsOfGreen = convertCardsToViewCards(playerGreen.getCardDeck());
 
-        MainWindow mainWindow = new MainWindow(cardsOfRed, cardsOfGreen, this);
+        mainWindow = new MainWindow(cardsOfRed, cardsOfGreen, this);
 
         CentralContent centralContent = mainWindow.getCentralContent();
 
         PlayerMenu greenMenu = mainWindow.getGreenPlayerMenu();
         PlayerMenu redMenu = mainWindow.getRedPlayerMenu();
+
 
 //        centralContent.onCardRejectionClicked(e -> onCardInDeckClicked(5));
 //        greenMenu.onCardClicked(0, e -> System.out.println("rejection stack clicked"));
@@ -145,9 +162,14 @@ public class Controller implements GameButtonClickListener {
      * @param player The player whose turn it is.
      */
     public void nextTurn(Player player) {
-    if (isGameOver()) endGame();
+    if (isGameOver()){ endGame();}
 
-    try{
+//    try{
+        mainWindow.getGreenPlayerMenu().setButtonsClickable(isGreensTurn);
+        mainWindow.getRedPlayerMenu().setButtonsClickable(!isGreensTurn);
+        isGreensTurn = !isGreensTurn;
+
+
 
 //            Card userCard = handleCardClick();
 //            int cardIdx = CentralContent.getCardIdx();
@@ -196,10 +218,10 @@ public class Controller implements GameButtonClickListener {
 
 
 
-        } catch (Exception e){
+//        } catch (Exception e){
         // TODO: also change the exception as well, or maybe don't make it that long
-    }
-    nextTurn(player instanceof PlayerRed ? playerGreen : playerRed);
+//    }
+//    nextTurn(player instanceof PlayerRed ? playerGreen : playerRed);
 
 
 
@@ -330,15 +352,42 @@ public class Controller implements GameButtonClickListener {
 
     public void onCardInDeckClicked(CardView[] cardDeckView, int cardClickedIdx, PlayerName currentPlayerName) {
         // TODO: you have to make the buttons of the other player unclickable
-        System.out.println(currentPlayerName);
+
+
+
 
         Player currentPlayer = (currentPlayerName == PlayerName.PLAYER_GREEN) ? playerGreen : playerRed;
+
         Card[] cards = currentPlayer.getCardDeck();
-        cards[cardClickedIdx].play(currentPlayer);
+        Card cardClicked = cards[cardClickedIdx];
+
+        Path currentPath = cardClicked.getPath();
+        PathName currentPathName = currentPath.getPathName();
+        boolean playerHasPawnInPath = currentPlayer.hasPawnInPath(currentPathName);
 
 
+        if (!playerHasPawnInPath && cardClicked.getName() == CardName.ARIADNE_CARD){
+            mainWindow.noAriadneCardPopUp(); // TODO: maybe an exception?
+            return;
+        }
 
-        System.out.println("card with index" + cardClickedIdx + "clicked");
+        if (!playerHasPawnInPath) {
+            PawnName pawnName = mainWindow.askUserForPawn();
+            currentPlayer.setPawn(pawnName, currentPathName);
+            Pawn choosenPawn = currentPlayer.getPawnInPath(pawnName, currentPathName);
+            currentPath.setPlayerPawn(currentPlayer, choosenPawn);
+        }
+        cardClicked.play(currentPlayer);
+
+
+        Card newCard = cardStack.getCard();
+        currentPlayer.setCardInDeck(cardClickedIdx, newCard);
+
+
+        PlayerMenu playerMenu = (currentPlayerName == PlayerName.PLAYER_GREEN) ? mainWindow.getGreenPlayerMenu() : mainWindow.getRedPlayerMenu();
+        playerMenu.updatePlayerMenu(cardClickedIdx, convertCardsToViewCards(new Card[]{newCard})[0]);
+
+        nextTurn(currentPlayer);
     }
 
     @Override

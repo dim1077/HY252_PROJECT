@@ -1,5 +1,6 @@
 package model.paths;
 
+import model.findings.Finding;
 import model.findings.RareFinding;
 import util.PathName;
 
@@ -9,14 +10,10 @@ import util.PathName;
  * that when completed marks the finding of the lost city
  */
 public class ZakrosPath extends Path {
-    public ZakrosPath(RareFinding rareFinding) {
-        super(rareFinding);
+    public ZakrosPath(RareFinding rareFinding, Finding[] nonRareFindings) {
+        super(rareFinding, nonRareFindings);
     }
 
-    @Override
-    protected void initializeFindings() {
-
-    }
 
     @Override
     void setPathName() {

@@ -30,12 +30,9 @@ public abstract class Position {
         this.hasPlayer = new boolean[2];
     }
 
-//    // Perhaps the code stinks because this method is pointless for SimplePosition,
-//    // but it's the only way I thought that doesn't break polymorphism later on.
-//    // YAGNI and/or Violation of Liskov Substitution Principle?
-//    @Deprecated
-//    public abstract Finding getFinding();
-
+    // Perhaps the code stinks because this method is pointless for SimplePosition,
+    // but it's the only way I thought that doesn't break polymorphism later on.
+    // YAGNI and/or Violation of Liskov Substitution Principle?
     // This way I don't force SimpleFinding to implement this method, not sure if that
     // really fixes things though
     public Finding getFinding() {
