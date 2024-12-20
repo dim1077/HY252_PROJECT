@@ -1,6 +1,5 @@
 package controller;
 
-import com.sun.xml.internal.ws.addressing.WsaActionUtil;
 import model.cardStack.CardStack;
 import model.cards.AriadneCard;
 import model.cards.Card;
@@ -118,8 +117,7 @@ public class Controller implements GameButtonClickListener {
 
         cardsOfRed = convertCardsToViewCards(playerRed.getCardDeck());
         cardsOfGreen = convertCardsToViewCards(playerGreen.getCardDeck());
-
-        mainWindow = new MainWindow(cardsOfRed, cardsOfGreen, this);
+        mainWindow = new MainWindow(cardsOfRed, cardsOfGreen, this, cardStack.getStackSize(), checkPointsPassed, !isGreensTurn);
 
         CentralContent centralContent = mainWindow.getCentralContent();
 
@@ -163,10 +161,12 @@ public class Controller implements GameButtonClickListener {
      */
     public void nextTurn(Player player) {
     if (isGameOver()){ endGame();}
+        CentralContent centralContent = mainWindow.getCentralContent();
 
 //    try{
         mainWindow.getGreenPlayerMenu().setButtonsClickable(isGreensTurn);
         mainWindow.getRedPlayerMenu().setButtonsClickable(!isGreensTurn);
+//        centralContent.updateInformation(cardStack.getStackSize(), checkPointsPassed, !isGreensTurn);
         isGreensTurn = !isGreensTurn;
 
 
@@ -354,8 +354,6 @@ public class Controller implements GameButtonClickListener {
         // TODO: you have to make the buttons of the other player unclickable
 
 
-
-
         Player currentPlayer = (currentPlayerName == PlayerName.PLAYER_GREEN) ? playerGreen : playerRed;
 
         Card[] cards = currentPlayer.getCardDeck();
@@ -371,13 +369,33 @@ public class Controller implements GameButtonClickListener {
             return;
         }
 
+        int prevPawnPosition = -1;
+        Pawn currentPlayerPawn = null;
         if (!playerHasPawnInPath) {
             PawnName pawnName = mainWindow.askUserForPawn();
             currentPlayer.setPawn(pawnName, currentPathName);
             Pawn choosenPawn = currentPlayer.getPawnInPath(pawnName, currentPathName);
             currentPath.setPlayerPawn(currentPlayer, choosenPawn);
+        }else{
+            currentPlayerPawn = currentPath.getPlayerPawn(currentPlayer);
+            prevPawnPosition = currentPlayerPawn.getPosition().getCellIdx();
         }
         cardClicked.play(currentPlayer);
+        int newPawnPosition = currentPlayerPawn.getPosition().getCellIdx();
+
+        if (currentPlayerPawn.getPosition().getFinding() != null){
+//            askPlayer
+            currentPlayerPawn.interact();
+        }
+
+        CentralContent centralContent = mainWindow.getCentralContent();
+        PawnName currentPawnName = currentPath.getPlayerPawn(currentPlayer).getPawnName();
+        if (prevPawnPosition == -1){
+            centralContent.addPawnToCell(currentPathName,0, currentPawnName, currentPlayerName, true);
+        }else {
+            centralContent.removePawnFromCell(currentPathName, prevPawnPosition, currentPlayerName);
+            centralContent.addPawnToCell(currentPathName, newPawnPosition, currentPawnName, currentPlayerName, true);
+        }
 
 
         Card newCard = cardStack.getCard();

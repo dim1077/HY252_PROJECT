@@ -34,7 +34,7 @@ public class MainWindow extends JFrame {
     /**
      * Constructs the main window for the application.
      * */
-    public MainWindow(CardView[] initialCardsRed, CardView[] initialCardsGreen, GameButtonClickListener cardClickListener) {
+    public MainWindow(CardView[] initialCardsRed, CardView[] initialCardsGreen, GameButtonClickListener cardClickListener, int availableCards, int checkPoints, boolean isPlayerOnesTurn) {
         this.cardClickListener = cardClickListener;
 
         setTitle("Lost Cities");
@@ -45,17 +45,17 @@ public class MainWindow extends JFrame {
         setPreferredSize(new Dimension(GameConstants.WIDTH, GameConstants.HEIGHT));
 
         // bottom menu
-        GreenPlayerMenu = new PlayerMenu(initialCardsGreen, cardClickListener, PlayerName.PLAYER_GREEN, true);
+        GreenPlayerMenu = new PlayerMenu(initialCardsGreen, this.cardClickListener, PlayerName.PLAYER_GREEN, true);
         // top menu
-        RedPlayerMenu = new PlayerMenu(initialCardsRed, cardClickListener, PlayerName.PLAYER_RED, false);
+        RedPlayerMenu = new PlayerMenu(initialCardsRed, this.cardClickListener, PlayerName.PLAYER_RED, false);
 
-        centralContent = new CentralContent(cardClickListener);
+        centralContent = new CentralContent(availableCards, checkPoints,  isPlayerOnesTurn , cardClickListener);
 
         add(RedPlayerMenu, BorderLayout.NORTH);
         add(GreenPlayerMenu, BorderLayout.SOUTH);
         add(centralContent, BorderLayout.CENTER);
 
-        pack();
+//        pack();
         setVisible(true);
     }
 

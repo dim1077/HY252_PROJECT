@@ -1,5 +1,6 @@
 package view.components.menus;
 
+import com.sun.scenario.effect.impl.sw.java.JSWBlend_SRC_OUTPeer;
 import controller.Controller;
 import controller.GameButtonClickListener;
 import model.players.Player;
@@ -11,6 +12,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 
 public class PlayerMenu extends JLayeredPane {
     private CardView[] cardDeck;
@@ -27,10 +29,12 @@ public class PlayerMenu extends JLayeredPane {
         this.cardsClickable = cardsClickable;
         this.cardClickListener = cardClickListener;
 
+
         setBackground(Color.RED);
         setOpaque(true);
-        setPreferredSize(new Dimension(800, 230));
+        setPreferredSize(new Dimension((int)(0.41 * GameConstants.WIDTH), (int)(0.21 * GameConstants.HEIGHT))); // the coefficients where arbitrarily chosen according to my likings
         displayCardDeck();
+//        displayLastCards(new CardView[]{null, null, null, null});
     }
 
     /*
@@ -57,6 +61,7 @@ public class PlayerMenu extends JLayeredPane {
         add(buttonPanel, JLayeredPane.DEFAULT_LAYER);
 
         setButtonsClickable(cardsClickable);
+
         // Refreshes the UI
         revalidate();
         repaint();
@@ -102,6 +107,43 @@ public class PlayerMenu extends JLayeredPane {
         revalidate();
         repaint();
     }
+
+//    public void displayLastCards(CardView[] lastCards) {
+//        // Remove existing components related to lastCards display only
+//        // Use a unique layer for the lastCardsPanel to avoid conflicts
+//        for (Component component : getComponentsInLayer(JLayeredPane.PALETTE_LAYER)) {
+//            remove(component);
+//        }
+//
+//        // Create a panel for displaying the last cards
+//        JPanel lastCardsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+//        lastCardsPanel.setOpaque(false);
+//        lastCardsPanel.setBounds(0, 0, getWidth(), (int) (0.2 * getHeight())); // Adjust the panel's size and position
+//
+//        // Add the cards or indices to the panel
+//        for (int i = 0; i < lastCards.length; i++) {
+//            if (lastCards[i] != null) {
+//                // If the card exists, display it as a button
+//                JButton cardButton = lastCards[i].getButton();
+//                cardButton.setEnabled(false); // Disable interaction for last cards
+//                lastCardsPanel.add(cardButton);
+//            } else {
+//                // If the card is null, display the index as a label
+//                JLabel indexLabel = new JLabel("Index: " + i, SwingConstants.CENTER);
+//                indexLabel.setFont(new Font("Arial", Font.BOLD, 14));
+//                indexLabel.setForeground(Color.RED); // Make it stand out
+//                lastCardsPanel.add(indexLabel);
+//            }
+//        }
+//
+//        // Add the lastCardsPanel to a separate layer to avoid conflicts
+//        add(lastCardsPanel, JLayeredPane.PALETTE_LAYER);
+//
+//        // Refresh the UI
+//        revalidate();
+//        repaint();
+//    }
+
 
 
     /**

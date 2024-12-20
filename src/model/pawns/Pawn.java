@@ -24,6 +24,7 @@ public abstract class Pawn {
      * @param owner the owner of the pawn (PlayerGreen or PlayerRed)
      * */
     public Pawn(PlayerName owner, PathName pathName) {
+        setPawnName();
         this.owner = owner;
         this.hasFinished = false;
         this.pathName = pathName;
@@ -35,7 +36,7 @@ public abstract class Pawn {
      * Abstract method to define the pawn's special interaction.
      * Must be implemented by subclasses.
      */
-    abstract void interact(Position position);
+    abstract public void interact();
 
     /**
      * Moves a pawn by 'steps' steps

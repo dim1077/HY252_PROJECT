@@ -1,5 +1,6 @@
 package model.pawns;
 
+import model.findings.Finding;
 import model.positions.Position;
 import model.positions.SimplePosition;
 import util.PathName;
@@ -33,12 +34,13 @@ public class Archeologist extends Pawn {
      * In case the player chooses to exploit the finding, his archeologist will be
      * revealed to his opponent.
      *
-     * @param position the position to the archeologist is in
      */
     @Override
-    public void interact(Position position) {
-        if (position instanceof SimplePosition) throw new IllegalArgumentException("precondition broken," +
-                " position must have a finding ");
+    public void interact() {
+        if (currentPosition.getFinding() == null) return;
+
+        Finding finding = currentPosition.getFinding();
+
     }
 
     @Override

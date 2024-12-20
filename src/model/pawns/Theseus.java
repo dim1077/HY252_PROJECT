@@ -32,10 +32,9 @@ public class Theseus extends Pawn {
      * This method is responsible for interacting with
      * a position that has a finding. Theseus can either destroy
      * a finding, which reveals his position, or ignore it.
-     * @param position the position to interact with
      */
     @Override
-    public void interact(Position position) {
+    public void interact() {
 
     }
 

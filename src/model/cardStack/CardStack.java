@@ -45,11 +45,11 @@ public class CardStack {
                 cardStack.push(new NumberCard(pathName, number));
             }
 
-            for (int j = 0; j <= GameConstants.NUMBER_OF_ARIADNE_CARDS / GameConstants.NUMBER_OF_PATHS; j++ ) {
+            for (int j = 0; j < GameConstants.NUMBER_OF_ARIADNE_CARDS / GameConstants.NUMBER_OF_PATHS; j++ ) {
                 cardStack.push(new AriadneCard(pathName));
             }
 
-            for (int j = 0; j <= GameConstants.NUMBER_OF_MINOTAUR_CARDS / GameConstants.NUMBER_OF_PATHS; j++ ) {
+            for (int j = 0; j < GameConstants.NUMBER_OF_MINOTAUR_CARDS / GameConstants.NUMBER_OF_PATHS; j++ ) {
                 cardStack.push(new MinotaurCard(pathName));
             }
         }

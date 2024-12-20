@@ -38,7 +38,7 @@ public class NumberCard extends Card {
 
 //        if () throw new IllegalArgumentException();
         if (number < path.getMaxCardPlayed(player)) return;
-        System.out.println(path.getMaxCardPlayed(player));
+//        System.out.println(path.getMaxCardPlayed(player));
 
 
         // The Player is in the last position: he is now removed from the map, and the pawn doesn't exist anymore
