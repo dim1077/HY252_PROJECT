@@ -11,6 +11,7 @@ import model.pawns.Pawn;
 import model.players.Player;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
+import model.positions.FindingPosition;
 import util.*;
 import view.components.centralContent.CentralContent;
 import view.components.menus.CardView;
@@ -72,22 +73,21 @@ public class Controller implements GameButtonClickListener {
         Finding[] nonRarefindings = new Finding[GameConstants.NUMBER_OF_RELICS];
         for (int i = 0; i < GameConstants.NUMBER_OF_SNAKE_GODDESS_STATUES; i++) nonRarefindings[i] = new SnakeGoddessFinding();
         final int baseIndex = GameConstants.NUMBER_OF_SNAKE_GODDESS_STATUES;
-        nonRarefindings[baseIndex]  = new FrescoFinding(20);
-        nonRarefindings[baseIndex + 1]  = new FrescoFinding(20);
-        nonRarefindings[baseIndex + 2]  = new FrescoFinding(15);
-        nonRarefindings[baseIndex + 3]  = new FrescoFinding(15);
-        nonRarefindings[baseIndex + 4]  = new FrescoFinding(15);
-        nonRarefindings[baseIndex + 5]  = new FrescoFinding(20);
-        // Note that points are tied to images; not images are tied to points
+//        nonRarefindings[baseIndex]  = new FrescoFinding(20, 1);
+//        nonRarefindings[baseIndex + 1]  = new FrescoFinding(20, 2);
+//        nonRarefindings[baseIndex + 2]  = new FrescoFinding(15, 3);
+//        nonRarefindings[baseIndex + 3]  = new FrescoFinding(15, 4);
+//        nonRarefindings[baseIndex + 4]  = new FrescoFinding(15, 5);
+//        nonRarefindings[baseIndex + 5]  = new FrescoFinding(20, 6);
 
         Collections.shuffle(Arrays.asList(nonRarefindings));
 
         // model
 
-        RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC, 35);
-        RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING, 25);
-        RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY, 25);
-        RareFinding rhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS, 25);
+        RareFinding phaistosDisc = new RareFinding(FindingName.PHAISTOS_DISC, 35);
+        RareFinding minosRing = new RareFinding(FindingName.MINOS_RING, 25);
+        RareFinding maliaJewelry= new RareFinding(FindingName.MALIA_JEWELRY, 25);
+        RareFinding rhytonOfZakros = new RareFinding(FindingName.RHYTHON_OF_ZAKROS, 25);
 
 
         maliaPath = new MaliaPath(maliaJewelry, Arrays.copyOfRange(nonRarefindings, 0, 4));
@@ -124,6 +124,8 @@ public class Controller implements GameButtonClickListener {
         PlayerMenu greenMenu = mainWindow.getGreenPlayerMenu();
         PlayerMenu redMenu = mainWindow.getRedPlayerMenu();
 
+//        greenMenu.displayLastCards();
+
 
 //        centralContent.onCardRejectionClicked(e -> onCardInDeckClicked(5));
 //        greenMenu.onCardClicked(0, e -> System.out.println("rejection stack clicked"));
@@ -157,16 +159,17 @@ public class Controller implements GameButtonClickListener {
      * Advances the game to the next player's turn.
      * Handles card interactions, pawn movement, findings, and game state updates.
      *
-     * @param player The player whose turn it is.
+     * @param player The player whose turn it is.2
      */
     public void nextTurn(Player player) {
-    if (isGameOver()){ endGame();}
+        if (isGameOver()){ endGame();}
+//        CentralContent centralContent = mainWindow.getCentralContent();
         CentralContent centralContent = mainWindow.getCentralContent();
 
 //    try{
-        mainWindow.getGreenPlayerMenu().setButtonsClickable(isGreensTurn);
+        mainWindow.getGreenPlayerMenu().setButtonsClickable(isGreensTurn); // bruh
         mainWindow.getRedPlayerMenu().setButtonsClickable(!isGreensTurn);
-//        centralContent.updateInformation(cardStack.getStackSize(), checkPointsPassed, !isGreensTurn);
+        centralContent.updateInformation(cardStack.getStackSize(), checkPointsPassed, !isGreensTurn);
         isGreensTurn = !isGreensTurn;
 
 
@@ -354,6 +357,7 @@ public class Controller implements GameButtonClickListener {
         // TODO: you have to make the buttons of the other player unclickable
 
 
+
         Player currentPlayer = (currentPlayerName == PlayerName.PLAYER_GREEN) ? playerGreen : playerRed;
 
         Card[] cards = currentPlayer.getCardDeck();
@@ -376,6 +380,7 @@ public class Controller implements GameButtonClickListener {
             currentPlayer.setPawn(pawnName, currentPathName);
             Pawn choosenPawn = currentPlayer.getPawnInPath(pawnName, currentPathName);
             currentPath.setPlayerPawn(currentPlayer, choosenPawn);
+            currentPlayerPawn = currentPath.getPlayerPawn(currentPlayer);
         }else{
             currentPlayerPawn = currentPath.getPlayerPawn(currentPlayer);
             prevPawnPosition = currentPlayerPawn.getPosition().getCellIdx();
@@ -383,9 +388,21 @@ public class Controller implements GameButtonClickListener {
         cardClicked.play(currentPlayer);
         int newPawnPosition = currentPlayerPawn.getPosition().getCellIdx();
 
-        if (currentPlayerPawn.getPosition().getFinding() != null){
-//            askPlayer
-            currentPlayerPawn.interact();
+        boolean posHasFinding = false;
+        try {
+            posHasFinding = currentPlayerPawn.getPosition().getFinding() != null;
+        } catch (Throwable e) {
+            System.out.println("no way wtf ");
+        }
+        if (posHasFinding){
+            if (currentPlayerPawn.getPosition().getFinding() != null) System.out.println("test" +  currentPlayerPawn.getPosition().getFinding());
+            else System.out.println("bruh it's null");
+//            boolean ignore = mainWindow.askUserForFindingInteraction();
+            boolean ignore = false;
+            if (!ignore){
+                currentPlayerPawn.interactWithFinding((FindingPosition) currentPlayerPawn.getPosition(), currentPlayer);
+                currentPlayerPawn.setRevealed(true);
+            }
         }
 
         CentralContent centralContent = mainWindow.getCentralContent();
@@ -403,15 +420,16 @@ public class Controller implements GameButtonClickListener {
 
 
         PlayerMenu playerMenu = (currentPlayerName == PlayerName.PLAYER_GREEN) ? mainWindow.getGreenPlayerMenu() : mainWindow.getRedPlayerMenu();
+//        PlayerMenuT playerMenu = (currentPlayerName == PlayerName.PLAYER_GREEN) ? mainWindow.getGreenPlayerMenu() : mainWindow.getRedPlayerMenu();
         playerMenu.updatePlayerMenu(cardClickedIdx, convertCardsToViewCards(new Card[]{newCard})[0]);
 
         nextTurn(currentPlayer);
     }
 
-    @Override
-    public void onFrescoClicked() {
-
-    }
+//    @Override
+//    public void onFrescoClicked() {
+//
+//    }
 
     @Override
     public void onGiveUpClicked() {

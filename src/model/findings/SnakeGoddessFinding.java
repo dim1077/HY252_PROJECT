@@ -3,6 +3,11 @@ package model.findings;
 
 
 // I don't want to mess with html right now, the HTML enchantment was created using chatGPT
+
+import model.players.Player;
+import model.positions.FindingPosition;
+import util.FindingName;
+
 /**
  * Snake Goddess Statue
  * <p>
@@ -49,11 +54,22 @@ package model.findings;
  *   </tbody>
  * </table>
  */
-public class SnakeGoddessFinding implements Finding {
+public class SnakeGoddessFinding extends Finding {
 
+
+    public SnakeGoddessFinding() {
+        setFindingName(FindingName.SNAKE_GODDESS);
+    }
+
+    /**
+     * To collect the finding we take two actions:
+     * 1) Set the finding position to not have a finding
+     * 2) Give the player the snake goddess finding
+     */
     @Override
-    public void collectFinding() {
-
+    public void addFindingInCollection(FindingPosition currentPosition, Player currentPlayer) {
+        currentPlayer.addFinding(this);
+        currentPosition.removeFinding();
     }
 
     @Override
@@ -64,5 +80,15 @@ public class SnakeGoddessFinding implements Finding {
     @Override
     public boolean isCollectable() {
         return false;
+    }
+
+    @Override
+    public void setFindingName(FindingName findingName) {
+        this.findingName = findingName;
+    }
+
+    @Override
+    public int getPoints() {
+        return 0;
     }
 }

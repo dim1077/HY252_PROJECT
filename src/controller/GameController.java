@@ -6,7 +6,7 @@
 //import model.cardStack.CardStack;
 //import model.cards.Card;
 //import model.findings.RareFinding;
-//import model.findings.RareFindingNames;
+//import util.FindingName;
 //import model.paths.*;
 //import model.players.Player;
 //import model.players.PlayerGreen;
@@ -41,10 +41,10 @@
 //        lastCardsPlayed.put(playerRed, new Card[4]);
 //        lastCardsPlayed.put(playerGreen, new Card[4]);
 //
-//        RareFinding phaistosDisc = new RareFinding(RareFindingNames.PHAISTOS_DISC);
-//        RareFinding minosRing = new RareFinding(RareFindingNames.MINOS_RING);
-//        RareFinding maliaJewelry= new RareFinding(RareFindingNames.MALIA_JEWELRY);
-//        RareFinding RhytonOfZakros = new RareFinding(RareFindingNames.RHYTHON_OF_ZAKROS);
+//        RareFinding phaistosDisc = new RareFinding(FindingName.PHAISTOS_DISC);
+//        RareFinding minosRing = new RareFinding(FindingName.MINOS_RING);
+//        RareFinding maliaJewelry= new RareFinding(FindingName.MALIA_JEWELRY);
+//        RareFinding RhytonOfZakros = new RareFinding(FindingName.RHYTHON_OF_ZAKROS);
 //
 //
 //        maliaPath = new MaliaPath(maliaJewelry);

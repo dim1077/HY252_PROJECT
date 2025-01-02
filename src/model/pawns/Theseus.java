@@ -1,6 +1,7 @@
 package model.pawns;
 
-import model.positions.Position;
+import model.players.Player;
+import model.positions.FindingPosition;
 import util.PathName;
 import util.PawnName;
 import util.PlayerName;
@@ -34,8 +35,8 @@ public class Theseus extends Pawn {
      * a finding, which reveals his position, or ignore it.
      */
     @Override
-    public void interact() {
-
+    public void interactWithFinding(FindingPosition currentPosition, Player currentPlayer) {
+        currentPosition.removeFinding();
     }
 
     /**

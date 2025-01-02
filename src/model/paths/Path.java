@@ -23,7 +23,7 @@ public abstract class Path {
 
 
     protected PathName pathName;
-    protected Map<Player, Pawn> playerPawn = new HashMap<>();
+    protected Map<PlayerName, Pawn> playerPawn = new HashMap<>();
     protected int[] maxCardPlayed;
     protected Position[] positions;
     protected Finding[] nonRareFindings;
@@ -41,26 +41,21 @@ public abstract class Path {
         initializePositions();
     }
 
-
-//    public void updateMaxNumber(){
-//      // throw something
-//    }
-
     private void initializePositions(){
         List<Integer> positionsList = new ArrayList<>(GameConstants.numOfPositionsWithFindings); // TODO:Perhaps numOfPositionsWithFindings should be an array after all
         Random random = new Random();
         int rareFindingPosition = positionsList.get(random.nextInt(positionsList.size())) - 1;
-        positions[rareFindingPosition] = new FindingPosition(pathName, rareFindingPosition, GameConstants.rewardForIthPathCell[rareFindingPosition], rareFinding,true);
-
+        positions[rareFindingPosition] = new FindingPosition(pathName, rareFindingPosition, GameConstants.REWARD_PATH_FOR_ITH_CELL[rareFindingPosition], rareFinding,true);
 
         // Reminder: positions 2, 4, 6, 8, 9 are FindingPositions (1-indexed)
         int currFindingIdx = 0;
         for (int pos = 0; pos < GameConstants.NUMBER_OF_PATH_CELLS; pos++) {
+            if (pos == rareFindingPosition) continue;
 
-            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1) && pos != rareFindingPosition) {
-                positions[pos] = new FindingPosition(pathName, pos, GameConstants.rewardForIthPathCell[pos], nonRareFindings[currFindingIdx++], true); // the Finding will be initialized in the initializeFindings() function
+            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1)) {
+                positions[pos] = new FindingPosition(pathName, pos, GameConstants.REWARD_PATH_FOR_ITH_CELL[pos], nonRareFindings[currFindingIdx++], true); // the Finding will be initialized in the initializeFindings() function
             } else {
-                positions[pos] = new SimplePosition(pathName, pos, GameConstants.rewardForIthPathCell[pos]);
+                positions[pos] = new SimplePosition(pathName, pos, GameConstants.REWARD_PATH_FOR_ITH_CELL[pos]);
             }
         }
     }
@@ -85,6 +80,10 @@ public abstract class Path {
         return positions;
     }
 
+    public Position getPosition(int cellIndex){
+        return positions[cellIndex];
+    }
+
     public int getMaxCardPlayed(Player player) {
         PlayerName playerName = PlayerName.playerObjectEncode(player);
         return getMaxCardPlayed(playerName);
@@ -96,12 +95,30 @@ public abstract class Path {
     }
 
     public void setPlayerPawn(Player player, Pawn pawn) {
-         playerPawn.put(player, pawn);
+        PlayerName playerName = PlayerName.playerObjectEncode(player);
+        setPlayerPawn(playerName, pawn);
+    }
+
+    public void setPlayerPawn(PlayerName player, Pawn pawn) {
+        playerPawn.put(player, pawn);
     }
 
     public Pawn getPlayerPawn(Player player) {
+        PlayerName playerName = PlayerName.playerObjectEncode(player);
+        return getPlayerPawn(playerName);
+    }
+
+    public Pawn getPlayerPawn(PlayerName player) {
         return playerPawn.get(player);
     }
+
+
+//    public Pawn getPlayerPawn(PlayerName playerName) {
+//        for (int i = 0; i < GameConstants.NUMBER_OF_PATH_CELLS; i++){
+//            if (positions[i].hasPlayer(playerName)) return playerPawn.get(playerName);
+//        }
+//        return null;
+//    }
 
     public PathName getPathName(){
         return pathName;

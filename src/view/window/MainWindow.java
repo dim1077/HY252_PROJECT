@@ -3,6 +3,7 @@ package view.window;
 import controller.Controller;
 import controller.GameButtonClickListener;
 import util.GameConstants;
+import util.PathName;
 import util.PawnName;
 import util.PlayerName;
 import view.components.centralContent.CentralContent;
@@ -25,8 +26,8 @@ import java.awt.event.ActionListener;
  */
 public class MainWindow extends JFrame {
     private CentralContent centralContent;
-    private PlayerMenu GreenPlayerMenu;
-    private PlayerMenu RedPlayerMenu;
+    private PlayerMenu greenPlayerMenu;
+    private PlayerMenu redPlayerMenu;
     private GameButtonClickListener cardClickListener;
 
 
@@ -45,14 +46,15 @@ public class MainWindow extends JFrame {
         setPreferredSize(new Dimension(GameConstants.WIDTH, GameConstants.HEIGHT));
 
         // bottom menu
-        GreenPlayerMenu = new PlayerMenu(initialCardsGreen, this.cardClickListener, PlayerName.PLAYER_GREEN, true);
+        greenPlayerMenu = new PlayerMenu(initialCardsGreen, this.cardClickListener, PlayerName.PLAYER_GREEN, true);
+
         // top menu
-        RedPlayerMenu = new PlayerMenu(initialCardsRed, this.cardClickListener, PlayerName.PLAYER_RED, false);
+        redPlayerMenu = new PlayerMenu(initialCardsRed, this.cardClickListener, PlayerName.PLAYER_RED, false);
 
         centralContent = new CentralContent(availableCards, checkPoints,  isPlayerOnesTurn , cardClickListener);
 
-        add(RedPlayerMenu, BorderLayout.NORTH);
-        add(GreenPlayerMenu, BorderLayout.SOUTH);
+        add(redPlayerMenu, BorderLayout.NORTH);
+        add(greenPlayerMenu, BorderLayout.SOUTH);
         add(centralContent, BorderLayout.CENTER);
 
 //        pack();
@@ -100,6 +102,12 @@ public class MainWindow extends JFrame {
         return result[0];
     }
 
+    public void askUserForFindingInteraction(){
+        System.out.println("Congratulations, you found a ");
+    }
+
+
+    // TODO: make a pop up package
     public void noAriadneCardPopUp(){
         JOptionPane.showMessageDialog(null, "Cannot use Ariadne cards without having played any other card in that path before that", "Invalid card", JOptionPane.ERROR_MESSAGE);
     }
@@ -133,7 +141,7 @@ public class MainWindow extends JFrame {
      * @return The {@link PlayerMenu} component for the red player, located at the top of the window.
      */
     public PlayerMenu getRedPlayerMenu() {
-        return RedPlayerMenu;
+        return redPlayerMenu;
     }
 
     /**
@@ -142,7 +150,7 @@ public class MainWindow extends JFrame {
      * @return The {@link PlayerMenu} component for the green player, located at the bottom of the window.
      */
     public PlayerMenu getGreenPlayerMenu() {
-        return GreenPlayerMenu;
+        return greenPlayerMenu;
     }
 
 }

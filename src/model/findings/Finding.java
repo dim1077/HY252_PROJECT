@@ -1,18 +1,22 @@
 package model.findings;
 
 
+import model.players.Player;
+import model.positions.FindingPosition;
+import util.FindingName;
+
 /**
  * This class represents a finding.
  * A finding could represent a Fresco, a rare finding or a snake goddess statue
  * Each finding has a name and rewards points (directly or indirectly) by its discovery
  * */
-public interface Finding {
-
+public abstract class Finding {
+    protected FindingName findingName;
 
     /**
      * Collects the finding, adding to the player's inventory
      */
-    void collectFinding();
+    abstract public void addFindingInCollection(FindingPosition currentPosition, Player currentPlayer);
 
 
     /**
@@ -21,12 +25,22 @@ public interface Finding {
      *
      * @return A string description of the finding.
      */
-    String getDescription();
+    abstract public String getDescription();
 
     /**
      * Determines whether the finding can be collected by a player.
      *
      * @return true if the finding is collectable, false otherwise
      */
-    boolean isCollectable();
+    abstract public boolean isCollectable();
+
+
+    // force API user to input a name
+    abstract public void setFindingName(FindingName findingName);
+
+    public FindingName getFindingName(){
+        return findingName;
+    }
+
+    abstract public int getPoints();
 }

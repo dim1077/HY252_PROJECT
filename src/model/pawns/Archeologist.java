@@ -1,6 +1,8 @@
 package model.pawns;
 
 import model.findings.Finding;
+import model.players.Player;
+import model.positions.FindingPosition;
 import model.positions.Position;
 import model.positions.SimplePosition;
 import util.PathName;
@@ -36,11 +38,9 @@ public class Archeologist extends Pawn {
      *
      */
     @Override
-    public void interact() {
-        if (currentPosition.getFinding() == null) return;
-
-        Finding finding = currentPosition.getFinding();
-
+    public void interactWithFinding(FindingPosition currentPosition, Player currentPlayer) {
+        Finding finding = currentPosition.collectFinding();
+        finding.addFindingInCollection(currentPosition, currentPlayer);
     }
 
     @Override

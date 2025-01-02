@@ -9,6 +9,7 @@ import util.PlayerName;
 public class PlayerGreen extends Player {
     public PlayerGreen(Card[] nCards) {
         super(nCards);
+        setPlayerName();
     }
 
     @Override

@@ -1,6 +1,5 @@
 package model.cards;
 
-import javafx.geometry.Pos;
 import model.paths.Path;
 import model.pawns.Pawn;
 import model.players.Player;
@@ -23,7 +22,7 @@ public class NumberCard extends Card {
         Position playerPos = playerPawn.getPosition();
 
         // In case the pawn has finished, the player can play the card, but it won't do anything
-        if (playerPawn.getHasFinished()) return;
+        if (playerPawn.hasFinished()) return;
 
 
         // Player plays for the first time: every number card is valid
@@ -51,7 +50,7 @@ public class NumberCard extends Card {
         else{
             position[pawnPosition].setHasPlayer(player,false);
             position[pawnPosition + 1].setHasPlayer(player,true);
-             playerPawn.setCurrentPosition(position[pawnPosition + 1]);
+            playerPawn.setCurrentPosition(position[pawnPosition + 1]);
         }
         path.setMaxCardPlayed(number, player);
     }

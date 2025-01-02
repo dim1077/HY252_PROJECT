@@ -32,4 +32,11 @@ public enum PlayerName {
         if (player instanceof PlayerGreen) return PLAYER_GREEN;
         else throw new IllegalArgumentException("Unknown player type " + player);
     }
+
+    @Override
+    public String toString() {
+        if (this == PLAYER_RED) return "Player red";
+        else if (this == PLAYER_GREEN) return "Player green";
+        else throw new IllegalArgumentException("Unknown player type " + this);
+    }
 }

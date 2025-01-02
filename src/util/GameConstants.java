@@ -1,8 +1,8 @@
 package util;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.awt.Color;
+
 
 /**
  * This class defines various constants used throughout the game.
@@ -76,6 +76,46 @@ public class GameConstants {
 
     public static final int NUMBER_OF_RELICS = 20;
 
-    public static final int[] rewardForIthPathCell = {-20, -15, -10, 5, 10, 15, 30, 35, 50};
+    public static final int[] REWARD_PATH_FOR_ITH_CELL = {-20, -15, -10, 5, 10, 15, 30, 35, 50};
 
+    public static final int[] REWARD_PATH_FOR_NUM_OF_STATUES = {0, -20, -15, 10, 15, 30, 50};
+
+
+    public static final Set<FindingName> rareFindingNames =
+            new HashSet<>(Arrays.asList(
+                    FindingName.MALIA_JEWELRY,
+                    FindingName.MINOS_RING,
+                    FindingName.RHYTHON_OF_ZAKROS,
+                    FindingName.PHAISTOS_DISC
+            ));
+
+    public static final Set<FindingName> FRESCOES_NAMES =
+            new HashSet<>(Arrays.asList(
+                    FindingName.FRESCO_1,
+                    FindingName.FRESCO_2,
+                    FindingName.FRESCO_3,
+                    FindingName.FRESCO_4,
+                    FindingName.FRESCO_5,
+                    FindingName.FRESCO_6
+            ));
+
+    public static final int NUMBER_OF_THESEUS = 1;
+
+    public static final int NUMBER_OF_ARCHEOLOGIST = 3;
+
+    public static final int checkPointIdx = 6; // 0 indexed
+
+    public static final Map<PathName, Color> COLOR_FOR_EACH_PATH = new HashMap<>();
+
+    public static final Map<PlayerName, Color> COLOR_FOR_EACH_PLAYER = new HashMap<>();
+
+    static { // Java 8 doesn't support direct initialization of maps :(
+        COLOR_FOR_EACH_PATH.put(PathName.KNOSSOS_PATH, Color.RED);
+        COLOR_FOR_EACH_PATH.put(PathName.MALIA_PATH, Color.YELLOW);
+        COLOR_FOR_EACH_PATH.put(PathName.PHAISTOS_PATH, Color.WHITE);
+        COLOR_FOR_EACH_PATH.put(PathName.ZAKROS_PATH, Color.BLUE);
+
+        COLOR_FOR_EACH_PLAYER.put(PlayerName.PLAYER_GREEN, Color.GREEN);
+        COLOR_FOR_EACH_PLAYER.put(PlayerName.PLAYER_RED, Color.RED);
+    }
 }

@@ -1,6 +1,8 @@
 package model.pawns;
 
 
+import model.players.Player;
+import model.positions.FindingPosition;
 import model.positions.Position;
 import util.PathName;
 import util.PawnName;
@@ -36,7 +38,7 @@ public abstract class Pawn {
      * Abstract method to define the pawn's special interaction.
      * Must be implemented by subclasses.
      */
-    abstract public void interact();
+    abstract public void interactWithFinding(FindingPosition currentPosition, Player currentPlayer);
 
     /**
      * Moves a pawn by 'steps' steps
@@ -67,7 +69,7 @@ public abstract class Pawn {
         return owner;
     }
 
-    public boolean getHasFinished(){
+    public boolean hasFinished(){
         return hasFinished;
     }
 

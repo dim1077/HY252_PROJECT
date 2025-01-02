@@ -17,7 +17,7 @@ public class AriadneCard extends Card {
         Position[] position = path.getPositions();
 
         // In case the pawn has finished, the player can play the card, but it won't do anything
-        if (playerPawn.getHasFinished()) return;
+        if (playerPawn.hasFinished()) return;
 
         // Invalid, can't use Ariadne card in the first round. TODO: 0 is not the correct thing here
         if (playerPawn.getPosition() == null){
@@ -26,7 +26,7 @@ public class AriadneCard extends Card {
         int pawnPosition = playerPawn.getPosition().getCellIdx();
 
         position[pawnPosition].setHasPlayer(player,false);
-        if (pawnPosition != position.length - 1){
+        if (pawnPosition == position.length - 1){
             position[pawnPosition].setHasPlayer(player,false);
             playerPawn.setHasFinished(true);
         }
@@ -35,6 +35,9 @@ public class AriadneCard extends Card {
             playerPawn.setHasFinished(true);
         }else{
             int newPawnPosition = pawnPosition + 2;
+            if (position[newPawnPosition - 1].getFinding() != null){
+
+            }
             position[newPawnPosition].setHasPlayer(player,true);
             playerPawn.setCurrentPosition(position[newPawnPosition]);
         }

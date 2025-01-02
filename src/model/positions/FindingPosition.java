@@ -32,9 +32,14 @@ public class FindingPosition extends Position {
      * Returns the finding this position contains iff the finding is available.
      * Then makes the finding unavailable (if it isn't a fresco)
      */
-    public Finding getFinding() {
+    public Finding collectFinding() {
         if (!findingAvailable) return null;
         if (finding.isCollectable()) findingAvailable = false;
+        return finding;
+    }
+
+    public Finding getFinding(){
+        if (!findingAvailable) return null;
         return finding;
     }
 
@@ -42,7 +47,7 @@ public class FindingPosition extends Position {
     /**
      * Destroys the finding by making it unavailable
      * */
-    public void destroyFinding(){
+    public void removeFinding(){
         findingAvailable = false;
     }
 

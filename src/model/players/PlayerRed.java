@@ -10,6 +10,7 @@ import util.PlayerName;
 public class PlayerRed extends Player{
     public PlayerRed(Card[] nCards) {
         super(nCards);
+        setPlayerName();
     }
 
     @Override

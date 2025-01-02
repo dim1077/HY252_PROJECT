@@ -60,7 +60,7 @@ public class CardStack {
      * @return draw a new card from the top of the stack
      */
     public Card getCard(){
-        if (cardStack.isEmpty())throw new IllegalArgumentException();
+        if (cardStack.isEmpty()) throw new IllegalArgumentException();
         return cardStack.pop();
     }
 

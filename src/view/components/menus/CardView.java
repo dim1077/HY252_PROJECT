@@ -25,7 +25,8 @@ public class CardView {
         // Load and scale the card icon
         String iconFileName = getCardIconFileName();
         ImageIcon rawIcon = new ImageIcon("src/assets/images/cards/" + iconFileName);
-        Image scaledImage = rawIcon.getImage().getScaledInstance(80, 120, Image.SCALE_SMOOTH);
+//        Image scaledImage = rawIcon.getImage().getScaledInstance(80, 120, Image.SCALE_SMOOTH);
+        Image scaledImage = rawIcon.getImage().getScaledInstance(40, 60, Image.SCALE_SMOOTH);
         cardIcon = new ImageIcon(scaledImage);
 
         // Create the button with only the icon
@@ -33,7 +34,8 @@ public class CardView {
         button.setOpaque(true);
         button.setBackground(Color.WHITE);
         button.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        button.setPreferredSize(new Dimension(90, 130));
+//        button.setPreferredSize(new Dimension(90, 130)); // change this when you test the model
+        button.setPreferredSize(new Dimension(45, 65));
 
         // Remove any default padding for text
         button.setHorizontalTextPosition(SwingConstants.CENTER);

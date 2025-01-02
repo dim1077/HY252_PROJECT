@@ -22,11 +22,6 @@ public interface GameButtonClickListener {
     void onCardInDeckClicked(CardView[] cardView, int cardIdx, PlayerName playerName);
 
     /**
-     * Triggered when a fresco is clicked.
-     */
-    void onFrescoClicked();
-
-    /**
      * Triggered when the "Give Up" button is clicked.
      */
     void onGiveUpClicked();
