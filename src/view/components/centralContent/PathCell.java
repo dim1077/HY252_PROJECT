@@ -1,4 +1,4 @@
-package view.componentT.centralContentT;
+package view.components.centralContent;
 
 import util.GameConstants;
 import util.PathName;
@@ -9,11 +9,20 @@ import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.*;
 
+/**
+ * Represents an individual cell within a path panel.
+ * Each cell may display a background icon and can hold pawns represented by images.
+ */
 public class PathCell extends JPanel {
-    private int cellIndex;
-    private PathName pathName;
+    private final int cellIndex;
+    private final PathName pathName;
 
-
+    /**
+     * Constructs a PathCell with the specified index and path name.
+     *
+     * @param index    The index of the cell in the path (0-8).
+     * @param pathName The name of the path to which this cell belongs.
+     */
     public PathCell(int index, PathName pathName) {
         this.cellIndex = index;
         this.pathName = pathName;
@@ -73,8 +82,16 @@ public class PathCell extends JPanel {
         }
     }
 
-
+    /**
+     * Adds a pawn image to the cell.
+     *
+     * @param pawnName   The name of the pawn being added (Theseus or Archeologist).
+     * @param playerName The name of the player owning the pawn (Green or Red).
+     * @param isRevealed Indicates if the pawn's identity is revealed.
+     */
     public void addPawnToCell(PawnName pawnName, PlayerName playerName, boolean isRevealed) {
+
+
         String imagePath = "";
         try {
             if (!isRevealed) imagePath += "src/assets/images/pionia/question.jpg";
@@ -96,8 +113,10 @@ public class PathCell extends JPanel {
 
         // Create JLabel with the image
         JLabel imageLabel = new JLabel(scaledIcon);
-        if (getPawnImageCount() == 2)  imageLabel.setBounds(25, 10, 15, 30);
+
+        if (playerName == PlayerName.PLAYER_GREEN) imageLabel.setBounds(25, 10, 15, 30);
         else imageLabel.setBounds(5, 10, 15, 30); // Set position and size
+
 
         Color playerColor = GameConstants.COLOR_FOR_EACH_PLAYER.get(playerName);
         imageLabel.setBorder(BorderFactory.createLineBorder(playerColor, 2));
@@ -109,7 +128,13 @@ public class PathCell extends JPanel {
         repaint();
     }
 
-    public void removePawnFromCell(PathName pathName, int cellIdx, PlayerName playerName) {
+    /**
+     * Removes a pawn image from the cell based on the player's name.
+     *
+     * @param playerName The name of the player whose pawn is to be removed.
+     */
+    public void removePawnFromCell(PlayerName playerName) {
+
         try {
             // Iterate through the components in the cell
             for (Component component : getComponents()) {
@@ -136,18 +161,4 @@ public class PathCell extends JPanel {
             e.printStackTrace(); // Log any errors
         }
     }
-
-
-
-
-    private int getPawnImageCount() {
-        int count = 0;
-        for (Component component : getComponents()) {
-            if (component instanceof JLabel) {
-                count++;
-            }
-        }
-        return count;
-    }
-
 }

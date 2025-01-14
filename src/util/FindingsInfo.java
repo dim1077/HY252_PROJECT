@@ -6,12 +6,27 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The {@code FindingsInfo} class provides functionality to load and retrieve
+ * information about archaeological findings based on a CSV file. It allows
+ * fetching details and image paths for specific findings identified by the
+ * {@code FindingName} enum.
+ */
 public class FindingsInfo {
     private static final Map<FindingName, String[]> findingsData = new HashMap<>();
     private static boolean isDataLoaded = false; // Flag to track data loading
 
 
-    // Method to load data from CSV file
+    /**
+     * Loads findings data from a specified CSV file into a map. The CSV file should
+     * have rows with the format: "path;message;description".
+     *
+     * This method identifies findings based on the presence of specific keywords
+     * in the path field of each row and maps them to corresponding {@code FindingName}
+     * enum values.
+     *
+     * @param csvFilePath the file path of the CSV file containing findings data.
+     */
     private static void loadFindingsData(String csvFilePath) {
         try (BufferedReader br = new BufferedReader(new FileReader(csvFilePath))) {
             String line;
@@ -55,6 +70,11 @@ public class FindingsInfo {
         }
     }
 
+    /**
+     * Ensures the findings data is loaded from the CSV file. This method checks
+     * the flag {@code isDataLoaded} and invokes the {@code loadFindingsData()}
+     * method if the data is not already loaded.
+     */
     private static void ensureDataLoaded() {
         if (!isDataLoaded) {
             loadFindingsData("src/assets/csvFiles/csv_greeklish.csv");
@@ -63,12 +83,28 @@ public class FindingsInfo {
     }
 
 
-    // Method to get details for a finding
+    /**
+     * Retrieves the details of a specific finding identified by the given {@code FindingName}.
+     * The details include the path, message, and description of the finding.
+     *
+     * @param findingName the name of the finding.
+     * @return an array of strings containing the path, message, and description,
+     *         or {@code null} if the finding is not found.
+     */
     public static String[] getFindingDetails(FindingName findingName) {
         ensureDataLoaded();
         return findingsData.get(findingName);
     }
 
+
+    /**
+     * Retrieves the file path of the image associated with a specific finding.
+     * The image path is constructed based on the {@code FindingName}.
+     *
+     * @param findingName the name of the finding.
+     * @return the file path of the image for the finding.
+     * @throws IllegalArgumentException if the {@code FindingName} is invalid.
+     */
     public static String getFindingImagePath(FindingName findingName){
         String filePath = "src/assets/images/findings/";
         if (findingName == FindingName.RHYTHON_OF_ZAKROS) filePath += "ruto";

@@ -1,4 +1,4 @@
-package view.componentT.playerMenuT;
+package view.components.playerMenu;
 
 import util.FindingName;
 import util.FindingsInfo;
@@ -6,9 +6,11 @@ import util.FindingsInfo;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
+/**
+ * Represents an information panel displaying the player's score,
+ * the number of Snake Goddess statues collected, and a button to view frescoes.
+ */
 public class InformationPanel extends JPanel {
     private List<FindingName> frescoesNames;
     private int score;
@@ -17,12 +19,18 @@ public class InformationPanel extends JPanel {
     private JLabel northLabel;
     private JLabel southLabel;
 
+
+    /**
+     * Constructs an InformationPanel with the player's initial score and statues count.
+     *
+     * @param score              The initial score of the player.
+     * @param snakeGoddessStatues The initial number of Snake Goddess statues collected.
+     */
     public InformationPanel(int score, int snakeGoddessStatues) {
         this.score = score;
         this.snakeGoddessStatues = snakeGoddessStatues;
 
         setLayout(new BorderLayout(0, 10));
-        setBackground(Color.LIGHT_GRAY);
 
         String playerScoreText = "Your score: " + score + " points";
          northLabel = new JLabel(playerScoreText, SwingConstants.CENTER);
@@ -36,7 +44,6 @@ public class InformationPanel extends JPanel {
         String playerStatuesNumberText = "Statues number: " + snakeGoddessStatues;
         southLabel = new JLabel(playerStatuesNumberText, SwingConstants.CENTER);
 
-        // Add components to the panel
         add(northLabel, BorderLayout.NORTH);
         add(centerButton, BorderLayout.CENTER);
         add(southLabel, BorderLayout.SOUTH);
@@ -76,6 +83,13 @@ public class InformationPanel extends JPanel {
     }
 
 
+    /**
+     * Updates the panel with the player's new score, statue count, and frescoes list.
+     *
+     * @param newScore              The updated score of the player.
+     * @param newSnakeGoddessStatues The updated number of Snake Goddess statues.
+     * @param newFrescoesNames      The updated list of frescoes collected by the player.
+     */
     public void updateInformationPanel(int newScore, int newSnakeGoddessStatues, List<FindingName> newFrescoesNames) {
         this.score = newScore;
         this.snakeGoddessStatues = newSnakeGoddessStatues;

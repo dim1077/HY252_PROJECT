@@ -4,6 +4,9 @@ import model.players.Player;
 import model.players.PlayerGreen;
 import model.players.PlayerRed;
 
+/**
+ * The enum contains the player names, which are global to all the program
+ * */
 public enum PlayerName {
     PLAYER_RED(0),
     PLAYER_GREEN(1);

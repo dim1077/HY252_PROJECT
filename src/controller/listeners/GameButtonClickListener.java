@@ -1,8 +1,8 @@
-package controller;
+package controller.listeners;
 
 
 import util.PlayerName;
-import view.components.menus.CardView;
+import view.components.playerMenu.CardView;
 
 /**
  * This interface defines the listener for various button click events in the game.
@@ -25,4 +25,15 @@ public interface GameButtonClickListener {
      * Triggered when the "Give Up" button is clicked.
      */
     void onGiveUpClicked();
+
+
+    /**
+     * Triggered when the users clicked to save the game.
+     */
+    void onSaveGameClicked();
+
+    /**
+     * Triggered when the users clicked mute/unmute the game.
+     */
+    void onMusicSoundClicked();
 }

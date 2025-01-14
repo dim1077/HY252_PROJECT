@@ -1,5 +1,9 @@
 package util;
 
+
+/**
+ * The enum contains the finding names, which are global to all the program
+ * */
 public enum FindingName {
     PHAISTOS_DISC,
     MINOS_RING,

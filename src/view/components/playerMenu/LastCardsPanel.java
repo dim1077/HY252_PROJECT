@@ -1,31 +1,37 @@
-package view.componentT.playerMenuT;
+package view.components.playerMenu;
 
 import util.FindingName;
 import util.FindingsInfo;
 import util.GameConstants;
 import util.PathName;
-import view.components.menus.CardView;
 
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * Represents a panel that displays the last cards played for each path
+ * along with any rare items found on that path.
+ */
 public class LastCardsPanel extends JPanel {
-    private CardView[] lastCards;   // Array for CardView objects
-    private JPanel[] cardContainers; // Individual containers for each card and its icon
+    private CardView[] lastCards;
+    private JPanel[] cardContainers;
     private FindingName[] rareItemsFound;
     final int numOfLastCards = 4;
 
-    // Constructor accepts 4 CardView objects
+
+    /**
+     * Constructs a LastCardsPanel with placeholders for each path's last card and rare items.
+     */
     public LastCardsPanel() {
         lastCards = new CardView[]{null, null, null, null};
 
-        cardContainers = new JPanel[numOfLastCards]; // Containers for each card and its icon
+        cardContainers = new JPanel[numOfLastCards];
         rareItemsFound = new FindingName[numOfLastCards];
 
-        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10)); // Horizontal alignment, spacing
-        setBackground(Color.LIGHT_GRAY);
+        setLayout(new FlowLayout(FlowLayout.LEFT, 20, 10));
+//        setBackground(Color.LIGHT_GRAY);
 
-        // Initialize and add each card and its icon
         initializeLastCards();
     }
 
@@ -35,6 +41,14 @@ public class LastCardsPanel extends JPanel {
         }
     }
 
+
+    /**
+     * Updates the last cards played and the rare items found for each path.
+     *
+     * @param newLastCards      Array of the new last cards played for each path.
+     * @param rareFindingFound  The rare finding discovered, if any.
+     * @param rareFindingPathName The path where the rare finding was discovered.
+     */
     public void updateLastCards(CardView[] newLastCards, FindingName rareFindingFound, PathName rareFindingPathName) {
         this.lastCards = newLastCards;
         this.rareItemsFound[rareFindingPathName.getValue()] = rareFindingFound;
@@ -92,7 +106,7 @@ public class LastCardsPanel extends JPanel {
 
     private void addEmptyCard(PathName pathName){
         JPanel cardContainer = new JPanel(new BorderLayout());
-        cardContainer.setBackground(Color.LIGHT_GRAY);
+//        cardContainer.setBackground(Color.LIGHT_GRAY);
 
         // Placeholder for missing cards
         JLabel placeholderCard = new JLabel(pathName.toString(), SwingConstants.CENTER);

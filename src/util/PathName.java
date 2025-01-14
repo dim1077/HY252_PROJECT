@@ -1,9 +1,13 @@
 package util;
 
 import model.paths.Path;
-import model.players.Player;
+
+
 
 // numbered enums in java: https://stackoverflow.com/questions/479565/how-do-you-define-a-class-of-constants-in-java
+/**
+ * The enum contains the path names, which are global to all the program
+ * */
 public enum PathName {
     KNOSSOS_PATH(0),
     MALIA_PATH(1),

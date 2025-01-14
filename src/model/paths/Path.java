@@ -22,115 +22,171 @@ public abstract class Path {
 
 
 
+    /** The path’s unique name (Knossos, Malia, etc.). */
     protected PathName pathName;
-    protected Map<PlayerName, Pawn> playerPawn = new HashMap<>();
-    protected int[] maxCardPlayed;
-    protected Position[] positions;
-    protected Finding[] nonRareFindings;
+
+    /**
+     * Which pawn each player has on this path, if any.
+     * <br/>Key = PlayerName (GREEN=0, RED=1), Value = Pawn object.
+     */
+    protected final Map<PlayerName, Pawn> playerPawn = new HashMap<>();
+
+    /**
+     * Tracks the maximum numeric card a player has played in this path so far.
+     * <br/>Index: [0 -> Green, 1 -> Red].
+     */
+    protected final int[] maxCardPlayed;
+
+    /** The 9 positions that constitute this path. */
+    protected final Position[] positions;
+
+    /** Array of non-rare findings to be placed in the path’s available finding positions. */
+    protected final Finding[] nonRareFindings;
+
+    /** The unique rare finding for this path. */
     protected final RareFinding rareFinding;
+
     // TODO: perhaps add something to hold player pawn positions? (Probably not)
 
-
     public Path(RareFinding rareFinding, Finding[] nonRareFindings) {
-        setPathName();
-        maxCardPlayed = new int[GameConstants.NUMBER_OF_PLAYERS];
-        Arrays.fill(maxCardPlayed, -1); // -1 means player hasn't played in that path.
-        this.nonRareFindings = nonRareFindings;
         this.rareFinding = rareFinding;
+        this.nonRareFindings = nonRareFindings;
+
+        // Subclasses are forced to set pathName via setPathName() call
+        setPathName();
+
+        // Initialize maxCardPlayed to -1 (meaning no card played yet).
+        this.maxCardPlayed = new int[GameConstants.NUMBER_OF_PLAYERS];
+        Arrays.fill(this.maxCardPlayed, -1);
+
         this.positions = new Position[GameConstants.NUMBER_OF_PATH_CELLS];
         initializePositions();
     }
 
-    private void initializePositions(){
-        List<Integer> positionsList = new ArrayList<>(GameConstants.numOfPositionsWithFindings); // TODO:Perhaps numOfPositionsWithFindings should be an array after all
+    /**
+     * Every subclass must assign a valid {@link PathName} to {@code pathName}.
+     */
+    abstract void setPathName();
+
+    private void initializePositions() {
+        List<Integer> findingCells = new ArrayList<>(GameConstants.numOfPositionsWithFindings);
+        findingCells.addAll(GameConstants.numOfPositionsWithFindings);
+
+        // Randomly pick one of these cells to host the rare finding
         Random random = new Random();
-        int rareFindingPosition = positionsList.get(random.nextInt(positionsList.size())) - 1;
-        positions[rareFindingPosition] = new FindingPosition(pathName, rareFindingPosition, GameConstants.REWARD_PATH_FOR_ITH_CELL[rareFindingPosition], rareFinding,true);
+        int rareFinding1Based = findingCells.get(random.nextInt(findingCells.size()));
+        int rareFindingIndex = rareFinding1Based - 1; // convert 1-based to 0-based
 
-        // Reminder: positions 2, 4, 6, 8, 9 are FindingPositions (1-indexed)
-        int currFindingIdx = 0;
+        // Place the rare finding
+        positions[rareFindingIndex] = new FindingPosition(
+                pathName,
+                rareFindingIndex,
+                GameConstants.REWARD_PATH_FOR_ITH_CELL[rareFindingIndex],
+                rareFinding,
+                true
+        );
+
+        // Fill the other positions
+        int nonRareIndex = 0;
         for (int pos = 0; pos < GameConstants.NUMBER_OF_PATH_CELLS; pos++) {
-            if (pos == rareFindingPosition) continue;
+            if (pos == rareFindingIndex) continue; // skip the rare-finding cell
 
-            if (GameConstants.numOfPositionsWithFindings.contains(pos + 1)) {
-                positions[pos] = new FindingPosition(pathName, pos, GameConstants.REWARD_PATH_FOR_ITH_CELL[pos], nonRareFindings[currFindingIdx++], true); // the Finding will be initialized in the initializeFindings() function
+            // If 1-based index is in findingCells, place a non-rare finding
+            if (findingCells.contains(pos + 1)) {
+                positions[pos] = new FindingPosition(
+                        pathName,
+                        pos,
+                        GameConstants.REWARD_PATH_FOR_ITH_CELL[pos],
+                        nonRareFindings[nonRareIndex++],
+                        true
+                );
             } else {
-                positions[pos] = new SimplePosition(pathName, pos, GameConstants.REWARD_PATH_FOR_ITH_CELL[pos]);
+                // Otherwise, just a simple position
+                positions[pos] = new SimplePosition(
+                        pathName,
+                        pos,
+                        GameConstants.REWARD_PATH_FOR_ITH_CELL[pos]
+                );
             }
+        }
+
+        if (positions[rareFindingIndex].getFinding() == null){
+            System.out.println("bruh");
         }
     }
 
     /**
-     * Forces all subclasses of Path to have a name
-     * */
-    abstract void setPathName();
-
-    /**
-     * @return returns the (unique) rare finding of the path
+     * @return The path’s rare finding object.
      */
     public RareFinding getRareFinding() {
         return rareFinding;
     }
 
-
     /**
-     * @return returns an array of 9 positions
-     * */
+     * @return All 9 positions (0-indexed) of this path.
+     */
     public Position[] getPositions() {
         return positions;
     }
 
-    public Position getPosition(int cellIndex){
+    /**
+     * Retrieves a specific position by index.
+     * @param cellIndex The 0-based cell index in [0..8].
+     * @return The corresponding {@link Position}.
+     */
+    public Position getPosition(int cellIndex) {
         return positions[cellIndex];
     }
 
+    /**
+     * Gets the maximum numeric card value the specified player has played so far on this path.
+     */
     public int getMaxCardPlayed(Player player) {
-        PlayerName playerName = PlayerName.playerObjectEncode(player);
-        return getMaxCardPlayed(playerName);
+        PlayerName pName = PlayerName.playerObjectEncode(player);
+        return getMaxCardPlayed(pName);
     }
 
     public int getMaxCardPlayed(PlayerName playerName) {
-        int PlayerNameIdx = playerName.getValue();
-        return maxCardPlayed[PlayerNameIdx];
+        return maxCardPlayed[playerName.getValue()];
     }
 
+    /**
+     * Assigns a pawn to the path for a given player.
+     */
     public void setPlayerPawn(Player player, Pawn pawn) {
-        PlayerName playerName = PlayerName.playerObjectEncode(player);
-        setPlayerPawn(playerName, pawn);
+        setPlayerPawn(PlayerName.playerObjectEncode(player), pawn);
     }
 
-    public void setPlayerPawn(PlayerName player, Pawn pawn) {
-        playerPawn.put(player, pawn);
+    public void setPlayerPawn(PlayerName playerName, Pawn pawn) {
+        playerPawn.put(playerName, pawn);
     }
 
+    /**
+     * Retrieves the pawn belonging to the specified player (or null if none).
+     */
     public Pawn getPlayerPawn(Player player) {
-        PlayerName playerName = PlayerName.playerObjectEncode(player);
-        return getPlayerPawn(playerName);
+        return getPlayerPawn(PlayerName.playerObjectEncode(player));
     }
 
-    public Pawn getPlayerPawn(PlayerName player) {
-        return playerPawn.get(player);
+    public Pawn getPlayerPawn(PlayerName playerName) {
+        return playerPawn.get(playerName);
     }
 
-
-//    public Pawn getPlayerPawn(PlayerName playerName) {
-//        for (int i = 0; i < GameConstants.NUMBER_OF_PATH_CELLS; i++){
-//            if (positions[i].hasPlayer(playerName)) return playerPawn.get(playerName);
-//        }
-//        return null;
-//    }
-
-    public PathName getPathName(){
+    /**
+     * @return The {@link PathName} for this path (KNOSSOS, MALIA, etc.).
+     */
+    public PathName getPathName() {
         return pathName;
     }
 
-    public void setMaxCardPlayed(int maxCardPlayedValue, PlayerName playerName) {
-        int PlayerNameIdx = playerName.getValue();
-        maxCardPlayed[PlayerNameIdx] = maxCardPlayedValue;
+    /**
+     * Sets the maximum numeric card value for the given player.
+     */
+    public void setMaxCardPlayed(int maxCardPlayedValue, Player player) {
+        setMaxCardPlayed(maxCardPlayedValue, PlayerName.playerObjectEncode(player));
     }
 
-    public void setMaxCardPlayed(int maxCardPlayedValue, Player player) {
-        PlayerName playerName = PlayerName.playerObjectEncode(player);
-        setMaxCardPlayed(maxCardPlayedValue, playerName);
+    public void setMaxCardPlayed(int maxCardPlayedValue, PlayerName playerName) {
+        maxCardPlayed[playerName.getValue()] = maxCardPlayedValue;
     }
 }

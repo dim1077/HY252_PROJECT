@@ -4,6 +4,8 @@ import java.util.*;
 import java.awt.Color;
 
 
+
+// TODO: there are too many constants, break the class into smaller parts
 /**
  * This class defines various constants used throughout the game.
  * These constants represent fixed values such as dimensions, numbers of game elements,
@@ -74,13 +76,28 @@ public class GameConstants {
     /** Represents the numbers of the positions in the path that have a finding (1-indexed) */
     public static final Set<Integer> numOfPositionsWithFindings = new HashSet<>(Arrays.asList(2, 4, 6, 8, 9));
 
+    /** The total number of relics available in the game. */
     public static final int NUMBER_OF_RELICS = 20;
 
+    /** The maximum number of findings Theseus can destroy. */
+    public static final int MAX_DESTRUCTION_COUNT = 3;
+
+    /**
+     * Rewards assigned for reaching specific cells in a path.
+     * Each value corresponds to the reward for the cell at that index.
+     */
     public static final int[] REWARD_PATH_FOR_ITH_CELL = {-20, -15, -10, 5, 10, 15, 30, 35, 50};
 
+    /**
+     * Rewards assigned based on the number of Snake Goddess statues collected.
+     * Each value corresponds to the reward for the respective count of statues.
+     */
     public static final int[] REWARD_PATH_FOR_NUM_OF_STATUES = {0, -20, -15, 10, 15, 30, 50};
 
 
+    /**
+     * A set of rare findings in the game, identified by their names.
+     */
     public static final Set<FindingName> rareFindingNames =
             new HashSet<>(Arrays.asList(
                     FindingName.MALIA_JEWELRY,
@@ -89,6 +106,9 @@ public class GameConstants {
                     FindingName.PHAISTOS_DISC
             ));
 
+    /**
+     * A set of fresco findings in the game, identified by their names.
+     */
     public static final Set<FindingName> FRESCOES_NAMES =
             new HashSet<>(Arrays.asList(
                     FindingName.FRESCO_1,
@@ -99,14 +119,25 @@ public class GameConstants {
                     FindingName.FRESCO_6
             ));
 
+    /** The number of Theseus tokens available in the game. */
     public static final int NUMBER_OF_THESEUS = 1;
 
+    /** The total number of archaeologist tokens in the game. */
     public static final int NUMBER_OF_ARCHEOLOGIST = 3;
 
-    public static final int checkPointIdx = 6; // 0 indexed
+    /** The index of the checkpoint in the path (0-indexed). */
+    public static final int checkPointIdx = 6;
 
+    /**
+     * A mapping of colors associated with each path.
+     * Each path is assigned a specific color for visual distinction.
+     */
     public static final Map<PathName, Color> COLOR_FOR_EACH_PATH = new HashMap<>();
 
+    /**
+     * A mapping of colors associated with each player.
+     * Each player is assigned a specific color for visual distinction.
+     */
     public static final Map<PlayerName, Color> COLOR_FOR_EACH_PLAYER = new HashMap<>();
 
     static { // Java 8 doesn't support direct initialization of maps :(

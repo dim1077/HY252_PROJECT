@@ -44,6 +44,12 @@ public class Archeologist extends Pawn {
     }
 
     @Override
+    public boolean isImmobilized() {
+        return false;
+    }
+
+    /** Sets the pawn name of Archeologist object to be archeologist */
+    @Override
     void setPawnName() {
         name = PawnName.ARCHEOLOGIST;
     }

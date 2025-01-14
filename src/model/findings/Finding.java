@@ -1,46 +1,62 @@
 package model.findings;
 
-
 import model.players.Player;
 import model.positions.FindingPosition;
 import util.FindingName;
 
 /**
- * This class represents a finding.
- * A finding could represent a Fresco, a rare finding or a snake goddess statue
- * Each finding has a name and rewards points (directly or indirectly) by its discovery
- * */
+ * Represents a generic finding in the game.
+ * A finding can be an artifact such as a Fresco, a rare discovery, or a snake goddess statue.
+ * Findings may provide points (directly or indirectly) upon discovery and can be added to a player's collection.
+ *
+ * This abstract class defines the essential properties and methods that all findings must implement.
+ */
 public abstract class Finding {
+
+    /**
+     * The name of the finding, identifying its type or category.
+     */
     protected FindingName findingName;
 
     /**
-     * Collects the finding, adding to the player's inventory
+     * Adds the finding to the player's collection.
+     * This method should handle updating the player's inventory or score based on the finding type.
+     *
+     * @param currentPosition The position where the finding was discovered.
+     * @param currentPlayer   The player who discovered the finding.
      */
     abstract public void addFindingInCollection(FindingPosition currentPosition, Player currentPlayer);
 
-
     /**
-     * Gets a description of the finding.
-     * This includes the name, type, or other details about the finding.
+     * Determines whether the finding is collectable by a player.
+     * Some findings may serve special purposes (like frescoes) and might not be directly collectible.
      *
-     * @return A string description of the finding.
-     */
-    abstract public String getDescription();
-
-    /**
-     * Determines whether the finding can be collected by a player.
-     *
-     * @return true if the finding is collectable, false otherwise
+     * @return {@code true} if the finding can be collected, {@code false} otherwise.
      */
     abstract public boolean isCollectable();
 
-
-    // force API user to input a name
+    /**
+     * Sets the name of the finding.
+     * Forces subclasses to define a specific name for the finding during initialization.
+     *
+     * @param findingName The name to assign to the finding.
+     */
     abstract public void setFindingName(FindingName findingName);
 
-    public FindingName getFindingName(){
+    /**
+     * Retrieves the name of the finding.
+     *
+     * @return The name of the finding as a {@code FindingName}.
+     */
+    public FindingName getFindingName() {
         return findingName;
     }
 
+    /**
+     * Retrieves the number of points associated with the finding.
+     * Points may be awarded immediately upon discovery or through specific game mechanics.
+     *
+     * @return The number of points awarded for collecting the finding.
+     */
     abstract public int getPoints();
 }

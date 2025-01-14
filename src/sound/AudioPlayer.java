@@ -20,26 +20,26 @@ public class AudioPlayer {
      * @param isGreenTurn True for green player's turn, false for red.
      */
     public void playMusicForTurn(boolean isGreenTurn) {
-//        try {
-//            stopMusic();
-//
-//            String filePath = isGreenTurn ? greenTurnAudio : redTurnAudio;
-//
-//            File audioFile = new File(filePath);
-//            if (!audioFile.exists()) {
-//                System.err.println("Audio file not found: " + filePath);
-//                return;
-//            }
-//
-//            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
-//            clip = AudioSystem.getClip();
-//            clip.open(audioStream);
-//            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the audio until changed
-//            clip.start(); // Start playback
-//
-//        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
-//            e.printStackTrace();
-//        }
+        try {
+            stopMusic();
+
+            String filePath = isGreenTurn ? greenTurnAudio : redTurnAudio;
+
+            File audioFile = new File(filePath);
+            if (!audioFile.exists()) {
+                System.err.println("Audio file not found: " + filePath);
+                return;
+            }
+
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile);
+            clip = AudioSystem.getClip();
+            clip.open(audioStream);
+            clip.loop(Clip.LOOP_CONTINUOUSLY); // Loop the audio until changed
+            clip.start(); // Start playback
+
+        } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -50,5 +50,14 @@ public class AudioPlayer {
             clip.stop();
             clip.close();
         }
+    }
+
+    /**
+     * Checks if music is currently playing.
+     *
+     * @return True if music is playing, false otherwise.
+     */
+    public boolean isMusicPlaying() {
+        return clip != null && clip.isRunning();
     }
 }

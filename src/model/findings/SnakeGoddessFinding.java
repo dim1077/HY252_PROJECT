@@ -1,21 +1,17 @@
 package model.findings;
 
-
-
-// I don't want to mess with html right now, the HTML enchantment was created using chatGPT
-
 import model.players.Player;
 import model.positions.FindingPosition;
 import util.FindingName;
 
 /**
- * Snake Goddess Statue
+ * Represents a **Snake Goddess Statue** finding in the game.
  * <p>
- * This class represents a snake goddess statue The discovery of the snake goddess does not directly reward the player with points.
- * Instead, when the game ends, the player's points are calculated using the following table:
+ * The discovery of the Snake Goddess Statue does not directly award the player points.
+ * Instead, the player's score is calculated at the end of the game based on the number of statues collected,
+ * using the following table:
  * </p>
  * <table style="border: 1px solid black; border-collapse: collapse; text-align: center;">
- *      <caption></caption>
  *   <thead>
  *     <tr>
  *       <th style="border: 1px solid black; padding: 5px;">Number of Statues</th>
@@ -56,15 +52,23 @@ import util.FindingName;
  */
 public class SnakeGoddessFinding extends Finding {
 
-
+    /**
+     * Constructs a Snake Goddess Finding and assigns it a predefined name.
+     */
     public SnakeGoddessFinding() {
         setFindingName(FindingName.SNAKE_GODDESS);
     }
 
     /**
-     * To collect the finding we take two actions:
-     * 1) Set the finding position to not have a finding
-     * 2) Give the player the snake goddess finding
+     * Adds this finding to the player's collection and removes it from its current position.
+     * <p>
+     * Two actions are performed when this finding is collected:
+     * 1. The finding is added to the player's collection.
+     * 2. The finding is removed from its current position.
+     * </p>
+     *
+     * @param currentPosition The position where the finding was discovered.
+     * @param currentPlayer   The player who discovered the finding.
      */
     @Override
     public void addFindingInCollection(FindingPosition currentPosition, Player currentPlayer) {
@@ -72,21 +76,36 @@ public class SnakeGoddessFinding extends Finding {
         currentPosition.removeFinding();
     }
 
-    @Override
-    public String getDescription() {
-        return "";
-    }
-
+    /**
+     * Determines whether this finding is directly collectable.
+     *
+     * @return {@code false}, as the Snake Goddess Statue is not directly collectable for points but contributes
+     *         to end-game scoring.
+     */
     @Override
     public boolean isCollectable() {
         return false;
     }
 
+    /**
+     * Sets the name of this finding.
+     *
+     * @param findingName The name to assign to this finding.
+     */
     @Override
     public void setFindingName(FindingName findingName) {
         this.findingName = findingName;
     }
 
+    /**
+     * Retrieves the points awarded for this finding.
+     * <p>
+     * Since the Snake Goddess Statue does not provide points directly, this method always returns 0.
+     * The actual points are calculated at the end of the game based on the number of statues collected.
+     * </p>
+     *
+     * @return 0, as points are calculated later based on collection count.
+     */
     @Override
     public int getPoints() {
         return 0;

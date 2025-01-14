@@ -6,11 +6,20 @@ import model.players.Player;
 import model.positions.Position;
 import util.CardName;
 
+
+
+/**
+ * Represents the Ariadne card, which moves a player's pawn 2 cells forward,
+ * potentially skipping over a FindingPosition. If the pawn is near the end,
+ * it may finish the path.
+ */
 public class AriadneCard extends Card {
     public AriadneCard(Path name) {
         super(name);
     }
 
+
+    // TODO: this code needs refactoring
     @Override
     public void play(Player player) {
         Pawn playerPawn = path.getPlayerPawn(player);
@@ -19,7 +28,7 @@ public class AriadneCard extends Card {
         // In case the pawn has finished, the player can play the card, but it won't do anything
         if (playerPawn.hasFinished()) return;
 
-        // Invalid, can't use Ariadne card in the first round. TODO: 0 is not the correct thing here
+        // Invalid, can't use Ariadne card in the first round.
         if (playerPawn.getPosition() == null){
             throw new IllegalArgumentException("Cannot play ariadne card in the first round"); // this shouldn't happen, as we are not going to let the program reach card.play() in that case
         }

@@ -1,20 +1,30 @@
-package view.componentT.playerMenuT;
+package view.components.playerMenu;
 
-import controller.GameButtonClickListener;
+import controller.listeners.GameButtonClickListener;
 import util.PlayerName;
-import view.components.menus.CardView;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 
+
+/**
+ * Represents a panel displaying the current deck of cards for a player.
+ * The panel manages card interactions and updates dynamically based on game actions.
+ */
 public class CardDeckPanel extends JPanel {
     private CardView[] currentCards;
     private GameButtonClickListener cardClickListener;
     private PlayerName playerName;
 
 
-
+    /**
+     * Constructs a CardDeckPanel with an initial set of cards.
+     *
+     * @param initialCards       The initial set of cards for the deck.
+     * @param cardClickListener  The listener for card click events.
+     * @param playerName         The name of the player who owns this deck.
+     */
     public CardDeckPanel(CardView[] initialCards, GameButtonClickListener cardClickListener, PlayerName playerName) {
         this.currentCards = initialCards;
         this.cardClickListener = cardClickListener;
@@ -22,7 +32,6 @@ public class CardDeckPanel extends JPanel {
         assert(currentCards.length == 8);
 
         setLayout(new FlowLayout());
-        setBackground(Color.LIGHT_GRAY);
 
         initializeCardDeck();
     }
@@ -44,11 +53,16 @@ public class CardDeckPanel extends JPanel {
         repaint();
     }
 
+    /**
+     * Updates a specific card in the deck and refreshes the panel.
+     *
+     * @param cardIdx The index of the card to be updated.
+     * @param newCard The new card to replace the existing card.
+     */
     public void updateCardDeck(int cardIdx, CardView newCard) {
-        // Update the card in the data model
+
         currentCards[cardIdx] = newCard;
 
-        // Clear the panel visually
         removeAll();
 
         // Rebuild the card deck
@@ -60,13 +74,11 @@ public class CardDeckPanel extends JPanel {
                 currentButton.removeActionListener(al);
             }
 
-            // Attach the new listener
-            final int index = i; // Capture index for listener
+            final int index = i;
             currentButton.addActionListener(e -> {
                 cardClickListener.onCardInDeckClicked(currentCards, index, playerName);
             });
 
-            // Add the button back to the panel
             add(currentButton);
         }
 
@@ -75,14 +87,17 @@ public class CardDeckPanel extends JPanel {
         repaint();
     }
 
-
+    /**
+     * Sets the clickable state of all buttons in the deck.
+     *
+     * @param clickable True to enable buttons, false to disable them.
+     */
     public void setButtonsClickable(boolean clickable) {
         for (CardView card : currentCards) {
             JButton button = card.getButton();
             button.setEnabled(clickable);
         }
 
-        // Refresh the UI
         revalidate();
         repaint();
     }
