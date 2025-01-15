@@ -24,7 +24,7 @@ class PlayerTests {
 
     @BeforeEach
     void setUp() {
-        initialDeck = new Card[GameConstants.NUMBER_OF_DECK_CARDS];
+        initialDeck = new Card[GameConstants.Cards.NUMBER_OF_DECK_CARDS];
         greenPlayer = new PlayerGreen(initialDeck);
     }
 

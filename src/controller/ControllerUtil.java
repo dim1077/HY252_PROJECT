@@ -43,7 +43,6 @@ public class ControllerUtil {
      * Each Card is constructed based on the CardView's name, path, and number
      * in the case of NumberCard. This method assumes that the Path array provides
      * valid paths for conversion.
-     *
      * This method is deprecated as it may introduce errors due to unchecked
      * conversions and is not recommended for use.
      *
@@ -93,7 +92,7 @@ public class ControllerUtil {
         List<FindingName> frescoes = new ArrayList<>();
         if (findingNames.isEmpty()) return frescoes;
         for (FindingName name : findingNames) {
-            if (GameConstants.FRESCOES_NAMES.contains(name)) frescoes.add(name);
+            if (GameConstants.Findings.FRESCOES_NAMES.contains(name)) frescoes.add(name);
         }
         return frescoes;
     }

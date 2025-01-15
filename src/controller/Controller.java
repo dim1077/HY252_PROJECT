@@ -63,6 +63,10 @@ public class Controller implements GameButtonClickListener {
     private CardStack cardStack;
     private Path[] paths;
 
+    private long startTurnTime;
+    private Timer turnTimer;
+
+
     /**
      * Last cards played per path (index=pathValue) for each player.
      */
@@ -100,12 +104,14 @@ public class Controller implements GameButtonClickListener {
     // -------------------------------------------------------------------------
 
     /**
-     * Initializes the entire game: model, view, and audio.
+     * Initializes the entire game: model, view, audio and starts the 30-second counter
      */
     public void initializeGame() {
         initializeModel();
         initializeView();
         initializeAudio();
+
+        startTurnTimer();
     }
 
     /**
@@ -118,6 +124,8 @@ public class Controller implements GameButtonClickListener {
         }
         updateUIForNextTurn();
         isGreensTurn = !isGreensTurn;
+
+        startTurnTimer();
     }
 
     /**
@@ -167,6 +175,39 @@ public class Controller implements GameButtonClickListener {
         // TODO
     }
 
+    /**
+     * Starts a timer to count seconds until the player plays a card.
+     * He has
+     */
+    private void startTurnTimer() {
+        startTurnTime = System.currentTimeMillis();
+
+        turnTimer = new Timer();
+
+        turnTimer.scheduleAtFixedRate(new TimerTask() {
+            private final long startTime = System.currentTimeMillis();
+
+            @Override
+            public void run() {
+                long elapsedSeconds = (System.currentTimeMillis() - startTime) / 1000;
+                if (elapsedSeconds >= GameConstants.Turn.MAX_TIME_FOR_TURN) {
+                    stopTimer();
+                    mainWindow.showNoTimePopUp();
+                    nextTurn();
+                }
+            }
+        }, 0, 1000);
+    }
+
+    /**
+     * Stops the timer and calculates elapsed time.
+     */
+    private void stopTimer() {
+        if (turnTimer != null) {
+            turnTimer.cancel();
+            turnTimer = null;
+        }
+    }
 
     /**
      * Invoked when the rejection stack is clicked.
@@ -184,6 +225,9 @@ public class Controller implements GameButtonClickListener {
      */
     @Override
     public void onCardInDeckClicked(CardView[] cardDeckView, int cardClickedIdx, PlayerName currentPlayerName) {
+        // Stop the timer as the player has played
+        stopTimer();
+
         // 1) Identify current player & retrieve the clicked card/path
         Player currentPlayer = (currentPlayerName == PlayerName.PLAYER_GREEN) ? playerGreen : playerRed;
         Card clickedCard = currentPlayer.getCardDeck()[cardClickedIdx];
@@ -420,8 +464,8 @@ public class Controller implements GameButtonClickListener {
         cardStack = new CardStack(paths);
 
         // Create players with a full deck each
-        playerGreen = new PlayerGreen(cardStack.getNCards(GameConstants.NUMBER_OF_DECK_CARDS));
-        playerRed = new PlayerRed(cardStack.getNCards(GameConstants.NUMBER_OF_DECK_CARDS));
+        playerGreen = new PlayerGreen(cardStack.getNCards(GameConstants.Cards.NUMBER_OF_DECK_CARDS));
+        playerRed = new PlayerRed(cardStack.getNCards(GameConstants.Cards.NUMBER_OF_DECK_CARDS));
 
         // Initialize supporting maps
         initializeControllerMaps();
@@ -449,11 +493,11 @@ public class Controller implements GameButtonClickListener {
     }
 
     private Finding[] createNonRareFindings() {
-        Finding[] nonRare = new Finding[GameConstants.NUMBER_OF_RELICS];
-        for (int i = 0; i < GameConstants.NUMBER_OF_SNAKE_GODDESS_STATUES; i++) {
+        Finding[] nonRare = new Finding[GameConstants.Findings.NUMBER_OF_RELICS];
+        for (int i = 0; i < GameConstants.Findings.NUMBER_OF_SNAKE_GODDESS_STATUES; i++) {
             nonRare[i] = new SnakeGoddessFinding();
         }
-        final int base = GameConstants.NUMBER_OF_SNAKE_GODDESS_STATUES;
+        final int base = GameConstants.Findings.NUMBER_OF_SNAKE_GODDESS_STATUES;
         nonRare[base] = new FrescoFinding(20, FindingName.FRESCO_1);
         nonRare[base + 1] = new FrescoFinding(20, FindingName.FRESCO_2);
         nonRare[base + 2] = new FrescoFinding(15, FindingName.FRESCO_3);
@@ -568,8 +612,8 @@ public class Controller implements GameButtonClickListener {
         }
 
         int[] usage = pawnsUsed.get(player);
-        boolean canUseTheseus = usage[PawnName.THESEUS.getValue()] < GameConstants.NUMBER_OF_THESEUS;
-        boolean canUseArcheologist = usage[PawnName.ARCHEOLOGIST.getValue()] < GameConstants.NUMBER_OF_ARCHEOLOGIST;
+        boolean canUseTheseus = usage[PawnName.THESEUS.getValue()] < GameConstants.Tokens.NUMBER_OF_THESEUS;
+        boolean canUseArcheologist = usage[PawnName.ARCHEOLOGIST.getValue()] < GameConstants.Tokens.NUMBER_OF_ARCHEOLOGIST;
 
         PawnName chosenPawn = mainWindow.askUserForPawn(canUseTheseus, canUseArcheologist);
         player.setPawn(chosenPawn, path.getPathName());
@@ -585,7 +629,7 @@ public class Controller implements GameButtonClickListener {
         int pathIdx = pathName.getValue();
         if (!hasCheckpointPassed.get(player)[pathIdx]) {
             Position pos = pawn.getPosition();
-            if (pos != null && pos.getCellIdx() >= GameConstants.checkPointIdx) {
+            if (pos != null && pos.getCellIdx() >= GameConstants.Paths.CHECKPOINT_INDEX) {
                 hasCheckpointPassed.get(player)[pathIdx] = true;
                 checkPointsPassed++;
             }
@@ -626,7 +670,7 @@ public class Controller implements GameButtonClickListener {
         PathName currentPath = pawn.getPosition().getPathName();
         // If it is a rare finding, record it
         FindingName findingName = finding.getFindingName();
-        if (GameConstants.rareFindingNames.contains(findingName)) {
+        if (GameConstants.Findings.RARE_FINDING_NAMES.contains(findingName)) {
             FindingName[] findings = rareFindingPlayerFound.get(player);
             findings[currentPath.getValue()] = findingName;
         }
@@ -669,7 +713,7 @@ public class Controller implements GameButtonClickListener {
             totalFindingPoints += finding.getPoints(); // statues will get 0 points
             if (finding instanceof SnakeGoddessFinding) snakeStatuesCount++;
         }
-        totalStatuesPoints += GameConstants.REWARD_PATH_FOR_NUM_OF_STATUES[snakeStatuesCount];
+        totalStatuesPoints += GameConstants.Rewards.REWARD_PATH_FOR_NUM_OF_STATUES[snakeStatuesCount];
         return totalPathPoints + totalStatuesPoints + totalFindingPoints;
     }
 
@@ -721,6 +765,7 @@ public class Controller implements GameButtonClickListener {
         CentralContent centralContent = mainWindow.getCentralContent();
         centralContent.updateInformation(cardStack.getStackSize(), checkPointsPassed, !isGreensTurn);
 
+        // TODO: audio shouldn't be in this function
         audioPlayer.playMusicForTurn(isGreensTurn);
     }
 

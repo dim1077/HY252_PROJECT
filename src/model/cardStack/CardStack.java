@@ -31,7 +31,7 @@ public class CardStack {
     }
 
     private void shuffleCards() {
-        Collections.shuffle(cardStack, new java.util.Random(43));
+        Collections.shuffle(cardStack);
     }
 
     public int getStackSize(){
@@ -40,16 +40,16 @@ public class CardStack {
 
     private void initCards(Path[] paths) {
         for (Path pathName : paths) {
-            for (int number = 1; number <= GameConstants.NUMBER_OF_PATH_NUMBER_CARDS / 2; number++) {
+            for (int number = 1; number <= GameConstants.Cards.NUMBER_OF_PATH_NUMBER_CARDS / 2; number++) {
                 cardStack.push(new NumberCard(pathName, number));
                 cardStack.push(new NumberCard(pathName, number));
             }
 
-            for (int j = 0; j < GameConstants.NUMBER_OF_ARIADNE_CARDS / GameConstants.NUMBER_OF_PATHS; j++ ) {
+            for (int j = 0; j < GameConstants.Cards.NUMBER_OF_ARIADNE_CARDS / GameConstants.Paths.NUMBER_OF_PATHS; j++ ) {
                 cardStack.push(new AriadneCard(pathName));
             }
 
-            for (int j = 0; j < GameConstants.NUMBER_OF_MINOTAUR_CARDS / GameConstants.NUMBER_OF_PATHS; j++ ) {
+            for (int j = 0; j < GameConstants.Cards.NUMBER_OF_MINOTAUR_CARDS / GameConstants.Paths.NUMBER_OF_PATHS; j++ ) {
                 cardStack.push(new MinotaurCard(pathName));
             }
         }

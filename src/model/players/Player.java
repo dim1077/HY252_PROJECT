@@ -67,7 +67,7 @@ public abstract class Player {
         this.score = 0;
         this.currentCards = initialCards;
         this.findings = new ArrayList<>();
-        this.pawns = new Pawn[GameConstants.NUMBER_OF_PAWNS]; // typically 4
+        this.pawns = new Pawn[GameConstants.Players.NUMBER_OF_PAWNS]; // typically 4
         // If you want to initialize pawns up-front, do so in a separate method or a subclass
         initializePawns();
     }
@@ -169,7 +169,7 @@ public abstract class Player {
 
     /**
      * Returns the player's current score.
-     * <p>
+     *
      * Note: This may not be dynamically updated if your controller or game logic updates score externally.
      * Some designs might recalculate the "score" from findings & positions rather than storing it here.
      */

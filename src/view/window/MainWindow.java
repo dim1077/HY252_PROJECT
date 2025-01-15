@@ -18,7 +18,6 @@ public class MainWindow extends JFrame {
     private CentralContent centralContent;
     private PlayerMenu greenPlayerMenu;
     private PlayerMenu redPlayerMenu;
-    private GameButtonClickListener cardClickListener;
 
 
     /**
@@ -32,15 +31,14 @@ public class MainWindow extends JFrame {
      * @param isPlayerOnesTurn  Indicates whether it's player one's turn.
      */
     public MainWindow(CardView[] initialCardsRed, CardView[] initialCardsGreen, GameButtonClickListener cardClickListener, int availableCards, int checkPoints, boolean isPlayerOnesTurn) {
-        this.cardClickListener = cardClickListener;
 
         setTitle("Lost Cities");
-        setSize(GameConstants.WIDTH / 2, GameConstants.HEIGHT / 2); // TODO I don't think this is needed or makes sense
+        setSize(GameConstants.Screen.WIDTH / 2, GameConstants.Screen.HEIGHT / 2); // TODO I don't think this is needed or makes sense
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setBackground(Color.BLACK);
-        setPreferredSize(new Dimension(GameConstants.WIDTH, GameConstants.HEIGHT));
+        setPreferredSize(new Dimension(GameConstants.Screen.WIDTH, GameConstants.Screen.HEIGHT));
 
 
         setJMenuBar(new GameMenu(cardClickListener));
@@ -87,7 +85,10 @@ public class MainWindow extends JFrame {
      */
     public void PawnImmobilized(){
         JOptionPane.showMessageDialog(null, "Cannot use pawn: Currently immobilized", "Invalid card", JOptionPane.ERROR_MESSAGE);
+    }
 
+    public void showNoTimePopUp(){
+        JOptionPane.showMessageDialog(null, "Time's up, you lost your turn.", "No time left!", JOptionPane.INFORMATION_MESSAGE);
     }
 
     /**
@@ -193,7 +194,7 @@ public class MainWindow extends JFrame {
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);  // close on exit
 
         JPanel panel = new JPanel();
-        panel.setBorder(BorderFactory.createLineBorder(GameConstants.COLOR_FOR_EACH_PLAYER.get(playerName), 4)); // Green border with 4px thickness
+        panel.setBorder(BorderFactory.createLineBorder(GameConstants.PlayerVisuals.COLOR_FOR_EACH_PLAYER.get(playerName), 4)); // Green border with 4px thickness
         panel.setLayout(new BorderLayout(10, 10));
 
         JLabel messageLabel = new JLabel("Congratulations, " + playerName.toString() + "! You are the winner!", JLabel.CENTER);

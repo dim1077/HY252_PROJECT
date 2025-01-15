@@ -47,7 +47,7 @@ class ModelTests {
         RareFinding rare = new RareFinding(FindingName.MINOS_RING, 25);
         knossosPath = new KnossosPath(rare, new model.findings.Finding[5]);  // 5 non-rare placeholders
         // Minimal player
-        greenPlayer = new PlayerGreen(new Card[GameConstants.NUMBER_OF_DECK_CARDS]);
+        greenPlayer = new PlayerGreen(new Card[GameConstants.Cards.NUMBER_OF_DECK_CARDS]);
     }
 
     @Test

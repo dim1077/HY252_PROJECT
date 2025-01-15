@@ -30,7 +30,7 @@ public class PlayerMenu extends JLayeredPane {
      */
     public PlayerMenu(CardView[] initialCards, GameButtonClickListener cardClickListener, PlayerName playerName) {
         setLayout(null);
-        setBorder(BorderFactory.createLineBorder(GameConstants.COLOR_FOR_EACH_PLAYER.get(playerName), 2));
+        setBorder(BorderFactory.createLineBorder(GameConstants.PlayerVisuals.COLOR_FOR_EACH_PLAYER.get(playerName), 2));
 
         this.playerName = playerName;
         this.cardClickListener = cardClickListener;
@@ -92,8 +92,8 @@ public class PlayerMenu extends JLayeredPane {
         int numOfTheseus = pawnsUsed[PawnName.THESEUS.getValue()];
         int numOfArcheologist = pawnsUsed[PawnName.ARCHEOLOGIST.getValue()];
 
-        int availableTheseus = GameConstants.NUMBER_OF_THESEUS - numOfTheseus;
-        int availableArcheologist = GameConstants.NUMBER_OF_ARCHEOLOGIST - numOfArcheologist;
+        int availableTheseus = GameConstants.Tokens.NUMBER_OF_THESEUS - numOfTheseus;
+        int availableArcheologist = GameConstants.Tokens.NUMBER_OF_ARCHEOLOGIST - numOfArcheologist;
 
         String availablePawnsDesc = playerName.toString() + '-' + "Available pawns: " + availableTheseus + " Theseus and " + availableArcheologist + " archeologists";
         availablePawnsLabel.setText(availablePawnsDesc);

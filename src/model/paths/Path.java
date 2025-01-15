@@ -56,10 +56,10 @@ public abstract class Path {
         setPathName();
 
         // Initialize maxCardPlayed to -1 (meaning no card played yet).
-        this.maxCardPlayed = new int[GameConstants.NUMBER_OF_PLAYERS];
+        this.maxCardPlayed = new int[GameConstants.Players.NUMBER_OF_PLAYERS];
         Arrays.fill(this.maxCardPlayed, -1);
 
-        this.positions = new Position[GameConstants.NUMBER_OF_PATH_CELLS];
+        this.positions = new Position[GameConstants.Paths.NUMBER_OF_PATH_CELLS];
         initializePositions();
     }
 
@@ -69,8 +69,8 @@ public abstract class Path {
     abstract void setPathName();
 
     private void initializePositions() {
-        List<Integer> findingCells = new ArrayList<>(GameConstants.numOfPositionsWithFindings);
-        findingCells.addAll(GameConstants.numOfPositionsWithFindings);
+        List<Integer> findingCells = new ArrayList<>(GameConstants.Paths.POSITIONS_WITH_FINDINGS);
+        findingCells.addAll(GameConstants.Paths.POSITIONS_WITH_FINDINGS);
 
         // Randomly pick one of these cells to host the rare finding
         Random random = new Random();
@@ -81,14 +81,14 @@ public abstract class Path {
         positions[rareFindingIndex] = new FindingPosition(
                 pathName,
                 rareFindingIndex,
-                GameConstants.REWARD_PATH_FOR_ITH_CELL[rareFindingIndex],
+                GameConstants.Rewards.REWARD_PATH_FOR_ITH_CELL[rareFindingIndex],
                 rareFinding,
                 true
         );
 
         // Fill the other positions
         int nonRareIndex = 0;
-        for (int pos = 0; pos < GameConstants.NUMBER_OF_PATH_CELLS; pos++) {
+        for (int pos = 0; pos < GameConstants.Paths.NUMBER_OF_PATH_CELLS; pos++) {
             if (pos == rareFindingIndex) continue; // skip the rare-finding cell
 
             // If 1-based index is in findingCells, place a non-rare finding
@@ -96,7 +96,7 @@ public abstract class Path {
                 positions[pos] = new FindingPosition(
                         pathName,
                         pos,
-                        GameConstants.REWARD_PATH_FOR_ITH_CELL[pos],
+                        GameConstants.Rewards.REWARD_PATH_FOR_ITH_CELL[pos],
                         nonRareFindings[nonRareIndex++],
                         true
                 );
@@ -105,13 +105,9 @@ public abstract class Path {
                 positions[pos] = new SimplePosition(
                         pathName,
                         pos,
-                        GameConstants.REWARD_PATH_FOR_ITH_CELL[pos]
+                        GameConstants.Rewards.REWARD_PATH_FOR_ITH_CELL[pos]
                 );
             }
-        }
-
-        if (positions[rareFindingIndex].getFinding() == null){
-            System.out.println("bruh");
         }
     }
 

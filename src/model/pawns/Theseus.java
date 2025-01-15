@@ -26,14 +26,14 @@ public class Theseus extends Pawn {
 
     /**
      * @precondition The position must contain a finding
-     * <p>
+     *
      * This method is responsible for interacting with
      * a position that has a finding. Theseus can either destroy
      * a finding, which reveals his position, or ignore it.
      */
     @Override
     public void interactWithFinding(FindingPosition currentPosition, Player currentPlayer) {
-        if (findingsDestroyed != GameConstants.MAX_DESTRUCTION_COUNT) return;
+        if (findingsDestroyed != GameConstants.Findings.MAX_DESTRUCTION_COUNT) return;
         currentPosition.removeFinding();
         findingsDestroyed++;
     }

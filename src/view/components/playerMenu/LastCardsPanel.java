@@ -65,7 +65,7 @@ public class LastCardsPanel extends JPanel {
                 ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
                 cardImage = new JLabel(scaledIcon);
-                cardImage.setBorder(BorderFactory.createLineBorder(GameConstants.COLOR_FOR_EACH_PATH.get(path), 2));
+                cardImage.setBorder(BorderFactory.createLineBorder(GameConstants.Paths.COLOR_FOR_EACH_PATH.get(path), 2));
 
             } else {
                 // Placeholder for missing cards
@@ -75,7 +75,7 @@ public class LastCardsPanel extends JPanel {
 
                 cardImage.setOpaque(true);
                 cardImage.setBackground(Color.WHITE);
-                cardImage.setBorder(BorderFactory.createLineBorder(GameConstants.COLOR_FOR_EACH_PATH.get(path), 2));
+                cardImage.setBorder(BorderFactory.createLineBorder(GameConstants.Paths.COLOR_FOR_EACH_PATH.get(path), 2));
             }
 
             cardImage.setPreferredSize(new Dimension(45, 65));
@@ -106,26 +106,24 @@ public class LastCardsPanel extends JPanel {
 
     private void addEmptyCard(PathName pathName){
         JPanel cardContainer = new JPanel(new BorderLayout());
-//        cardContainer.setBackground(Color.LIGHT_GRAY);
 
         // Placeholder for missing cards
         JLabel placeholderCard = new JLabel(pathName.toString(), SwingConstants.CENTER);
-        placeholderCard.setBorder(BorderFactory.createLineBorder(GameConstants.COLOR_FOR_EACH_PATH.get(pathName), 2));
+        placeholderCard.setBorder(BorderFactory.createLineBorder(GameConstants.Paths.COLOR_FOR_EACH_PATH.get(pathName), 2));
 
         placeholderCard.setOpaque(true);
         placeholderCard.setBackground(Color.WHITE);
-        placeholderCard.setBorder(BorderFactory.createLineBorder(GameConstants.COLOR_FOR_EACH_PATH.get(pathName), 2));
-        placeholderCard.setPreferredSize(new Dimension(45, 65)); // Match card size
-        placeholderCard.setFont(new Font("Arial", Font.PLAIN, 5)); // Use a smaller font size
+        placeholderCard.setBorder(BorderFactory.createLineBorder(GameConstants.Paths.COLOR_FOR_EACH_PATH.get(pathName), 2));
+        placeholderCard.setPreferredSize(new Dimension(45, 65));
+        placeholderCard.setFont(new Font("Arial", Font.PLAIN, 5));
 
         cardContainer.add(placeholderCard, BorderLayout.CENTER);
 
         JLabel placeholderIcon = new JLabel("?", SwingConstants.CENTER);
-        cardContainer.add(placeholderIcon, BorderLayout.SOUTH);//        // Placeholder for missing icons
+        cardContainer.add(placeholderIcon, BorderLayout.SOUTH);//
 
-        // Add the container to the main panel
         add(cardContainer);
-        cardContainers[pathName.getValue()] = cardContainer; // Store the container reference
+        cardContainers[pathName.getValue()] = cardContainer;
     }
 
 }

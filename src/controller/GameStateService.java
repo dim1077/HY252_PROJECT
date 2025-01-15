@@ -11,6 +11,12 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
+
+
+/**
+ * This file was supposed to contain the functionality for save the game variables into
+ * Json format, it's currently unfinished and nonfunctional.
+ * */
 public class GameStateService {
 //    private static final String SAVE_FILE = "game_state.json";
 //

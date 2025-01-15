@@ -27,7 +27,7 @@ public class InformationPanel extends JPanel {
      * @param snakeGoddessStatues The initial number of Snake Goddess statues collected.
      */
     public InformationPanel(int score, int snakeGoddessStatues) {
-        this.score = score;
+            this.score = score;
         this.snakeGoddessStatues = snakeGoddessStatues;
 
         setLayout(new BorderLayout(0, 10));

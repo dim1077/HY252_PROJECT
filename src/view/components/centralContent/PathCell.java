@@ -29,7 +29,7 @@ public class PathCell extends JPanel {
 
         setLayout(null);
         setPreferredSize(new Dimension(50, 50)); // Fixed size
-        setBorder(BorderFactory.createLineBorder(GameConstants.COLOR_FOR_EACH_PATH.get(pathName)));
+        setBorder(BorderFactory.createLineBorder(GameConstants.Paths.COLOR_FOR_EACH_PATH.get(pathName)));
         setBackground(Color.WHITE); // Default background color
 
 
@@ -45,18 +45,16 @@ public class PathCell extends JPanel {
         else throw new IllegalArgumentException();
 
         if (gridIndex == 8) fileName += "Palace";
-        else if (GameConstants.numOfPositionsWithFindings.contains((gridIndex + 1) % 9)) fileName += "2"; // gridIndex + 1 because numOfPositionsWithFindings is 1-indexed
+        else if (GameConstants.Paths.POSITIONS_WITH_FINDINGS.contains((gridIndex + 1) % 9)) fileName += "2"; // gridIndex + 1 because numOfPositionsWithFindings is 1-indexed
 
         return fileName;
     }
 
     private void setPathIcon(int index) {
         try {
-            // Build the file path and load the image
             String iconFileName = getPathIconFileName(index);
             ImageIcon rawIcon = new ImageIcon("src/assets/images/paths/" + iconFileName + ".jpg");
 
-            // Scale the image smoothly
             Image scaledImage;
             if (index == 8)
                 scaledImage = rawIcon.getImage().getScaledInstance(69, 48, Image.SCALE_SMOOTH);
@@ -64,21 +62,19 @@ public class PathCell extends JPanel {
                 scaledImage = rawIcon.getImage().getScaledInstance(48, 48, Image.SCALE_SMOOTH);
             ImageIcon pathIcon = new ImageIcon(scaledImage);
 
-            // Use absolute positioning
 
-            // Create and position the path icon label
             JLabel iconLabel = new JLabel(pathIcon);
             if (index == 8)
-                iconLabel.setBounds(0, 0, 69, 48); // Custom size for index 8
+                iconLabel.setBounds(0, 0, 69, 48);
             else
-                iconLabel.setBounds(0, 0, 50, 50); // Default size for other indices
+                iconLabel.setBounds(0, 0, 50, 50);
 
-            add(iconLabel); // Add it first so it stays at the back layer
+            add(iconLabel);
 
 
 
         } catch (Exception e) {
-            e.printStackTrace(); // Log any errors during loading
+            e.printStackTrace();
         }
     }
 
@@ -104,21 +100,18 @@ public class PathCell extends JPanel {
         }
 
 
-        // Load the image
-        ImageIcon icon = new ImageIcon(imagePath); // Replace with your image path
+        ImageIcon icon = new ImageIcon(imagePath);
 
-        // Resize the image if needed
         Image scaledImage = icon.getImage().getScaledInstance(15, 30, Image.SCALE_SMOOTH);
         ImageIcon scaledIcon = new ImageIcon(scaledImage);
 
-        // Create JLabel with the image
         JLabel imageLabel = new JLabel(scaledIcon);
 
         if (playerName == PlayerName.PLAYER_GREEN) imageLabel.setBounds(25, 10, 15, 30);
-        else imageLabel.setBounds(5, 10, 15, 30); // Set position and size
+        else imageLabel.setBounds(5, 10, 15, 30);
 
 
-        Color playerColor = GameConstants.COLOR_FOR_EACH_PLAYER.get(playerName);
+        Color playerColor = GameConstants.PlayerVisuals.COLOR_FOR_EACH_PLAYER.get(playerName);
         imageLabel.setBorder(BorderFactory.createLineBorder(playerColor, 2));
 
         add(imageLabel);
@@ -143,22 +136,20 @@ public class PathCell extends JPanel {
 
                     // Check if the border matches the player's color: And yes this is a terrible implementation but guess what? I'm not going to be a frontend engineer
                     if ((playerName == PlayerName.PLAYER_GREEN && label.getBorder() instanceof LineBorder
-                            && ((LineBorder) label.getBorder()).getLineColor().equals(GameConstants.COLOR_FOR_EACH_PLAYER.get(PlayerName.PLAYER_GREEN)))
+                            && ((LineBorder) label.getBorder()).getLineColor().equals(GameConstants.PlayerVisuals.COLOR_FOR_EACH_PLAYER.get(PlayerName.PLAYER_GREEN)))
                             || (playerName == PlayerName.PLAYER_RED && label.getBorder() instanceof LineBorder
-                            && ((LineBorder) label.getBorder()).getLineColor().equals(GameConstants.COLOR_FOR_EACH_PLAYER.get(PlayerName.PLAYER_RED)))) {
+                            && ((LineBorder) label.getBorder()).getLineColor().equals(GameConstants.PlayerVisuals.COLOR_FOR_EACH_PLAYER.get(PlayerName.PLAYER_RED)))) {
 
-                        // Remove the matching label
                         remove(label);
                         break;
                     }
                 }
             }
 
-            // Refresh the layout to reflect the changes
             revalidate();
             repaint();
         } catch (Exception e) {
-            e.printStackTrace(); // Log any errors
+            e.printStackTrace();
         }
     }
 }

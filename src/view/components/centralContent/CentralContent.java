@@ -64,10 +64,10 @@ public class CentralContent extends JLayeredPane {
 
 
     private void addPointsLabelsAbsolute() {
-        String[] points = new String[GameConstants.NUMBER_OF_PATH_CELLS];
-        for (int i = 0; i < GameConstants.NUMBER_OF_PATH_CELLS; i++) {
-            points[i] = "<html>" + GameConstants.REWARD_PATH_FOR_ITH_CELL[i] + " points" +
-                    (i == GameConstants.checkPointIdx ? "<br>checkpoint!" : "") + "</html>";
+        String[] points = new String[GameConstants.Paths.NUMBER_OF_PATH_CELLS];
+        for (int i = 0; i < GameConstants.Paths.NUMBER_OF_PATH_CELLS; i++) {
+            points[i] = "<html>" + GameConstants.Rewards.REWARD_PATH_FOR_ITH_CELL[i] + " points" +
+                    (i == GameConstants.Paths.CHECKPOINT_INDEX ? "<br>checkpoint!" : "") + "</html>";
         }
 
         int baseX = 350;
