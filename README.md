@@ -16,9 +16,31 @@ Unfortunately, the final documentation was lost. However, I've attached an **old
 ## ⚠️ Known Issues  
 - The **last commit** improved code clarity and structure but **broke some functionality related to special cards**. I decided to keep this version since it’s cleaner and better for demonstration purposes.  
 - UI could certainly use some polishing, but the focus was mainly on game logic and OOP principles.
+- **Git commits are unprofessional**, with inconsistent messages and structure. This was due to it being a personal project
+
 
 ## 🚀 How to Run  
 Currently, the project is **difficult to run** due to missing dependencies.  
 The original JAR file was faulty and not included in the repository, which affects test functionality and some core features. 
 There will possibly be an attempt to fix it later.
+- The **`.iml` file is included**, which might help with importing the project in IntelliJ IDEA but could also cause issues depending on your environment.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
